@@ -1197,22 +1197,6 @@ function drawOverlay(currentTime) {
                 overCtx.fillRect(pixel.x, pixel.y, 2, 2);
             }
             overCtx.globalAlpha = 1;
-            // for (let i = 0; i < visualizerPoints.length; i++) {
-            //     if (typeof visualizerPoints[i] !== 'undefined') {
-            //         for (let j = 0; j < visualizerPoints[i].length; j++) {
-            //             if (typeof visualizerPoints[i][j] !== 'undefined') {
-            //                 let point = visualizerPoints[i][j]["point"];
-            //                 let worldPoint = map.getProjection().fromLatLngToPoint(point);
-            //                 let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-            //                 if (visualizerBoundaryGrid[i][j])
-            //                     overCtx.fillStyle = "#00FF00";
-            //                 else
-            //                     overCtx.fillStyle = "#FF0000";
-            //                 overCtx.fillRect(pixel.x, pixel.y, 2, 2);
-            //             }
-            //         }
-            //     }
-            // }
         }
         //create new particles
         for (let i = 0; i < 5; i++) {
