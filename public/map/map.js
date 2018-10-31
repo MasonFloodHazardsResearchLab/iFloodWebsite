@@ -1199,7 +1199,15 @@ function drawOverlay(currentTime) {
     if (frameLength > 0.1)
         frameLength = 0;
     lastFrameTime = currentTime;
-    
+
+    //make sure canvas has been sized
+    if (mapOverlayCanvas.width === 0) {
+        mapOverlayCanvas.width = mapOverlayCanvas.clientWidth;
+        mapOverlayCanvas.height = mapOverlayCanvas.clientHeight;
+        overCtx.fillStyle = "rgba(255,255,255,0.06)";
+        overCtx.fillRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
+    }
+
     //fade trails
     overCtx.globalCompositeOperation = "destination-out";
     overCtx.globalAlpha = 0.04;
