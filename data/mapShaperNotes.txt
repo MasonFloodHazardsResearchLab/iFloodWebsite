@@ -1,0 +1,10 @@
+Mapshaper notes
+
+Remove bottom innundation layer:
+-filter 'elemin !== 0'
+
+Dissolve layers with same height:
+-dissolve elemin,elemax,eleavg
+
+Split timeseries:
+mapshaper WLTimeseries.json -split timestep -o

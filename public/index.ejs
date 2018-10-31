@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- partial("_headTag") %>
+</head>
+<body class="homepage">
+    <header class="homeHeader">
+        <div id="headerFill"></div>
+        <div id="headerInner">
+            <a class="headerTab home" href="/"><div class="skewShape"></div><img id="headerLogo" src="/logo.svg" width="190" height="55"></a>
+            <a class="headerTab <%if(tab == 'map'){%>current<%}%>" href="/map"><div class="skewShape"></div>Map</a>
+            <a class="headerTab <%if(tab == 'about'){%>current<%}%>" href="/about"><div class="skewShape"></div>About</a>
+            <a class="headerTab <%if(tab == 'alerts'){%>current<%}%>" href="/alerts"><div class="skewShape"></div>Alerts</a>
+            <a class="headerTab data <%if(tab == 'data'){%>current<%}%>" href="/data"><div class="skewShape"></div>Data</a>
+        </div>
+    </header>
+    <div id="homeHeroVideoContainer">
+        <video autoplay loop muted>
+            <source src="homepageSmall.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div id="homeLogoContainer">
+        <img src="homeLogo.svg" width="833" height="321">
+    </div>
+    <div id="homepageCards">
+        <a class="homepageCard mapCard" href="/map">
+            <div class="cardText">Forecast Map</div>
+        </a>
+        <a class="homepageCard alertCard" href="/alerts">
+            <div class="cardText">Real-time Alerts</div>
+        </a>
+    </div>
+    <div id="content">
+    <h2>Developing the next generation of total water flood forecasts</h2>
+    <p>The products provided here are for educational and scientific research only and should not be used for decision making in its present form. The models, methods and results published here are under constant testing, development and subject to educational and training exercises on real time.</p>
+    </div>
+    <%- partial("_footer") %>
+</body>
+</html>

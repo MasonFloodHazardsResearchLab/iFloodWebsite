@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map - GMU iFlood</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link href="https://fonts.googleapis.com/css?family=Mukta" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" type="text/css" href="map.css">
+	<script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jquery.colors.bundle.min.js"></script>
+    <script src="/jsrender.min.js"></script>
+</head>
+<body>
+    <header>
+    <div id="headerFill"></div>
+    <div id="headerInner">
+        <a class="headerTab home" href="/"><div class="skewShape"></div><img id="headerLogo" src="/logo.svg" width="190" height="55"></a>
+        <a class="headerTab current" href="/map"><div class="skewShape"></div>Map</a>
+        <a class="headerTab " href="/about"><div class="skewShape"></div>About</a>
+        <a class="headerTab " href="/alerts"><div class="skewShape"></div>Alerts</a>
+        <a class="headerTab data " href="/data"><div class="skewShape"></div>Data</a>
+    </div>
+    <div id="headerScrollFade"></div>
+</header>
+    <div id="mapContainer">
+    <div id="map"></div>
+    <canvas id="mapOverlayCanvas"></canvas>
+    <div id="placeButtons"></div>
+    <div id="mapScales"></div>
+    <div id="timeSlideContainer">
+        <div id="timePopup">09:00 UTC</div>
+        <div id="modelInfo">iFlood data generated 00:00 UTC, 0000-00-00. Third party data may be older.</div>
+        <button id="playPauseButton" class="play"></button>
+        <div id="timeSlider">
+            <canvas id="timeSliderBG"></canvas>
+            <canvas id="timeSliderHandle" width="20" height="20"></canvas>
+        </div>
+    </div>
+    <div id="mapLayerBar">
+        <div id="expandButton"></div>
+        <div id="layerScroll">
+            <div id="layerErrorBox">Some data failed to load.</div>
+            <div id="layerInfo">
+            </div>
+            <div id="layerTiles">
+            </div>
+        </div>
+    </div>
+    <div id="messageBoxFade"></div>
+    <div id="welcomeMessageBox" class="messageBox">
+        <h2>Notice</h2>
+        <p>
+            iFLOOD data is a prediction based on educational studies of past and present conditions. These systems are still under development.
+        </p>
+        <button class="messageButton dismissButton">Got it!</button>
+    </div>
+</div>
+
+<script id="templateLayerInfo" type="text/x-jsrender">
+    <div class="layerItem">
+        <div class="bgContain">
+            <div class="bg" style="background-image: url('{{:img}}')"></div>
+        </div>
+        <div class="titleBar">
+            <button class="closeButton"></button>
+            <div class="title">{{:displayName}}</div>
+            <canvas class="infoCanvas" width="80" height="20"></canvas>
+        </div>
+        <div class="description">{{:description}}</div>
+        {{if hasParticles}}
+            <div class="checkboxRow checkbox">
+                <input id="particleToggle{{:~uniqueID()}}" type="checkbox" name="particleToggle" class="particleToggle" value="On"> <label for="particleToggle{{:~uniqueID()-1}}">Show Vectors</label>
+            </div>
+        {{/if}}
+        <a class="dataButton" target="_blank">Raw Data</a>
+    </div>
+</script>
+
+<script id="templateLayerTile" type="text/x-jsrender">
+    <button class="layerTile">
+        <div class="tileImg" style="background-image: url('{{:img}}')">
+            <div class="cover"></div>
+        </div>
+        <div class="title">{{:displayName}}</div>
+    </button>
+</script>
+
+<script id="templatePopupTabs" type="text/x-jsrender">
+    <div class="mapPopupTabs">
+        <div class="tab current" id="mapPopupTab1" role="button" tabindex="0">Water Level</div>
+        <div class="tab" id="mapPopupTab2" role="button" tabindex="0">Wind</div>
+        <div class="tab" id="mapPopupTab3" role="button" tabindex="0">Validation</div>
+    </div>
+    <div class="mapPopupContent" id="mapPopupContent1"></div>
+    <div class="mapPopupContent" id="mapPopupContent2"></div>
+    <div class="mapPopupContent" id="mapPopupContent3"></div>
+</script>
+
+<script id="templatePlaceButton" type="text/x-jsrender">
+    <div class="placeButton" role="button">
+        <div class="placeImg" style="background-image: url('{{:img}}')"></div>
+        <div class="title">{{:displayName}}</div>
+    </div>
+</script>
+
+<script id="templateHurricaneInfo" type="text/x-jsrender">
+    <div class="hurricaneInfo">
+        <b>{{:name}}</b><br>
+        Max Wind: {{:maxwind}} knots<br>
+        Wind Gusts: {{:gusts}} knots<br>
+        {{if pressure != 9999}}
+            Minimum Pressure: {{:pressure}} mb<br>
+        {{/if}}
+        <br>
+        {{:time.format("ddd HH:mm [UTC]")}}
+    </div>
+</script>
+
+<script src="mapstyles.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&v=quarterly&libraries=geometry"></script>
+
+<script src="/moment.min.js"></script>
+<script src="/plotly-latest.min.js"></script>
+<script type="text/javascript" src="/arcgislink_compiled.js"></script>
+
+<script src="mapdata.js"></script>
+<script src="map.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<header>
+    <div id="headerFill"></div>
+    <div id="headerInner">
+        <a class="headerTab home" href="/"><div class="skewShape"></div><img id="headerLogo" src="/logo.svg" width="190" height="55"></a>
+        <a class="headerTab <%if(tab == 'map'){%>current<%}%>" href="/map"><div class="skewShape"></div>Map</a>
+        <a class="headerTab <%if(tab == 'about'){%>current<%}%>" href="/about"><div class="skewShape"></div>About</a>
+        <a class="headerTab <%if(tab == 'alerts'){%>current<%}%>" href="/alerts"><div class="skewShape"></div>Alerts</a>
+        <a class="headerTab data <%if(tab == 'data'){%>current<%}%>" href="/data"><div class="skewShape"></div>Data</a>
+    </div>
+    <div id="headerScrollFade"></div>
+</header>
