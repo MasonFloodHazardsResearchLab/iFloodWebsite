@@ -373,7 +373,7 @@ let layers = {
         "particleColor":"#7eb0ff",
         "z":2,
         "img":"/map/layerIcons/currents.png",
-        "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue placerat nibh, in efficitur arcu tincidunt non. Sed viverra ornare elit. ",
+        "description":"Predicted currents velocity and magnitude from the iFLOOD forecast system for next 84 hours. Currents are in meters per second.",
         "visible":false
     },
     // "precip": {
