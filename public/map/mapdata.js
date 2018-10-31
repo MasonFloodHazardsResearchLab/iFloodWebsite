@@ -238,6 +238,7 @@ let layers = {
         "urls":[
             [0,"{_CURRENT_GMU_}/Splits/water/{_h_}.json"],
         ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/CBmaxele.json",
         "downloadUrl":"{_CURRENT_DOWNLOAD_}",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,2],
@@ -257,6 +258,7 @@ let layers = {
         "urls":[
             [0,"{_CURRENT_GMU_}/GeoJson/maxinundation.json"]
         ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxinundation.json", //TODO: Should this be temporal?
         "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Inundation/",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,6],
@@ -277,6 +279,7 @@ let layers = {
         "urls":[
             [0,"{_CURRENT_GMU_}/Splits/pressure/{_h_}.json"],
         ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/minpressure.json",
         "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Pressure/",
         "colorRange":colorRanges["plasma"],
         "colorBounds":[9,11],
@@ -297,6 +300,7 @@ let layers = {
         "urls":[
             [0,"{_CURRENT_GMU_}/Splits/wind/{_h_}.json"],
         ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxwind.json",
         "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Wind/",
         "colorRange":colorRanges["viridis"],
         "colorBounds":[0,80],

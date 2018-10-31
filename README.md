@@ -1,4 +1,4 @@
-# iFlood Website
+# iFlood Website 🌊
 
 This is the repo for the iFlood web interface currently hosted at [iflood.vse.gmu.edu](http://iflood.vse.gmu.edu). Originally developed by [William O'Connell](https://williamoconnell.me).
 
@@ -21,4 +21,4 @@ the [AWS CLI](https://aws.amazon.com/cli/). Best practice would be to set up a
  make your code changes in the `/public` folder and run `upload.bat`. Harp will compile your changes to the
  `/www` folder, which will then be uploaded to S3. Keep in mind that old cached files may stay in
  CloudFront for up to 24 hours, so you might want to [invalidate the cache](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html)
- so CloudFront will know to look for the new version.
+ so CloudFront will know to look for the new version. Don't forget to commit your changes!

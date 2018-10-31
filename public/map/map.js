@@ -326,7 +326,7 @@ let sliderGrabbed = false;
 let sliderMouseIn = false;
 let sliderTimeout = null;
 function sliderShowHidePopup() {
-    if (sliderGrabbed || sliderMouseIn)
+    if ((sliderGrabbed || sliderMouseIn) && !currentlyMax)
         $('#timePopup').addClass("show");
     else
         $('#timePopup').removeClass("show");
@@ -350,6 +350,8 @@ timeSlider.addEventListener('mouseout',function() {
     sliderShowHidePopup();
 });
 let sliderGrabHandler = function(event) {
+    if (currentlyMax)
+        hideMax();
     let xpos = event.clientX || event.touches[0].clientX;
     sliderGrabbed = true;
     event.preventDefault();
@@ -395,6 +397,34 @@ window.addEventListener("resize",function() {
     drawTimeSlide();
 });
 
+//max button
+let maxButton = $('#maxButton');
+let currentlyMax = false;
+let originalHourSetting = 0;
+
+function showMax() {
+    if (animationPlaying)
+        stopAnim();
+    maxButton.addClass("active");
+    originalHourSetting = currentHourSetting;
+    currentHourSetting = -1;
+    currentlyMax = true;
+}
+function hideMax() {
+    maxButton.removeClass("active");
+    currentHourSetting = originalHourSetting;
+    currentlyMax = false;
+}
+
+maxButton.click(function() {
+    if (currentlyMax)
+        hideMax();
+    else
+        showMax();
+    drawTimeSlide();
+    updateTime()
+});
+
 //animate time
 let playButton = $('#playPauseButton');
 let animationPlaying = false;
@@ -411,19 +441,26 @@ function stepTime() {
 			animationTimeout = setTimeout(stepTime, 200);
 	});
 }
+
+function startAnim() {
+    if (currentlyMax)
+        hideMax();
+    animationPlaying = true;
+    playButton.removeClass("play");
+    playButton.addClass("pause");
+    animationTimeout = stepTime();
+}
+function stopAnim() {
+    animationPlaying = false;
+    playButton.removeClass("pause");
+    playButton.addClass("play");
+    clearTimeout(animationTimeout);
+}
 playButton.click(function() {
-    if (animationPlaying) {
-        animationPlaying = false;
-        playButton.removeClass("pause");
-        playButton.addClass("play");
-        clearTimeout(animationTimeout);
-    }
-    else {
-        animationPlaying = true;
-        playButton.removeClass("play");
-        playButton.addClass("pause");
-		animationTimeout = stepTime();
-    }
+    if (animationPlaying)
+        stopAnim();
+    else
+        startAnim();
 });
 
 //messageBoxes
@@ -733,7 +770,10 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
     ) {
         let fileUrl = layer["urls"][dataIndex][1].replace("{_CURRENT_GMU_}",currentGMUDirectory);
         if (layer["temporal"]) {
-            fileUrl = fileUrl.replace("{_h_}", (timeIndex+1).toString());
+            if (timeIndex === -1)
+                fileUrl = layer["maxUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
+            else
+                fileUrl = fileUrl.replace("{_h_}", (timeIndex+1).toString());
         }
         let planningToShow = layer["showing"];
 		if (activeDataRequests.hasOwnProperty(fileUrl)) {
@@ -874,7 +914,7 @@ function hideAllData(layer, except) {
     if (layer["temporal"]) {
         for (let i = 0; i < layer["data"].length; i++) {
             if (layer["data"][i]) {
-                for (let j = 0; j < layer["data"][i].length; j++) {
+                for (let j = -1; j < layer["data"][i].length; j++) {
                     if (layer["data"][i][j]
                     && (typeof except === 'undefined' || except[0] !== i || except[1] !== j)
                     ) {
@@ -1019,44 +1059,46 @@ function drawTimeSlide() {
     bgCtx.fillRect(gridWidth*(2+thisHour)-1,12,2,10);
     //top
     bgCtx.fillRect(gridWidth*2-1,12,gridWidth*83+1,2);
-    //text
-    bgCtx.font = "12px Mukta";
-    bgCtx.textAlign = "center";
-    bgCtx.fillStyle = "#FFFFFF";
-    let timeString;
-    if (currentHourSetting-thisHour > 0)
-        timeString = "+" + (currentHourSetting-thisHour).toString() + " hr";
-    else if (currentHourSetting-thisHour < 0)
-        timeString = currentHourSetting-thisHour + " hr";
-    else
-        timeString = "now";
-    bgCtx.fillText(
-        timeString,
-        Math.max(20,Math.min(timeSlider.clientWidth-20,gridWidth*(2+currentHourSetting)-1)),
-        35
-    );
+    if (!currentlyMax) {
+        //text
+        bgCtx.font = "12px Mukta";
+        bgCtx.textAlign = "center";
+        bgCtx.fillStyle = "#FFFFFF";
+        let timeString;
+        if (currentHourSetting - thisHour > 0)
+            timeString = "+" + (currentHourSetting - thisHour).toString() + " hr";
+        else if (currentHourSetting - thisHour < 0)
+            timeString = currentHourSetting - thisHour + " hr";
+        else
+            timeString = "now";
+        bgCtx.fillText(
+            timeString,
+            Math.max(20, Math.min(timeSlider.clientWidth - 20, gridWidth * (2 + currentHourSetting) - 1)),
+            35
+        );
 
-    sliderHandleCanvas.style.left = (gridWidth*(2+currentHourSetting))-10 + "px";
-    handleCtx.fillStyle = "#171717";
-    handleCtx.lineWidth = 2;
-    handleCtx.strokeStyle = "#FFFFFF";
-    handleCtx.beginPath();
-    handleCtx.arc(10,10,9,0,2*Math.PI);
-    handleCtx.fill();
-    handleCtx.stroke();
-    //hour hand
-    handleCtx.lineWidth = 1;
-    handleCtx.beginPath();
-    handleCtx.moveTo(10,10);
-    let hourHandPos = (parseInt(lastForecast.format("hh"))+currentHourSetting)/12 - 0.25;
-    handleCtx.lineTo(10+Math.cos(2*Math.PI*hourHandPos)*5,10+Math.sin(2*Math.PI*hourHandPos)*5);
-    handleCtx.stroke();
-    //minute hand
-    handleCtx.lineWidth = 1;
-    handleCtx.beginPath();
-    handleCtx.moveTo(10,10);
-    handleCtx.lineTo(10,3);
-    handleCtx.stroke();
+        sliderHandleCanvas.style.left = (gridWidth * (2 + currentHourSetting)) - 10 + "px";
+        handleCtx.fillStyle = "#171717";
+        handleCtx.lineWidth = 2;
+        handleCtx.strokeStyle = "#FFFFFF";
+        handleCtx.beginPath();
+        handleCtx.arc(10, 10, 9, 0, 2 * Math.PI);
+        handleCtx.fill();
+        handleCtx.stroke();
+        //hour hand
+        handleCtx.lineWidth = 1;
+        handleCtx.beginPath();
+        handleCtx.moveTo(10, 10);
+        let hourHandPos = (parseInt(lastForecast.format("hh")) + currentHourSetting) / 12 - 0.25;
+        handleCtx.lineTo(10 + Math.cos(2 * Math.PI * hourHandPos) * 5, 10 + Math.sin(2 * Math.PI * hourHandPos) * 5);
+        handleCtx.stroke();
+        //minute hand
+        handleCtx.lineWidth = 1;
+        handleCtx.beginPath();
+        handleCtx.moveTo(10, 10);
+        handleCtx.lineTo(10, 3);
+        handleCtx.stroke();
+    }
 
     //popup
     let popup = $('#timePopup');

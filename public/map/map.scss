@@ -290,6 +290,20 @@ body {
         background-image: url("/map/play.svg");
     }
 }
+#maxButton {
+    flex: 0 0 60px;
+    height: 40px;
+    border-left: solid 1px #AAA;
+    color: #FFF;
+    cursor: pointer;
+    &:hover {
+        background-color: lighten($bg_dark,5%);
+    }
+    &.active {
+        background-color: lighten($bg_dark,15%);
+        font-weight: bold;
+    }
+}
 #timeSlider {
     flex: 1;
     position: relative;
