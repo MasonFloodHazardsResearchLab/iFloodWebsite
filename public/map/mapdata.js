@@ -361,7 +361,7 @@ let layers = {
         "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxcurrents.json",
         "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Currents/",
         "colorRange":colorRanges["velocityBlue"],
-        "colorBounds":[0,10],
+        "colorBounds":[0,3],
         "colorProperty":"elemin",
         "unit":"m/s",
         "borderFix":true,
