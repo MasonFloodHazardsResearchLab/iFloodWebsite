@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="49504481-7f4f-4294-a3b2-662789b94789" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/map/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/map/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +53,7 @@
         <counts>
           <entry key="Python Console" value="133" />
           <entry key="ejs" value="4145" />
+          <entry key="gitignore" value="16" />
           <entry key="html" value="195" />
           <entry key="js" value="25597" />
           <entry key="json" value="88" />
@@ -68,6 +68,7 @@
           <entry key="JSON" value="88" />
           <entry key="JavaScript" value="25597" />
           <entry key="Markdown" value="2217" />
+          <entry key="PLAIN_TEXT" value="16" />
           <entry key="Python" value="133" />
           <entry key="SCSS" value="10356" />
           <entry key="Scratch" value="113" />
@@ -77,6 +78,7 @@
         <counts>
           <entry key="bat" value="1" />
           <entry key="ejs" value="27" />
+          <entry key="gitignore" value="2" />
           <entry key="html" value="2" />
           <entry key="js" value="19" />
           <entry key="json" value="8" />
@@ -94,7 +96,7 @@
           <entry key="JSON" value="8" />
           <entry key="JavaScript" value="19" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="PLAIN_TEXT" value="3" />
           <entry key="SCSS" value="10" />
           <entry key="SVG" value="18" />
           <entry key="Scratch" value="2" />
@@ -118,15 +120,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
               <caret line="16" column="32" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/index.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="32" column="22" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -167,11 +160,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/map/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="1198" column="36" selection-start-line="1198" selection-start-column="36" selection-end-line="1198" selection-end-column="36" />
+            <state relative-caret-position="610">
+              <caret line="1198" column="36" lean-forward="true" selection-start-line="1198" selection-start-column="36" selection-end-line="1198" selection-end-column="36" />
               <folding>
                 <element signature="e#5074#8611#0" />
                 <element signature="e#8709#9998#0" />
@@ -202,6 +195,15 @@
                 <caret line="23" column="53" lean-forward="true" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
               </first_editor>
               <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -315,6 +317,7 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/public/map/map.scss" />
         <option value="$PROJECT_DIR$/public/map/map.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -744,20 +747,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="391">
-            <caret line="23" column="53" lean-forward="true" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/map/map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="1198" column="36" selection-start-line="1198" selection-start-column="36" selection-end-line="1198" selection-end-column="36" />
+        <state relative-caret-position="610">
+          <caret line="1198" column="36" lean-forward="true" selection-start-line="1198" selection-start-column="36" selection-end-line="1198" selection-end-column="36" />
           <folding>
             <element signature="e#5074#8611#0" />
             <element signature="e#8709#9998#0" />
@@ -776,6 +769,23 @@
             <element signature="e#49419#60293#0" />
             <element signature="e#60363#68354#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="391">
+            <caret line="23" column="53" lean-forward="true" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
         </state>
       </provider>
     </entry>
