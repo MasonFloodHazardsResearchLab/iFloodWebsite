@@ -312,6 +312,7 @@ let layers = {
         "particleUrl":"{_CURRENT_GMU_}/Splits/wind_vectors/{_h_}.json",
         "particleLat":"windx",
         "particleLng":"windy",
+        "particleColor":"#FFFFFF",
         "z":5,
         "img":"/map/layerIcons/wind.png",
         "description":"Wind speeds at the surface in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Winds speeds are given in meters per second.",
@@ -328,25 +329,6 @@ let layers = {
         "z":10,
         "img":"/map/layerIcons/boundary.png",
         "description":"Numerical model domain for iFlood forecast System.",
-        "visible":false
-    },
-    // "precip": {
-    //     "type":"wmsTile",
-    //     "displayName":"CERA Precip",
-    //     "url":"https://tc2.nccera-5.renci.org/cerarisk/ceracgi/cera_wms_tiled?day=20180914&time=1200&com=9267&griddomain=HSOFS&tz=utc&unit=ft&legend=nc&ceraversion=8&query=elev&timestep_precimg=prechc24",
-    //     "img":"/map/layerIcons/ceraPrecip.png",
-    //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc.",
-    //     "visible":false
-    // },
-    "precip": {
-        "group":1,
-        "type":"arcGIS",
-        "displayName":"24 Hour Precip",
-        "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer",
-        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
-        "gisLayer":"19",
-        "img":"/map/layerIcons/temp.png",
-        "description":"24-Hr Quantitative Precipitation Accumulation from NOAA",
         "visible":false
     },
     "bathy": {
@@ -366,6 +348,51 @@ let layers = {
         "z":0,
         "img":"/map/layerIcons/bathy.png",
         "description":"Depth of water in the model domain is derived from National Geophysical Data Center's Coastal Relief Model (CRM) and NOAA digital nautical charts. Bathymetry is given in meters.",
+        "visible":false
+    },
+    "currents": {
+        "group":0,
+        "type":"geoJSON",
+        "displayName":"Currents",
+        "temporal":true,
+        "urls":[
+            [0,"{_CURRENT_GMU_}/Splits/currents/{_h_}.json"],
+        ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxcurrents.json",
+        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Currents/",
+        "colorRange":colorRanges["velocityBlue"],
+        "colorBounds":[0,10],
+        "colorProperty":"elemin",
+        "unit":"m/s",
+        "borderFix":true,
+        "reverseBar":true,
+        "hasParticles":true,
+        "particleUrl":"{_CURRENT_GMU_}/Splits/current_vectors/{_h_}.json",
+        "particleLat":"windx",
+        "particleLng":"windy",
+        "particleColor":"#7eb0ff",
+        "z":2,
+        "img":"/map/layerIcons/currents.png",
+        "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue placerat nibh, in efficitur arcu tincidunt non. Sed viverra ornare elit. ",
+        "visible":false
+    },
+    // "precip": {
+    //     "type":"wmsTile",
+    //     "displayName":"CERA Precip",
+    //     "url":"https://tc2.nccera-5.renci.org/cerarisk/ceracgi/cera_wms_tiled?day=20180914&time=1200&com=9267&griddomain=HSOFS&tz=utc&unit=ft&legend=nc&ceraversion=8&query=elev&timestep_precimg=prechc24",
+    //     "img":"/map/layerIcons/ceraPrecip.png",
+    //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc.",
+    //     "visible":false
+    // },
+    "precip": {
+        "group":1,
+        "type":"arcGIS",
+        "displayName":"24 Hour Precip",
+        "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer",
+        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
+        "gisLayer":"19",
+        "img":"/map/layerIcons/temp.png",
+        "description":"24-Hr Quantitative Precipitation Accumulation from NOAA",
         "visible":false
     },
     "stormPath": {

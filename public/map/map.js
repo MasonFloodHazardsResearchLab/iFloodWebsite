@@ -1118,6 +1118,8 @@ function getPixelFromMapPoint(latLng) {
 }
 
 function setParticleFile(layer) {
+    if (currentHourSetting === -1)
+        return;
     if (!layer["visualizerPoints"]) {
         layer["visualizerPoints"] = [];
     }
@@ -1207,91 +1209,93 @@ function drawOverlay(currentTime) {
     let topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
     let bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
     let scale = Math.pow(2, map.getZoom());
-    overCtx.fillStyle = "#ffffff";
 
     let drewAnything = false;
 
-    for (let layerIndex in layers) {
-        if (!layers.hasOwnProperty(layerIndex))
-            continue;
-        let layer = layers[layerIndex];
-        if (!layer["hasParticles"] || !layer["particlesRunning"])
-            continue;
+    if (!currentlyMax) { //don't draw anything while viewing max
+        for (let layerIndex in layers) {
+            if (!layers.hasOwnProperty(layerIndex))
+                continue;
+            let layer = layers[layerIndex];
+            if (!layer["hasParticles"] || !layer["particlesRunning"])
+                continue;
 
-        drewAnything = true;
+            drewAnything = true;
 
-        let visParticles = layer["visParticles"];
-        let visualizerPoints = layer["visualizerPoints"];
-        let visualizerGrid = layer["visualizerGrid"];
-        let visualizerBoundaryGrid = layer["visualizerBoundaryGrid"];
+            let visParticles = layer["visParticles"];
+            let visualizerPoints = layer["visualizerPoints"];
+            let visualizerGrid = layer["visualizerGrid"];
+            let visualizerBoundaryGrid = layer["visualizerBoundaryGrid"];
 
-        if (map.getZoom() > 3) {
-            for (let i = 0; i < visParticles.length; i++) {
-                let point = new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]);
-                let worldPoint = map.getProjection().fromLatLngToPoint(point);
-                let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-                if (visParticles[i]["age"] < 1) {
-                    overCtx.globalAlpha = visParticles[i]["age"];
+            if (map.getZoom() > 3) {
+                overCtx.fillStyle = layer["particleColor"];
+                for (let i = 0; i < visParticles.length; i++) {
+                    let point = new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]);
+                    let worldPoint = map.getProjection().fromLatLngToPoint(point);
+                    let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+                    if (visParticles[i]["age"] < 1) {
+                        overCtx.globalAlpha = visParticles[i]["age"];
+                    }
+                    else {
+                        overCtx.globalAlpha = 1;
+                    }
+                    overCtx.fillRect(pixel.x, pixel.y, 2, 2);
+                }
+                overCtx.globalAlpha = 1;
+            }
+            //create new particles
+            for (let i = 0; i < 5; i++) {
+                if (map.getZoom() < 6) {
+                    visParticles.push({
+                        lat: Math.random() * 41 + 6,
+                        lng: Math.random() * 38 - 98,
+                        vLat: 0,
+                        vLng: 0,
+                        age: 0
+                    });
                 }
                 else {
-                    overCtx.globalAlpha = 1;
+                    visParticles.push({
+                        lat: Math.random() * (map.getBounds().getNorthEast().lat() - map.getBounds().getSouthWest().lat()) + map.getBounds().getSouthWest().lat(),
+                        lng: Math.random() * (map.getBounds().getNorthEast().lng() - map.getBounds().getSouthWest().lng()) + map.getBounds().getSouthWest().lng(),
+                        vLat: 0,
+                        vLng: 0,
+                        age: 0
+                    });
                 }
-                overCtx.fillRect(pixel.x, pixel.y, 2, 2);
+                if (visParticles.length > 500)
+                    visParticles.shift();
             }
-            overCtx.globalAlpha = 1;
-        }
-        //create new particles
-        for (let i = 0; i < 5; i++) {
-            if (map.getZoom() < 6) {
-                visParticles.push({
-                    lat: Math.random() * 41 + 6,
-                    lng: Math.random() * 38 - 98,
-                    vLat: 0,
-                    vLng: 0,
-                    age: 0
-                });
-            }
-            else {
-                visParticles.push({
-                    lat: Math.random() * (map.getBounds().getNorthEast().lat() - map.getBounds().getSouthWest().lat()) + map.getBounds().getSouthWest().lat(),
-                    lng: Math.random() * (map.getBounds().getNorthEast().lng() - map.getBounds().getSouthWest().lng()) + map.getBounds().getSouthWest().lng(),
-                    vLat: 0,
-                    vLng: 0,
-                    age: 0
-                });
-            }
-            if (visParticles.length > 500)
-                visParticles.shift();
-        }
-        //move
-        let moveFactor;
-        if (map.getZoom() < 6)
-            moveFactor = 1.875;
-        else
-            moveFactor = 60 / Math.pow(2, map.getZoom());
-        for (let i = 0; i < visParticles.length; i++) {
-            let lat = Math.round((visParticles[i]["lat"] - visualizerGrid["latStart"]) / visualizerGrid["latIncrement"]);
-            let lng = Math.round((visParticles[i]["lng"] - visualizerGrid["lngStart"]) / visualizerGrid["lngIncrement"]);
-            let shouldKill = false;
-            if (typeof visualizerPoints[lat] !== 'undefined' && typeof visualizerPoints[lat][lng] !== 'undefined' && visualizerPoints[lat][lng] !== null) {
-                visParticles[i]["vLat"] += (visualizerPoints[lat][lng]["vLat"] - visParticles[i]["vLat"]) / 5;
-                visParticles[i]["vLng"] += (visualizerPoints[lat][lng]["vLng"] - visParticles[i]["vLng"]) / 5;
-                if (!visualizerBoundaryGrid[lat][lng]) {
-                    shouldKill = true;
+            //move
+            let moveFactor;
+            if (map.getZoom() < 6)
+                moveFactor = 1.875;
+            else
+                moveFactor = 60 / Math.pow(2, map.getZoom());
+            for (let i = 0; i < visParticles.length; i++) {
+                let lat = Math.round((visParticles[i]["lat"] - visualizerGrid["latStart"]) / visualizerGrid["latIncrement"]);
+                let lng = Math.round((visParticles[i]["lng"] - visualizerGrid["lngStart"]) / visualizerGrid["lngIncrement"]);
+                let shouldKill = false;
+                if (typeof visualizerPoints[lat] !== 'undefined' && typeof visualizerPoints[lat][lng] !== 'undefined' && visualizerPoints[lat][lng] !== null) {
+                    visParticles[i]["vLat"] += (visualizerPoints[lat][lng]["vLat"] - visParticles[i]["vLat"]) / 5;
+                    visParticles[i]["vLng"] += (visualizerPoints[lat][lng]["vLng"] - visParticles[i]["vLng"]) / 5;
+                    if (!visualizerBoundaryGrid[lat][lng]) {
+                        shouldKill = true;
+                    }
                 }
-            }
-            else {
-                if (!google.maps.geometry.poly.containsLocation(new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]), particleBoundary))
+                else {
+                    if (!google.maps.geometry.poly.containsLocation(new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]), particleBoundary))
+                        shouldKill = true;
+                }
+                visParticles[i]["lat"] += visParticles[i]["vLat"] * frameLength * moveFactor;
+                visParticles[i]["lng"] += visParticles[i]["vLng"] * frameLength * moveFactor;
+                visParticles[i]["age"] += frameLength;
+                if (Math.abs(visParticles[i]["vLat"]) < 0.002 && Math.abs(visParticles[i]["vLng"]) < 0.002)
                     shouldKill = true;
-            }
-            visParticles[i]["lat"] += visParticles[i]["vLat"] * frameLength * moveFactor;
-            visParticles[i]["lng"] += visParticles[i]["vLng"] * frameLength * moveFactor;
-            visParticles[i]["age"] += frameLength;
-            if (Math.abs(visParticles[i]["vLat"]) < 0.002 && Math.abs(visParticles[i]["vLng"]) < 0.002)
-                shouldKill = true;
-            if (shouldKill) {
-                visParticles.splice(i, 1);
-                i--;
+                if (shouldKill) {
+                    visParticles.splice(i, 1);
+                    i--;
+                }
             }
         }
     }
