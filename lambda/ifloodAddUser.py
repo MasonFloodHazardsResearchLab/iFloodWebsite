@@ -1,3 +1,5 @@
+# Add a user to the database and send them a message with a confirmation code
+
 import boto3
 import json
 import re

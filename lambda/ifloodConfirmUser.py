@@ -1,8 +1,6 @@
+# Verify a user if provided the correct confirmation code
+
 import boto3
-import json
-import re
-import urllib.parse
-import random
 
 dynamodb = boto3.resource('dynamodb')
 userTable = dynamodb.Table('ifloodAlertsUsers')
