@@ -239,7 +239,7 @@ let layers = {
             [0,"{_CURRENT_GMU_}/Splits/water/{_h_}.json"],
         ],
         "maxUrl":"{_CURRENT_GMU_}/GeoJson/CBmaxele.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}",
+        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Water/",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,2],
         "colorProperty":"elemin",
