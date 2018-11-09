@@ -10,6 +10,10 @@ with Amazon's CloudFront CDN to help improve load times.
 There are two separate S3 buckets. Bucket `gmu-iflood-data` is where forecast data is uploaded. Bucket `gmu-iflood-interface`
 hosts the front end website which makes AJAX calls to the data bucket.
 
+Alerts are handled through AWS API Gateway, which calls a collection of Lambda functions. The source for these
+functions can be found in `/lambda`, but if you make any changes to them you'll need to update the version in AWS
+as well.
+
 ### How to update
 In order to make changes to the site, you'll first need to install harp (`npm install -g harp`) and set up
 the [AWS CLI](https://aws.amazon.com/cli/). Best practice would be to set up a

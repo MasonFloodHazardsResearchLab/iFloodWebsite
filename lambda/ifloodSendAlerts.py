@@ -27,6 +27,11 @@ def lambda_handler(event, context):
         Key="Forecast/"+event["forecastID"]+"/GeoJson/Floodlevels.json"
     )
     floodLevels = json.loads(response['Body'].read().decode('utf-8'))
+    response = s3.get_object(
+        Bucket="gmu-iflood-data",
+        Key="Forecast/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json"
+    )
+    oldFloodLevels = json.loads(response['Body'].read().decode('utf-8'))
 
     allUsers = []
 
@@ -49,8 +54,10 @@ def lambda_handler(event, context):
         if chosenAlerts.get("stations"):
             stationsFlooded = []
             for station in chosenAlerts["stations"]:
-                if station in floodLevels and floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["stations"][station] and chosenAlerts["stations"][station] > 0:
-                    stationsFlooded.append((station,floodLevels[station]["Flood Level"]))
+                if station in floodLevels and station in oldFloodLevels and chosenAlerts["stations"][station] > 0: #make sure their selection is valid
+                    if floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["stations"][station]\
+                    and floodLevelNumbers[oldFloodLevels[station]["Flood Level"]] < chosenAlerts["stations"][station]: #only trigger for stations that have just now gone above the user's threshold
+                        stationsFlooded.append((station,floodLevels[station]["Flood Level"]))
             if stationsFlooded:
                 alertTripped = True
                 alertMessage += "Station Flood Levels:\n"
@@ -87,6 +94,9 @@ def lambda_handler(event, context):
                     PhoneNumber=userItem["primaryContact"],
                     Message=alertMessage,
                 )
-
+#
 # if __name__ == "__main__":
-#     lambda_handler({"forecastID":"2018110712"}, None)
+#     lambda_handler({
+#         "forecastID": "2018110306",
+#         "PreviousforecastID": "2018110300"
+#     }, None)
