@@ -7,10 +7,11 @@
 .niceInput {
     border: none;
     background-color: #2B2B2B;
+    font-family: 'Mukta', sans-serif;
     font-size: 18px;
     color: #DDD;
     border-radius: 3px;
-    padding: 8px 8px;
+    padding: 3px 10px;
     outline: none;
     transition: box-shadow 0.1s;
     &:focus {
@@ -53,8 +54,74 @@
     flex-direction: row;
     margin-top: 20px;
     #map {
+        position: sticky;
         flex: 400px 0 0;
         width: 400px;
         height: 400px;
+    }
+    #alertSelector {
+        flex: 1;
+        margin-left: 20px;
+    }
+}
+
+#chosenAlerts {
+    margin-bottom: 10px;
+}
+.alertBox {
+    display: flex;
+    padding: 15px;
+    border: solid 1px rgba(255,255,255,0.2);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    img {
+        flex: 60px 0 0;
+        width: 60px;
+        height: 60px;
+        opacity: 0.6;
+    }
+    .alertInfo {
+        flex: 1;
+        margin-left: 20px;
+        input {
+            width: 90%;
+        }
+    }
+}
+
+#addMenu {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    .tile {
+        width: 80px;
+        height: 80px;
+        text-align: center;
+        color: rgba(255,255,255,0.6);
+        &.add {
+            font-size: 30px;
+            line-height: 80px;
+        }
+    }
+    button.tile {
+        margin-left: 10px;
+        border: solid 1px rgba(255,255,255,0.2);
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.1s;
+        &:hover {
+            background-color: rgba(255,255,255,0.01);
+            transform: scale(1.05,1.05);
+        }
+        &:active {
+            transform: scale(0.98,0.98);
+        }
+        img {
+            display: block;
+            margin: 8px auto 2px;
+            width: 45px;
+            opacity: 0.6;
+        }
     }
 }

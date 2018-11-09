@@ -35,7 +35,7 @@ $('#primaryContactInput').on('input', function() {
             phoneNotice.removeClass("show");
         }
     }
-    else if ($(this).val().match(/^.*@.*\..*/)) { //if it looks like an email
+    else if ($(this).val().match(/^[^ ]*@[^ ]*\.[^ ]*/)) { //if it looks like an email
         contactIcon.removeClass("phone");
         contactIcon.addClass("mail");
         phoneNotice.removeClass("show");
