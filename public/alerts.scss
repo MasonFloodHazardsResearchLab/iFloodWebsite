@@ -1,0 +1,60 @@
+.smallLabel {
+    display: block;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+}
+
+.niceInput {
+    border: none;
+    background-color: #2B2B2B;
+    font-size: 18px;
+    color: #DDD;
+    border-radius: 3px;
+    padding: 8px 8px;
+    outline: none;
+    transition: box-shadow 0.1s;
+    &:focus {
+        box-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    }
+}
+
+#contactIcon {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity 0.4s;
+    &.phone {
+        background: url("/alerts/icons/phone.svg");
+        opacity: 1;
+    }
+    &.mail {
+        background: url("/alerts/icons/mail.svg");
+        opacity: 1;
+    }
+}
+
+#phoneNotice {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    opacity: 0;
+    transition: opacity 0.2s;
+    &.show {
+        opacity: 1;
+    }
+}
+
+#alertArea {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    #map {
+        flex: 400px 0 0;
+        width: 400px;
+        height: 400px;
+    }
+}
