@@ -1,5 +1,50 @@
-<h1>About Us</h1>
-<p>Research and educational systems supporting the development of the next generation of real time flood forecast systems, capable of providing accurate, timely and reliable information to support emergency management and response in areas impacted by multi-flood hazards. Our students are working on the complex dynamics of multi-flood hazards including storm surges, riverine flow, tidal oscillation and urban storm water systems. Our final goal is to develop integrated computational tools capable of predicting the total water levels resulting from the interaction of these systems in real time and into the future. The products provided here are for educational and scientific research only and should not be used for decision making in its present form. The models, methods and results published here are under constant testing, development and subject to educational and training exercises on real time.</p>
+<h1>About iFLOOD</h1>
+<h2>Hydrodynamic Model</h2>
+This system utilizes the Advanced Circulation Model (ADCIRC) Version 53 in the Two Dimensional Depth Integrated format.
+The numerical mesh was developed in the Mason Flood Hazards Research Lab adapted from the FEMA Region 3 High Resolution Mesh containing 0.38 million nodes (381164) with a resolution up to
+150 meters inside the Chesapeake Bay.Reference for the publication can be find here: Garzon, J. L. and Ferreira, C. M. (2016)
+
+<h2>Wave Model</h2>
+The Simulating WAves Nearshore (SWAN) model is a numerical wave model used to obtain realistic estimates of wave parameters in coastal areas, lakes, and estuaries from given wind, bottom,
+and current conditions. The model is based on the wave action balance equation (or energy balance in the absence of currents) with sources and sinks. SWAN is a third-generation wave model
+with first-, second-, and third-generation options.
+(PDF) User's Manual for the Simulating Waves Nearshore Model (SWAN). Available from:
+<a href="https://www.researchgate.net/publication/235059564_User's_Manual_for_the_Simulating_Waves_Nearshore_Model_SWAN">https://www.researchgate.net/publication/235059564_User's_Manual_for_the_Simulating_Waves_Nearshore_Model_SWAN</a>
+
+<h2>Morphodynamics Model</h2>
+The model is used for the computation of nearshore hydrodynamics and the morphodynamic response during storm-events, such as dune erosion, overwash and scour around buildings. The model
+can be solved for the 1D or 2D horizontal equations for wave propagation, flow, sediment transport and bottom changes, for varying (spectral) wave and flow boundary conditions. The
+vegetation surveys from the study sites has been incorporated in the model to understand the wave and water level reductions. The water levels and the currents are provided as the
+boundary conditions from the Chesapeake Flood forecast system and the wave spectrum is derived from the Wavewatch 3 model. The model is automated to ingest the boundary information and
+produce the wave and water level forecasts in at out study sites in the Chesapeake Bay. The model documentation can be found at:
+<a href="https://oss.deltares.nl/web/xbeach/">https://oss.deltares.nl/web/xbeach/</a>
+
+<h2>Atmospheric Model</h2>
+Meteorological forcing using NOAA's North American Mesoscale (NAM) model are used as an input to force water. This system is capable of providing guidance for next three and a half days (3.5)
+and is automated to run every six hour(6). Forcing from NOAA can be downloaded from <a href="http://ftp.ncep.noaa.gov/data/nccf/com/nam/prod/">here</a> Similarly the Global forecast system
+(GFS) is also setup to use as the model forcing to predict the storm surges. The GFS 0.25 degree domain is use as the model forcing for predictability
+compared to the NAM on EC95 mesh to reduce the computational load.
+
+<h2>Statistical Model</h2>
+The model validation for the current forecasts compared with the other operational systems for example ETSS,ESTOFS ,CBOFS and AHPS are automated using the python scripting. Root mean square
+error,bias,model skill, R-Value and variance is computed on the real-time. The bias plots for the study sites are available on the validation tab.
+
+<h2>Computational Resources</h2>
+The computations are performed in the Mason Flood hazards Research Lab’s In house Linux Cluster (Poseidon) with dedicated 32 cores. The additional computing resources are utilized from the
+datacenters of the Texas Advanced Computing Center (TACC) and Office of Research Computing (ORC) at George Mason University (GMU).
+
+<h2>Forecast Automation System</h2>
+The forecast system was developed using the guidelines from the ADCIRC Storm Surge Guidance (ASGS). The entire system is automated suing the python and bash scripting and is run 4 times a
+day and while providing forecasts for 3.5 days in the future.
+
+<h2>Data Visualization</h2>
+The forecasted model outputs are post processed using python scripting and made available in the four data formats ( ESRI shapefiles, Google Maps KML, GeoJsons and the shef format for the NWS).
+Python Gdal and Javs’s mapshaper tool is utilized for data formatting. The time series outputs from the iFLOOD, ETSS,ESTOFS and CBOFS at all the marked stations in the Bay is also available
+to download in the Tabular Separated FOrmat (tsv). For the web based iFLOOD data portal, the geojson formatted outputs are made interactive for end-users.
+
+<h2>Data Management</h2>
+The raw model outputs and the user friendly outputs are made available to the public using the Amazon Web Services hosted data server. The detailed study results can be made available for
+the scientific community on request.
 
 <h1>Developers</h1>
 <div class="profileRow prof">
@@ -7,7 +52,7 @@
         <a href="http://civil.gmu.edu/wp-content/uploads/2012/07/Portrait-2013-Ferreira.jpg"><img alt="Dr. Celso Ferreira" src="http://civil.gmu.edu/wp-content/uploads/2012/07/Portrait-2013-Ferreira-203x300.jpg"></a>
     </div>
     <div class="profileDetails">
-        <h2>Celso Ferreira</h2>Assistant Professor, Water Resources Engineering<br>
+        <h2>Celso Ferreira</h2>Associate Professor, Water Resources Engineering<br>
         Telephone: (703) 993-1782<br>
         Fax: (703) 993-9790<br>
         Email: <a href="mailto:cferrei3@gmu.edu">cferrei3@gmu.edu</a><br>
@@ -111,11 +156,25 @@
 <h2>High School Interns</h2>
 <div class="profileRow">
     <div class="profileImage">
+        <a href="william.jpg"><img src="william.jpg"></a>
+    </div>
+    <div class="profileDetails">
+        <h2>William O'Connell</h2>
+        Web Developer<br>
+        Thomas Jefferson High School<br>
+        2018 Mentorship Program<br>
+        <br>
+        Email: <a href='&#109;ailto&#58;wil%6&#67;ia%&#54;&#68;%&#52;0&#119;%&#54;9l&#108;iam&#111;co&#110;&#37;6&#69;e&#108;&#108;&#46;me'>will&#105;&#97;&#109;&#64;williamo&#99;onnell&#46;&#109;e</a><br>
+        Website: <a href="https://williamoconnell.me">https://williamoconnell.me</a>
+    </div>
+</div>
+<div class="profileRow">
+    <div class="profileImage">
         <a href="wang.jpg"><img src="wang.jpg"></a>
     </div>
     <div class="profileDetails">
         <h2>Christine Wang</h2>
         Thomas Jefferson High School<br>
-        2016 Mentorship program<br>
+        2016 Mentorship Program<br>
     </div>
 </div>
