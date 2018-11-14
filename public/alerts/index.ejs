@@ -5,46 +5,20 @@
 <div id="phoneNotice">Include +country code if outside US</div>
 
 <div id="alertArea">
-    <div id="map"></div>
+    <div id="mapContainer">
+        <div id="map"></div>
+    </div>
     <div id="alertSelector">
         <div class="smallLabel" >Alert me about:</div>
         <div id="chosenAlerts">
-            <div class="alertBox location">
-                <img src="icons/home.svg">
-                <div class="alertInfo">
-                    <input class="niceInput" title="address" type="text">
-                    <div class="smallLabel">Enter an address</div>
-                </div>
-            </div>
-            <div class="alertBox location">
-                <img src="icons/home.svg">
-                <div class="alertInfo">
-                    <input class="niceInput" title="address" type="text">
-                    <div class="smallLabel">Enter an address</div>
-                </div>
-            </div>
-            <div class="alertBox location">
-                <img src="icons/home.svg">
-                <div class="alertInfo">
-                    <input class="niceInput" title="address" type="text">
-                    <div class="smallLabel">Enter an address</div>
-                </div>
-            </div>
-            <div class="alertBox location">
-                <img src="icons/home.svg">
-                <div class="alertInfo">
-                    <input class="niceInput" title="address" type="text">
-                    <div class="smallLabel">Enter an address</div>
-                </div>
-            </div>
         </div>
         <div id="addMenu">
             <div class="tile add">Add:</div>
-            <button class="tile">
+            <button class="tile" id="addLocationButton">
                 <img src="icons/home.svg" width="64">
                 Location
             </button>
-            <button class="tile">
+            <button class="tile" id="addStationButton">
                 <img src="icons/station.svg" width="64">
                 Station
             </button>
@@ -52,8 +26,40 @@
     </div>
 </div>
 
+<script id="templateAlertBoxLocation" type="text/x-jsrender">
+    <div class="alertBox location">
+        <button class="closeButton"></button>
+        <img src="icons/home.svg">
+        <div class="alertInfo">
+            <input class="niceInput addressInput" title="address" type="text">
+            <div class="smallLabel">Enter an address</div>
+        </div>
+    </div>
+</script>
+
+<script id="templateAlertBoxStation" type="text/x-jsrender">
+    <div class="alertBox station">
+        <button class="closeButton"></button>
+        <img src="icons/station.svg">
+        <div class="alertInfo">
+            <select class="niceInput" title="address" type="text">
+                <option value="WASD2">District of Columbia</option>
+                <option value="BISM2">Bishop head</option>
+            </select>
+            <div class="smallLabel thresholdLabel">Threshold</div>
+            <div class="thresholdBar">
+                <button class="choice action">Action</button>
+                <button class="choice minor selected">Minor</button>
+                <button class="choice moderate">Moderate</button>
+                <button class="choice major">Major</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="/jquery-3.3.1.min.js"></script>
+<script src="/jsrender.min.js"></script>
 <script src="/map/mapstyles.js"></script>
 <script src="/map/mapdata.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&v=quarterly"></script>
-<script src="/jquery-3.3.1.min.js"></script>
 <script src="alerts.js"></script>

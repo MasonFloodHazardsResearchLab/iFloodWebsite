@@ -1,6 +1,12 @@
+const templateAlertBoxLocation = $.templates("#templateAlertBoxLocation");
+const templateAlertBoxStation = $.templates("#templateAlertBoxStation");
+
+const chosenAlerts = $("#chosenAlerts");
+const geocoder = new google.maps.Geocoder();
+
 map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
-    gestureHandling: 'greedy',
+    gestureHandling: 'cooperative',
     mapTypeId: 'roadmap',
     center: {lat: 38.2, lng: -76.325},
     streetViewControl: false,
@@ -46,3 +52,73 @@ $('#primaryContactInput').on('input', function() {
         phoneNotice.removeClass("show");
     }
 });
+
+let alerts = {};
+
+$("#addLocationButton").click(addLocationAlert);
+$("#addStationButton").click(addStationAlert);
+
+addLocationAlert(); //start with one location by default
+
+function addLocationAlert() {
+    let uid = generateUID();
+    let dom = $(templateAlertBoxLocation.render());
+    dom.data("uid",uid);
+    chosenAlerts.append(dom);
+    alerts[uid] = {
+        "dom":dom
+    };
+    dom.find(".addressInput").focus();
+    dom.find(".addressInput").on("change", function() {
+        if ($(this).val() === "" || $(this).val() === " ")
+            return;
+        geocoder.geocode({ 'address': $(this).val() }, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (typeof alerts[uid]["marker"] !== "undefined")
+                    alerts[uid]["marker"].setMap(null);
+                let marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+                marker.setIcon({
+                    "url": "icons/homeMap.svg",
+                    "anchor": new google.maps.Point(15, 44),
+                    "scaledSize": new google.maps.Size(30, 45),
+                });
+                alerts[uid]["marker"] = marker;
+                alerts[uid]["lat"] = results[0].geometry.location.lat();
+                alerts[uid]["lng"] = results[0].geometry.location.lng();
+            }
+        });
+    });
+    dom.find(".closeButton").click(function() {
+        dom.remove();
+        if (typeof alerts[uid]["marker"] !== "undefined")
+            alerts[uid]["marker"].setMap(null);
+        delete alerts[uid];
+    });
+    window.scrollTo(0,document.body.scrollHeight);
+}
+
+function addStationAlert() {
+    let uid = generateUID();
+    let dom = $(templateAlertBoxStation.render());
+    dom.data("uid",uid);
+    chosenAlerts.append(dom);
+    alerts[uid] = {
+        "dom":dom
+    };
+    dom.find(".closeButton").click(function() {
+        dom.remove();
+        delete alerts[uid];
+    });
+    window.scrollTo(0,document.body.scrollHeight);
+}
+
+function generateUID() {
+    let firstPart = (Math.random() * 46656) | 0;
+    let secondPart = (Math.random() * 46656) | 0;
+    firstPart = ("000" + firstPart.toString(36)).slice(-3);
+    secondPart = ("000" + secondPart.toString(36)).slice(-3);
+    return firstPart + secondPart;
+}
