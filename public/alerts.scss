@@ -56,12 +56,12 @@
     #mapContainer {
         position: sticky;
         top: 80px;
-        height: 400px;
+        height: 450px;
     }
     #map {
-        flex: 400px 0 0;
-        width: 400px;
-        height: 400px;
+        flex: 450px 0 0;
+        width: 450px;
+        height: 450px;
     }
     #alertSelector {
         flex: 1;
@@ -124,13 +124,14 @@
                 border-top: solid 1px;
                 border-bottom: solid 1px;
                 cursor: pointer;
+                outline: none;
                 &.action {
                     border-left: solid 1px;
                     border-radius: 3px 0 0 3px;
                     color: #FCFC97;
                     border-color: #FCFC97;
                     background-color: transparentize(#FCFC97, 0.9);
-                    &:hover {
+                    &:hover, &:focus {
                         background-color: transparentize(#FCFC97, 0.8);
                     }
                     &.selected {
@@ -142,7 +143,7 @@
                     color: #FCC97C;
                     border-color: #FCC97C;
                     background-color: transparentize(#FCC97C, 0.9);
-                    &:hover {
+                    &:hover, &:focus {
                         background-color: transparentize(#FCC97C, 0.8);
                     }
                     &.selected {
@@ -154,7 +155,7 @@
                     color: #FC8086;
                     border-color: #FC8086;
                     background-color: transparentize(#FC8086, 0.9);
-                    &:hover {
+                    &:hover, &:focus {
                         background-color: transparentize(#FC8086, 0.8);
                     }
                     &.selected {
@@ -168,7 +169,7 @@
                     color: #BC80D2;
                     border-color: #BC80D2;
                     background-color: transparentize(#BC80D2, 0.9);
-                    &:hover {
+                    &:hover, &:focus {
                         background-color: transparentize(#BC80D2, 0.8);
                     }
                     &.selected {

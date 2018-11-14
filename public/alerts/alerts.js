@@ -59,6 +59,7 @@ $("#addLocationButton").click(addLocationAlert);
 $("#addStationButton").click(addStationAlert);
 
 addLocationAlert(); //start with one location by default
+$('#primaryContactInput').focus();
 
 function addLocationAlert() {
     let uid = generateUID();
@@ -108,6 +109,14 @@ function addStationAlert() {
     alerts[uid] = {
         "dom":dom
     };
+    let select = dom.find(".stationSelect");
+    $.each(markers, function() {
+        select.append($("<option />").val(this["stationStr"]).text(this["title"]));
+    });
+    dom.find(".thresholdBar .choice").click(function() {
+        dom.find(".thresholdBar .choice").removeClass("selected");
+        $(this).addClass("selected");
+    });
     dom.find(".closeButton").click(function() {
         dom.remove();
         delete alerts[uid];
