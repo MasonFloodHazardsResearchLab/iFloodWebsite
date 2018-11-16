@@ -1,2 +1,72 @@
-<h1>Under Construction</h1>
-<p>This feature is still under development.</p>
+<h1>Alerts</h1>
+<h2 class="subhead gap">Get notified about flood risks in your area</h2>
+<label class="smallLabel" for="primaryContactInput">Phone number or email:</label>
+<input id="primaryContactInput" class="niceInput" type="text" size="22" autofocus tabindex="1"><div id="contactIcon"></div>
+<div id="phoneNotice">Include +country code if outside US</div>
+
+<div id="alertArea">
+    <div id="mapContainer">
+        <div id="map"></div>
+    </div>
+    <div id="alertSelector">
+        <div class="smallLabel" >Alert me about:</div>
+        <div id="chosenAlerts">
+        </div>
+        <div id="addMenu">
+            <div class="tile add">Add:</div>
+            <button class="tile" id="addLocationButton">
+                <img src="icons/home.svg" width="64">
+                Location
+            </button>
+            <button class="tile" id="addStationButton">
+                <img src="icons/station.svg" width="64">
+                Station
+            </button>
+        </div>
+        <div id="submitBar">
+            <div id="submitError"></div>
+            <button id="submitAlertsButton">Enable</button>
+        </div>
+    </div>
+</div>
+
+<div id="successMessage" class="hide">
+    <div class="headline">Almost There!</div>
+    <div class="details">Now just click the link we sent to {primary} to confirm your registration.</div>
+</div>
+
+<script id="templateAlertBoxLocation" type="text/x-jsrender">
+    <div class="alertBox location hide">
+        <button class="closeButton"></button>
+        <img src="icons/home.svg">
+        <div class="alertInfo">
+            <input class="niceInput addressInput" title="address" type="text" tabindex="2">
+            <div class="smallLabel addressDisplay"></div>
+        </div>
+    </div>
+</script>
+
+<script id="templateAlertBoxStation" type="text/x-jsrender">
+    <div class="alertBox station hide">
+        <button class="closeButton"></button>
+        <img src="icons/station.svg">
+        <div class="alertInfo">
+            <select class="niceInput stationSelect" title="address" type="text" tabindex="2">
+            </select>
+            <div class="smallLabel thresholdLabel">Threshold</div>
+            <div class="thresholdBar">
+                <button class="choice action">Action</button>
+                <button class="choice minor selected">Minor</button>
+                <button class="choice moderate">Moderate</button>
+                <button class="choice major">Major</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script src="/jquery-3.3.1.min.js"></script>
+<script src="/jsrender.min.js"></script>
+<script src="/map/mapstyles.js"></script>
+<script src="/map/mapdata.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&libraries=places"></script>
+<script src="alerts.js"></script>
