@@ -154,7 +154,6 @@ function addStationAlert(stationStr) {
         select.append($("<option />").val(this["stationStr"]).text(this["title"]));
     });
     if (typeof stationStr === "string") {
-        console.log(stationStr);
         select.val(stationStr);
         alerts[uid]["station"] = stationStr;
         stationMarkers[stationStr].setIcon({
