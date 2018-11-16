@@ -282,7 +282,7 @@ function submit() {
                 $('#primaryContactInput').prop('disabled', true);
                 $('#alertArea').addClass('hide');
                 $('#successMessage').removeClass('hide');
-                $('#successMessage').text($('#successMessage').replace("{primary}",primaryContact));
+                $('#successMessage').text($('#successMessage').text().replace("{primary}",primaryContact));
             }
             else {
                 $('#submitError').text(data);
