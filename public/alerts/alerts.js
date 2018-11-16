@@ -5,7 +5,6 @@ const templateAlertBoxLocation = $.templates("#templateAlertBoxLocation");
 const templateAlertBoxStation = $.templates("#templateAlertBoxStation");
 
 const chosenAlerts = $("#chosenAlerts");
-const geocoder = new google.maps.Geocoder();
 
 let contactIcon = $('#contactIcon');
 let phoneNotice = $('#phoneNotice');
@@ -67,10 +66,10 @@ for (let markerIndex in markers) {
 $("#addLocationButton").click(addLocationAlert);
 $("#addStationButton").click(addStationAlert);
 
-addLocationAlert(); //start with one location by default
+addLocationAlert(false); //start with one location by default
 $('#primaryContactInput').focus();
 
-function addLocationAlert() {
+function addLocationAlert(shouldFocus) {
     let uid = generateUID();
     let dom = $(templateAlertBoxLocation.render());
     dom.data("uid",uid);
@@ -83,7 +82,6 @@ function addLocationAlert() {
         "dom":dom
     };
     let autocomplete = new google.maps.places.Autocomplete(dom.find(".addressInput")[0]);
-    dom.find(".addressInput").focus();
     autocomplete.addListener('place_changed', function() {
         let place = autocomplete.getPlace();
         if (typeof alerts[uid]["marker"] !== "undefined")
@@ -124,7 +122,10 @@ function addLocationAlert() {
             alerts[uid]["marker"].setMap(null);
         delete alerts[uid];
     });
-    $("html, body").animate({ scrollTop: $(document).height() }, 150);
+    if (typeof shouldFocus === "undefined" || shouldFocus) {
+        dom.find(".addressInput").focus();
+        $("html, body").animate({scrollTop: $(document).height()}, 150);
+    }
 }
 
 const levelIcons = [
