@@ -213,9 +213,9 @@ function submit() {
     let primaryContact = "";
     if (contactValue.match(/^\+?[0-9 -()]{3,}$/)) { //if it looks like a phone number
         if (!contactValue.includes("+"))
-            primaryContact = "+1"+contactValue;
+            primaryContact = "+1"+contactValue.replace(/[^+0-9]/g,"");
         else
-            primaryContact = contactValue;
+            primaryContact = contactValue.replace(/[^+0-9]/g,"");
     }
     else if (contactValue.match(/^[^ ]*@[^ ]*\.[^ ]*/)) {
         primaryContact = contactValue;
