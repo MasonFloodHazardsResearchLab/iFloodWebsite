@@ -1,7 +1,7 @@
 <h1>Alerts</h1>
 <h2 class="subhead gap">Get notified about flood risks in your area</h2>
 <label class="smallLabel" for="primaryContactInput">Phone number or email:</label>
-<input id="primaryContactInput" class="niceInput" type="text" size="22" autofocus><div id="contactIcon"></div>
+<input id="primaryContactInput" class="niceInput" type="text" size="22" autofocus tabindex="1"><div id="contactIcon"></div>
 <div id="phoneNotice">Include +country code if outside US</div>
 
 <div id="alertArea">
@@ -23,26 +23,35 @@
                 Station
             </button>
         </div>
+        <div id="submitBar">
+            <div id="submitError"></div>
+            <button id="submitAlertsButton">Enable</button>
+        </div>
     </div>
 </div>
 
+<div id="successMessage" class="hide">
+    <div class="headline">Almost There!</div>
+    <div class="details">Now just click the link we sent to {primary} to confirm your registration.</div>
+</div>
+
 <script id="templateAlertBoxLocation" type="text/x-jsrender">
-    <div class="alertBox location">
+    <div class="alertBox location hide">
         <button class="closeButton"></button>
         <img src="icons/home.svg">
         <div class="alertInfo">
-            <input class="niceInput addressInput" title="address" type="text">
-            <div class="smallLabel">Enter an address</div>
+            <input class="niceInput addressInput" title="address" type="text" tabindex="2">
+            <div class="smallLabel addressDisplay"></div>
         </div>
     </div>
 </script>
 
 <script id="templateAlertBoxStation" type="text/x-jsrender">
-    <div class="alertBox station">
+    <div class="alertBox station hide">
         <button class="closeButton"></button>
         <img src="icons/station.svg">
         <div class="alertInfo">
-            <select class="niceInput stationSelect" title="address" type="text">
+            <select class="niceInput stationSelect" title="address" type="text" tabindex="2">
             </select>
             <div class="smallLabel thresholdLabel">Threshold</div>
             <div class="thresholdBar">
@@ -59,5 +68,5 @@
 <script src="/jsrender.min.js"></script>
 <script src="/map/mapstyles.js"></script>
 <script src="/map/mapdata.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&v=quarterly"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&libraries=places"></script>
 <script src="alerts.js"></script>

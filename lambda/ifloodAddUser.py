@@ -19,7 +19,10 @@ def errorOut(message):
     return {
         "isBase64Encoded": False,
         "statusCode": 400,
-        "headers": {"Content-Type": "text/html"},
+        "headers": {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*"
+        },
         "body": message
     }
 
@@ -88,6 +91,9 @@ def lambda_handler(event, context):
     return {
         "isBase64Encoded": False,
         "statusCode": 200,
-        "headers": {"Content-Type": "text/html"},
+        "headers": {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*"
+        },
         "body": "Success"
     }
