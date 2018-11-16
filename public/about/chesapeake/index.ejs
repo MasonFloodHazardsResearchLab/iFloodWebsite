@@ -1,0 +1,16 @@
+<h1>Chesapeake Bay Flood Forecast System powered by ADCIRC + NAM</h1>
+<h2>Hydrodynamic Model</h2>
+This system utilizes the Advanced Circulation Model (ADCIRC) Version 53 in the Two Dimensional Depth Integrated format.
+The numerical mesh was developed in the Mason Flood Hazards Research Lab adapted from the FEMA Region 3 High Resolution Mesh containing 0.38 million nodes (381164) with a resolution up to
+150 meters inside the Chesapeake Bay.Reference for the publication can be find here:<br>
+<a href="http://www.mdpi.com/2077-1312/4/3/45">Garzon, J. L. and Ferreira, C. M. (2016)</a>
+
+<h2>Atmospheric Model</h2>
+Meteorological forcing using NOAA's North American Mesoscale (NAM) model are used as an input to force water. This system is capable of providing guidance for next three and a half days
+and is automated to run every six hours. Forcing from NOAA can be downloaded from <a href="http://ftp.ncep.noaa.gov/data/nccf/com/nam/prod/">here</a>
+
+<h2>Computational Resources</h2>
+The computations are performed in the Mason Flood hazards Research Lab Poseidon Cluster with dedicated 32 cores.
+
+<h2>Forecast System</h2>
+The forecast system was developed using the guidelines from the ADCIRC Storm Surge Guidance (ASGS). The system is run 4 times a day and provides forecasts for 3.5 days in the future.

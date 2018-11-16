@@ -831,11 +831,13 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
             });
             //show this data only if it's still the correct one
             if (JSON.stringify(planningToShow) === JSON.stringify(layer["showing"]) && layer["visible"]) {
-                theDataLayer.setMap(map);
-                if (layer["temporal"])
-                    hideAllData(layer, [dataIndex, timeIndex]);
-                else
-                    hideAllData(layer, dataIndex);
+                setTimeout(function() { //this has to be in a timeout so google maps gets a chance to breathe, otherwise the colors are wrong for a frame or two
+                    theDataLayer.setMap(map);
+                    if (layer["temporal"])
+                        hideAllData(layer, [dataIndex, timeIndex]);
+                    else
+                        hideAllData(layer, dataIndex);
+                }, 0);
             }
             if (oncomplete) {
                 oncomplete(true);
