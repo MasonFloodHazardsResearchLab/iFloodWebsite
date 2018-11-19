@@ -45,7 +45,7 @@ def lambda_handler(event, context):
     #send removal message
     if userItem["contactType"] == "email":
         response = ses.send_email(
-            Source="alerts@mail.iflood.vse.gmu.edu",
+            Source="iFLOOD Alerts <alerts@mail.iflood.vse.gmu.edu>",
             Destination={
                 'ToAddresses': [
                     userItem["primaryContact"],

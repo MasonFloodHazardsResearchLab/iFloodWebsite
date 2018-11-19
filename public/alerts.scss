@@ -314,7 +314,7 @@
     left: 50%;
     transform: translate(-50%,0);
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     z-index: -5;
     transition: opacity 0.2s;
     &.hide {
@@ -326,7 +326,7 @@
         color: #1a7547;
         text-align: center;
     }
-    .description {
+    .details {
         font-size: 20px;
         text-align: center;
     }

@@ -60,7 +60,7 @@ header {
     }
     #headerLogo {
         height: 55px;
-        width: auto;
+        width: 190px;
         margin-top: 2px;
         margin-right: 10px;
     }
@@ -152,6 +152,7 @@ header {
         }
         #headerLogo {
             height: 45px;
+            width: 155px;
         }
         #headerScrollFade {
             display: block;
@@ -370,5 +371,94 @@ footer {
     }
     &.prof h2 {
         color: #96cfaf;
+    }
+}
+
+.developerGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
+.profileBox {
+    position: relative;
+    flex: 200px 0 0;
+    height: 220px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    background-color: #2B2B2B;
+    transition: flex 0.2s, margin 0.2s, transform 0.15s;
+    overflow: hidden;
+    &:hover:not(.expanded) {
+        transform: scale(1.05, 1);
+        .profileImage {
+            transform: scale(0.95, 1);
+        }
+        .name {
+            transform: scale(0.95, 1);
+        }
+    }
+    &.expanded {
+        flex: 414px 0 0;
+        .profileDetails {
+            opacity: 1;
+        }
+    }
+    .profileImage {
+        width: 180px;
+        height: 180px;
+        margin: 10px 10px 5px;
+        background-size: cover;
+        background-position: center top;
+        cursor: pointer;
+        transition: transform 0.15s;
+    }
+    .name {
+        width: 200px;
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+        transition: transform 0.15s;
+    }
+    .profileDetails {
+        opacity: 0;
+        position: absolute;
+        top: 5px;
+        left: 200px;
+        width: 190px;
+        font-size: 12px;
+        transition: opacity 0.2s;
+    }
+}
+@media screen and (max-width: 600px) {
+    .profileBox {
+        flex: calc(100vw - 20px) 0 0;
+        margin-right: 0;
+        margin-bottom: 5px;
+        &:hover:not(.expanded) {
+            transform: unset;
+            .profileImage {
+                transform: unset;
+            }
+            .name {
+                transform: unset;
+            }
+        }
+        &.expanded {
+            flex: calc(100vw - 20px) 0 0;
+        }
+        .profileImage {
+            width: 140px;
+        }
+        .name {
+            padding-left: 10px;
+            text-align: left;
+        }
+        .profileDetails {
+            opacity: 1;
+            left: 160px;
+            max-width: calc(100vw - 210px);
+            font-size: 10px;
+        }
     }
 }

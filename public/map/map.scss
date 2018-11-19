@@ -442,7 +442,7 @@ body {
     }
     .layerGroupContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(90px, 1fr));
+        grid-template-columns: repeat(auto-fill,minmax(90px, 1fr));
         margin-top: 15px;
         margin-bottom: 30px;
         grid-auto-rows: 1fr;
@@ -623,7 +623,7 @@ body {
             margin-top: 0;
         }
         .layerGroupContainer {
-            grid-template-columns: repeat(auto-fit,minmax(70px, 1fr));
+            grid-template-columns: repeat(auto-fill,minmax(70px, 1fr));
             margin-top: 8px;
             margin-bottom: 25px;
         }
