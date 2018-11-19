@@ -153,7 +153,7 @@
 <script src="/jquery-3.3.1.min.js"></script>
 <script>
     function size() {
-        let idealWidth = Math.floor($('#content')[0].clientWidth / 215 - 1) * 215 + 214;
+        let idealWidth = Math.floor(($('#content')[0].clientWidth-20) / 215 - 1) * 215 + 214;
         $('.developerGrid').css({
             "width": idealWidth + "px"
         });

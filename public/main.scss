@@ -432,7 +432,7 @@ footer {
 }
 @media screen and (max-width: 600px) {
     .profileBox {
-        flex: calc(100vw - 20px) 0 0;
+        flex: calc(100vw - 40px) 0 0;
         margin-right: 0;
         margin-bottom: 5px;
         &:hover:not(.expanded) {
