@@ -60,7 +60,7 @@ def lambda_handler(event, context):
                         stationsFlooded.append((station,floodLevels[station]["Flood Level"]))
             if stationsFlooded:
                 alertTripped = True
-                alertMessage += "Station Flood Levels:\n"
+                alertMessage += "Predicted Station Flood Levels:\n"
                 for stationStatus in stationsFlooded:
                     alertMessage += stationStatus[0] + ": " + stationStatus[1] + "\n"
                 alertMessage += "\n"
