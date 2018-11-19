@@ -457,8 +457,7 @@ footer {
         .profileDetails {
             opacity: 1;
             left: 160px;
-            max-width: calc(100vw - 210px);
-            font-size: 10px;
+            width: calc(100vw - 210px);
         }
     }
 }
