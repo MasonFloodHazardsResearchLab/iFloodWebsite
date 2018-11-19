@@ -58,7 +58,7 @@ def lambda_handler(event, context):
     #now we send their verification message
     if userItem["contactType"] == "email":
         response = ses.send_email(
-            Source="iflood.test@williamoconnell.me",
+            Source="alerts@mail.iflood.vse.gmu.edu",
             Destination={
                 'ToAddresses': [
                     userItem["primaryContact"],
