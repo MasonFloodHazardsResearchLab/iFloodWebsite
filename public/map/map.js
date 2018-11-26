@@ -1357,7 +1357,7 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
             mode: "lines",
             name: 'ETSS',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_adcirc'),
+            x: unpack(rows, 'Time_etss'),
             y: unpack(rows, 'etss'),
             line: {
                 color: 'rgb(204, 0, 204)',
