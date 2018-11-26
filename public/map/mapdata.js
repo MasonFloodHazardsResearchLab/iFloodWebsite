@@ -376,6 +376,28 @@ let layers = {
         "description":"Predicted currents velocity and magnitude from the iFLOOD forecast system for next 84 hours. Currents are in meters per second.",
         "visible":false
     },
+    "waveHeight": {
+        "group":0,
+        "type":"geoJSON",
+        "displayName":"Wave Height",
+        "temporal":true,
+        "urls":[
+            [0,"{_CURRENT_GMU_}/Splits/wave_height/{_h_}.json"],
+        ],
+        "maxUrl":"{_CURRENT_GMU_}/GeoJson/swanHS_max.json",
+        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/",
+        "colorRange":colorRanges["velocityBlue"],
+        "colorBounds":[0,6],
+        "colorProperty":"wavhtmin",
+        "unit":"m",
+        "borderFix":true,
+        "reverseBar":true,
+        "hasParticles":false,
+        "z":2,
+        "img":"/map/layerIcons/waveHeight.png",
+        "description":"Predicted maximum wave heights for the next 84 hours.",
+        "visible":false
+    },
     // "precip": {
     //     "type":"wmsTile",
     //     "displayName":"CERA Precip",

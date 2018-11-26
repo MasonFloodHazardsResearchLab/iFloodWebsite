@@ -1008,7 +1008,7 @@ function drawScaleBar(layer, current) {
         context.fillRect(0, Math.floor(currentAdjusted*185), 20, 1);
     }
     context.fillStyle = "#000000";
-    context.font = "10px Mukta";
+    context.font = "12px Mukta";
     context.textAlign = "left";
     if (layer["reverseBar"]) {
         if (typeof current === 'undefined' || currentAdjusted > 0.08)
@@ -1023,14 +1023,14 @@ function drawScaleBar(layer, current) {
             context.fillText(layer["colorBounds"][1].toString(), 22, 183);
     }
     if (typeof current !== 'undefined') {
-        context.font = "bold 10px Mukta";
+        context.font = "bold 12px Mukta";
         context.fillText(current.toString(), 22, Math.floor(Math.min(Math.max(currentAdjusted, 0.03), 0.96) * 185)+5);
     }
 
     context.fillStyle = "rgba(255,255,255,0.6)";
     context.fillRect(0, 185, 60, 15);
     context.fillStyle = "#000000";
-    context.font = "12px Mukta";
+    context.font = "14px Mukta";
     context.textAlign = "center";
     context.fillText(layer["unit"].toString(),30,196);
 }
@@ -1054,6 +1054,10 @@ function drawTimeSlide() {
     handleCtx.clearRect(0,0,sliderHandleCanvas.width,sliderHandleCanvas.height);
 
     bgCtx.fillStyle = "#FFFFFF";
+    if (currentlyMax)
+        bgCtx.fillStyle = "#777777";
+    else
+        bgCtx.fillStyle = "#FFFFFF";
     //sides
     bgCtx.fillRect(gridWidth*2-1,12,2,10);
     bgCtx.fillRect(gridWidth*85-1,12,2,10);
