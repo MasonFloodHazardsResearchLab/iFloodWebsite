@@ -848,7 +848,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
                 else {
                     return {
                         fillColor: color,
-                        fillOpacity: 0.8,
+                        fillOpacity: 0.75,
                         strokeWeight: 0,
                         zIndex: layer["z"]
                     };
