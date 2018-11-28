@@ -442,7 +442,7 @@ let layers = {
         "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wind_vectors/{_h_}.json",
         "particleLat":"windx",
         "particleLng":"windy",
-        "particleSpeedScale":0.2,
+        "particleSpeedScale":0.15,
         "particleColor":"rgba(255,255,255,0.5)",
         "z":10,
         "img":"/map/layerIcons/wind.png",
