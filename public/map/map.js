@@ -1682,14 +1682,14 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
                 gridwidth: .25,
                 linecolor: 'rgb(153, 153, 153)',
                 linewidth: 1,
-                tickwidth: .25,
                 tick0: 0,
                 domain: [0, 1],
                 tickwidth: 1,
                 nticks: 8,
                 mirror: true,
                 title: 'Stage (feet relative to MLLW)',
-                range: [-1, 8],
+                autorange: true,
+                //range: [-1, 8],
             }
         };
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
@@ -1948,6 +1948,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                 tickcolor: '#bfbfbf',
                 tickwidth: 4,
                 mirror: true,
+                title: 'Lead Time (hours)',
                 range: [1, 24],
 
             },
@@ -1957,7 +1958,6 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                 gridwidth: .25,
                 linecolor: 'rgb(153, 153, 153)',
                 linewidth: 1,
-                tickwidth: .25,
                 tick0: 0,
                 domain: [0, 1],
                 tickwidth: 1,
