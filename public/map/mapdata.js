@@ -350,6 +350,10 @@ let colorRanges = {
     ]
 };
 
+let models = {
+    "ChesapeakeBay_ADCIRCSWAN":{},
+};
+
 let layerGroups = [
     "GMU iFlood Data", //0
     "Third Party Data" //1
@@ -362,10 +366,10 @@ let layers = {
         "displayName":"Water Level",
         "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/Splits/water/{_h_}.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/water/{_h_}.json"],
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/CBmaxele.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Water/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/CBmaxele.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,2],
         "colorProperty":"elemin",
@@ -382,10 +386,10 @@ let layers = {
         "type":"geoJSON",
         "displayName":"Inundation",
         "urls":[
-            [0,"{_CURRENT_GMU_}/GeoJson/maxinundation.json"]
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json"]
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxinundation.json", //TODO: Should this be temporal?
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Inundation/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json", //TODO: Should this be temporal?
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Inundation/",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,6],
         "colorProperty":"elemin",
@@ -403,10 +407,10 @@ let layers = {
         "displayName":"Atmospheric Pressure",
         "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/Splits/pressure/{_h_}.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/pressure/{_h_}.json"],
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/minpressure.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Pressure/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/minpressure.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Pressure/",
         "colorRange":colorRanges["plasma"],
         "colorBounds":[9,11],
         "colorProperty":"elemin",
@@ -424,10 +428,10 @@ let layers = {
         "displayName":"Wind Magnitude",
         "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/Splits/wind/{_h_}.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wind/{_h_}.json"],
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxwind.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Wind/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxwind.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Wind/",
         "colorRange":colorRanges["viridis"],
         "colorBounds":[0,80],
         "colorProperty":"elemin",
@@ -435,9 +439,10 @@ let layers = {
         "borderFix":true,
         "reverseBar":true,
         "hasParticles":true,
-        "particleUrl":"{_CURRENT_GMU_}/Splits/wind_vectors/{_h_}.json",
+        "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wind_vectors/{_h_}.json",
         "particleLat":"windx",
         "particleLng":"windy",
+        "particleSpeedScale":1,
         "particleColor":"rgba(255,255,255,0.5)",
         "z":10,
         "img":"/map/layerIcons/wind.png",
@@ -449,8 +454,8 @@ let layers = {
         "type":"outline",
         "displayName":"Model Boundary",
         "temporal":true,
-        "url":"https://d2dyvyp1m8y8xp.cloudfront.net/boundary/ModelBoundary.json",
-        "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/boundary/ModelBoundary.json",
+        "url":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/boundary/ModelBoundary.json",
+        "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/boundary/ModelBoundary.json",
         "color":"#e13835",
         "z":100,
         "img":"/map/layerIcons/boundary.png",
@@ -462,9 +467,9 @@ let layers = {
         "type":"geoJSON",
         "displayName":"Bathymetry",
         "urls":[
-            [0,"https://d2dyvyp1m8y8xp.cloudfront.net/CBbathy/BathyV0.json"]
+            [0,"https://d2dyvyp1m8y8xp.cloudfront.net/Model/CBbathy/BathyV0.json"]
         ],
-        "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/CBbathy/BathyV0.json",
+        "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/CBbathy/BathyV0.json",
         "colorRange":colorRanges["bathymetry"],
         "colorBounds":[0,5000],
         "colorProperty":"dmax",
@@ -482,10 +487,10 @@ let layers = {
         "displayName":"Currents",
         "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/Splits/currents/{_h_}.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/currents/{_h_}.json"],
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/maxcurrents.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/Currents/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxcurrents.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Currents/",
         "colorRange":colorRanges["velocityBlue"],
         "colorBounds":[0,2],
         "colorProperty":"elemin",
@@ -493,9 +498,10 @@ let layers = {
         "borderFix":true,
         "reverseBar":true,
         "hasParticles":true,
-        "particleUrl":"{_CURRENT_GMU_}/Splits/current_vectors/{_h_}.json",
+        "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/current_vectors/{_h_}.json",
         "particleLat":"windx",
         "particleLng":"windy",
+        "particleSpeedScale":20,
         "particleColor":"rgba(223,240,230,0.6)",
         "z":4,
         "img":"/map/layerIcons/currents.png",
@@ -508,10 +514,10 @@ let layers = {
         "displayName":"Wave Height",
         "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/Splits/wave_height/{_h_}.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wave_height/{_h_}.json"],
         ],
-        "maxUrl":"{_CURRENT_GMU_}/GeoJson/swanHS_max.json",
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/swanHS_max.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/",
         "colorRange":colorRanges["winter"],
         "colorBounds":[0,9],
         "colorProperty":"elemin",
@@ -528,11 +534,12 @@ let layers = {
         "group":0,
         "type":"geoJSON",
         "displayName":"Wave Period",
-        "temporal":false,
+        "temporal":true,
         "urls":[
-            [0,"{_CURRENT_GMU_}/GeoJson/swanTPS_max.json"],
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wave_period/{_h_}.json"],
         ],
-        "downloadUrl":"{_CURRENT_DOWNLOAD_}/Downloadable_layers/",
+        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/swanTPS_max.json",
+        "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/",
         "colorRange":colorRanges["density"],
         "colorBounds":[0,40],
         "colorProperty":"elemin",
@@ -568,9 +575,9 @@ let layers = {
         "group":1,
         "type":"stormPath",
         "displayName":"Storm Paths",
-        "pointUrl":"{_CURRENT_GMU_}/NHCHurricanes/Hurricane/hurricane_points.json",
-        "pathUrl":"{_CURRENT_GMU_}/NHCHurricanes/Hurricane/hurricane_track.json",
-        "polygonUrl":"{_CURRENT_GMU_}/NHCHurricanes/Hurricane/hurricane_polygon.json",
+        "pointUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/NHCHurricanes/Hurricane/hurricane_points.json",
+        "pathUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/NHCHurricanes/Hurricane/hurricane_track.json",
+        "polygonUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/NHCHurricanes/Hurricane/hurricane_polygon.json",
         "pathSprites":{
             "HU":"/map/sprites/hurricane.svg",
             "TS":"/map/sprites/storm.svg"
@@ -591,7 +598,7 @@ let layers = {
     // }
 };
 
-let stationValidationUrl = "{_CURRENT_GMU_}/TimeSeries/plotly_bias24.tsv";
+let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/plotly_bias24.tsv";
 let markers = {
     "DC": {
         "pos": {
@@ -599,7 +606,7 @@ let markers = {
         },
         "title":"District of Columbia",
         "stationStr":"WASD2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/WASD2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WASD2.tsv",
         "hasWind":true,
         "floodLevels": [
             3.7,
@@ -614,7 +621,7 @@ let markers = {
         },
         "title":"Bishop head",
         "stationStr":"BISM2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/BISM2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BISM2.tsv",
         "hasWind":true,
         "floodLevels": [
             3.0,
@@ -629,7 +636,7 @@ let markers = {
         },
         "title":"Baltimore",
         "stationStr":"BLTM2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/BLTM2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BLTM2.tsv",
         "hasWind":true,
         "floodLevels": [
             2.5,
@@ -644,7 +651,7 @@ let markers = {
         },
         "title":"Annapolis",
         "stationStr":"APAM2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/APAM2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/APAM2.tsv",
         "hasWind":false,
         "floodLevels": [
             2.0,
@@ -659,7 +666,7 @@ let markers = {
         },
         "title":"Solomons Island",
         "stationStr":"SLIM2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/SLIM2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SLIM2.tsv",
         "hasWind":true,
         "floodLevels": [
             2.5,
@@ -674,7 +681,7 @@ let markers = {
         },
         "title":"Kiptopeke",
         "stationStr":"KPTV2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/KPTV2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/KPTV2.tsv",
         "hasWind":true,
         "floodLevels": [
             4.0,
@@ -689,7 +696,7 @@ let markers = {
         },
         "title":"Sewells Point",
         "stationStr":"SWPV2",
-        "timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/SWPV2.tsv",
+        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
         "hasWind":false,
         "floodLevels": [
             4.0,
@@ -704,7 +711,7 @@ let markers = {
         },
         "title":"Chesapeake Bay Bridge Tunnel",
         "stationStr":"CBBV2",
-        //"timeSeriesUrl":"{_CURRENT_GMU_}/TimeSeries/SWPV2.tsv",
+        //"timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
         //"hasWind":true,
         "floodLevels": [
             5.0,

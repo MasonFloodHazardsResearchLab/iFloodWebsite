@@ -80,7 +80,7 @@ function init() {
         let newItem = $(templateLayerInfo.render(layer)).css({
             display: "none"
         }).appendTo(domLayerInfo);
-        newItem.find(".dataButton").attr("href",layer["downloadUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory).replace("{_CURRENT_DOWNLOAD_}",currentDownloadDirectory));
+        newItem.find(".dataButton").attr("href",replaceModelPaths(layer["downloadUrl"]));
         if (layer["type"] === "geoJSON") {
             //add data array
             layer["data"] = [];
@@ -181,11 +181,11 @@ function init() {
             $(timeSlideContainer).addClass("mobileHide");
             if (typeof marker["timeSeriesUrl"] !== 'undefined') {
                 $(templatePopupTabs.render()).appendTo(domPlot);
-                makePlotStationTimeseries(marker["timeSeriesUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory), domPlot.find("#mapPopupContent1")[0], marker["floodLevels"],marker["title"]+": Water Level");
+                makePlotStationTimeseries(replaceModelPaths(marker["timeSeriesUrl"]), domPlot.find("#mapPopupContent1")[0], marker["floodLevels"],marker["title"]+": Water Level");
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContent2").append($('<img>',{
                         "class":"plotImg",
-                        "src":currentGMUDirectory+"/WindPhotos/"+marker["stationStr"]+"_wind.png",
+                        "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/WindPhotos/"+marker["stationStr"]+"_wind.png",
                     }));
                 }
                 else {
@@ -194,7 +194,7 @@ function init() {
                         "text": "No wind observation gauge installed at the Station"
                     }));
                 }
-                makePlotStationValidation(stationValidationUrl.replace("{_CURRENT_GMU_}",currentGMUDirectory), domPlot.find("#mapPopupContent3")[0], marker["stationStr"], marker["title"]+": Validation");
+                makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContent3")[0], marker["stationStr"], marker["title"]+": Validation");
                 for (let i = 1; i < 4; i++) {
                     domPlot.find("#mapPopupTab" + i).click(function () {
                         for (let j = 1; j < 4; j++) {
@@ -218,7 +218,7 @@ function init() {
         });
     }
     //set icons
-    $.get(currentGMUDirectory+"/GeoJson/Floodlevels.json",function(markerLevels) {
+    $.get(models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/GeoJson/Floodlevels.json",function(markerLevels) {
         for (let markerIndex in markers) {
             if (!markers.hasOwnProperty(markerIndex))
                 continue;
@@ -285,7 +285,7 @@ function init() {
     });
 
     particleBoundary = new google.maps.Polygon();
-    $.get(dataDomain + "/boundary/ModelBoundaryPoly.json", function (boundaryData) {
+    $.get(dataDomain + "/Model/boundary/ModelBoundaryPoly.json", function (boundaryData) {
         let theDataLayer = new google.maps.Data();
         theDataLayer.addGeoJson(boundaryData);
         theDataLayer.forEach(function (feature) {
@@ -303,17 +303,45 @@ function init() {
 }
 
 //load up most recent predictions
-$.get(dataDomain+"/Forecast/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function( recentRun ) {
-    console.log(recentRun);
-    lastForecast = moment.utc(recentRun, "YYYYMMDDHH");
-    thisHour = moment().diff(lastForecast, 'H');
+// $.when(
+//         $.get(pointUrl),
+//         $.get(pathUrl),
+//         $.get(polygonUrl)
+//     )
+let modelLoadingPromises = [];
+for (let modelName in models) {
+    if (!models.hasOwnProperty(modelName))
+        continue;
+    let model = models[modelName];
+    modelLoadingPromises.push(
+        $.get(dataDomain+"/Forecast/"+modelName+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
+            model["lastForecast"] = moment.utc(recentRun, "YYYYMMDDHH");
+            model["currentDirectory"] = dataDomain+"/Forecast/"+modelName+"/"+recentRun;
+            model["currentDownloadDirectory"] = dataDomain+"/?prefix=Forecast/"+modelName+"/"+recentRun;
+        })
+    );
+}
+$.when.apply($, modelLoadingPromises).then(function() {
+    thisHour = moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H');
     currentHourSetting = thisHour;
-    currentGMUDirectory = dataDomain+"/Forecast/"+recentRun;
-    currentDownloadDirectory = dataDomain+"/?prefix=Forecast/"+recentRun;
+    //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
+    //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
     $('#modelInfo').text("iFlood data generated "+lastForecast.format("HH:mm [UTC,] YYYY-MM-DD")+". Third party data may be older.");
     drawTimeSlide();
     init();
 });
+
+function replaceModelPaths(inStr) {
+    let outStr = inStr;
+    for (let modelName in models) {
+        if (!models.hasOwnProperty(modelName))
+            continue;
+        let model = models[modelName];
+        outStr = outStr.replace("{_"+modelName+"_FILES_}",model["currentDirectory"]);
+        outStr = outStr.replace("{_"+modelName+"_DOWNLOAD_}",model["currentDownloadDirectory"]);
+    }
+    return outStr;
+}
 
 //---   interface   ---
 //expand button for mobile
@@ -546,7 +574,7 @@ function showLayer(layer, oncomplete) {
     }
     else if (layer["type"] === "outline") {
         if (!layer["data"]) {
-            let fileUrl = layer["url"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
+            let fileUrl = replaceModelPaths(layer["url"]);
             if (activeDataRequests.hasOwnProperty(fileUrl)) {
 				if (oncomplete) {
 					oncomplete(true);
@@ -588,9 +616,9 @@ function showLayer(layer, oncomplete) {
     }
     else if (layer["type"] === "stormPath") {
         if (!layer["data"]) {
-            let pointUrl = layer["pointUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
-			let pathUrl = layer["pathUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
-			let polygonUrl = layer["polygonUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
+            let pointUrl = replaceModelPaths(layer["pointUrl"]);
+			let pathUrl = replaceModelPaths(layer["pathUrl"]);
+			let polygonUrl = replaceModelPaths(layer["polygonUrl"]);
 			$.when(
 			    $.get(pointUrl),
                 $.get(pathUrl),
@@ -768,10 +796,10 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
     if (!layer["data"][dataIndex]
     || (layer["temporal"] && !layer["data"][dataIndex][timeIndex])
     ) {
-        let fileUrl = layer["urls"][dataIndex][1].replace("{_CURRENT_GMU_}",currentGMUDirectory);
+        let fileUrl = replaceModelPaths(layer["urls"][dataIndex][1]);
         if (layer["temporal"]) {
             if (timeIndex === -1)
-                fileUrl = layer["maxUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory);
+                fileUrl = replaceModelPaths(layer["maxUrl"]);
             else
                 fileUrl = fileUrl.replace("{_h_}", (timeIndex+1).toString());
         }
@@ -1143,7 +1171,7 @@ function setParticleFile(layer) {
         settingBoundary = true;
     }
     let timeToSet = currentHourSetting;
-    $.get(layer["particleUrl"].replace("{_CURRENT_GMU_}",currentGMUDirectory).replace("{_h_}", (currentHourSetting+1).toString()), function (particleData) {
+    $.get(replaceModelPaths(layer["particleUrl"]).replace("{_h_}", (currentHourSetting+1).toString()), function (particleData) {
         if (currentHourSetting !== timeToSet)
             return;
         layer["visualizerGrid"]["latStart"] = particleData.lat[0][0];
@@ -1159,8 +1187,8 @@ function setParticleFile(layer) {
                 layer["visualizerPoints"][latNum][lngNum] = {
                     lat: particleData.lat[i][j],
                     lng: particleData.lon[i][j],
-                    vLat: particleData[layer["particleLat"]][i][j],
-                    vLng: particleData[layer["particleLng"]][i][j]
+                    vLat: particleData[layer["particleLat"]][i][j]*layer["particleSpeedScale"],
+                    vLng: particleData[layer["particleLng"]][i][j]*layer["particleSpeedScale"]
                 };
                 if (settingBoundary) {
                     if (typeof layer["visualizerBoundaryGrid"][latNum] === 'undefined')
@@ -1453,7 +1481,11 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
             "spikedistance": "data",
             "showcrossline": "true",
             title: title,
-            legend: {"orientation": "h"},
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+            },
             //"xanchor": "center"},
             margin: {
                 l: 60,
@@ -1822,9 +1854,13 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             showlegend: true,
             hovermode: "x",
             "spikedistance": "data",
-            "showcrossline": "true",
+            showcrossline: "true",
             title: title,
-            legend: {"orientation": "h"},
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.5,
+            },
             margin: {
                 l: 60,
                 r: 0,
@@ -1836,10 +1872,10 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             //"xanchor": "center"},
             images: [
                 {
-                    source: "https://masonfloodhazardsresearchlab.github.io/Xbeach/MasonM.png",
+                    source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .83,
+                    x: .87,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -1950,7 +1986,6 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                 mirror: true,
                 title: 'Lead Time (hours)',
                 range: [1, 24],
-
             },
             yaxis: {
                 showgrid: true,
