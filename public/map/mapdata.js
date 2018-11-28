@@ -547,7 +547,7 @@ let layers = {
         "borderFix":true,
         "reverseBar":true,
         "hasParticles":false,
-        "z":5,
+        "z":6,
         "img":"/map/layerIcons/wavePeriod.png",
         "description":"Predicted wave period for the next 84 hours.",
         "visible":false
