@@ -24,12 +24,12 @@ def lambda_handler(event, context):
     #get flood levels from s3 file
     response = s3.get_object(
         Bucket="gmu-iflood-data",
-        Key="Forecast/"+event["forecastID"]+"/GeoJson/Floodlevels.json"
+        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/"+event["forecastID"]+"/GeoJson/Floodlevels.json"
     )
     floodLevels = json.loads(response['Body'].read().decode('utf-8'))
     response = s3.get_object(
         Bucket="gmu-iflood-data",
-        Key="Forecast/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json"
+        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json"
     )
     oldFloodLevels = json.loads(response['Body'].read().decode('utf-8'))
 
