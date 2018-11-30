@@ -5,7 +5,6 @@ preloadTheLoader.src = "tail-spin.svg";
 let currentGMUDirectory = "";
 let currentDownloadDirectory = "";
 
-let lastForecast = moment("2017122000", "YYYYMMDDHH").utc();
 let thisHour = 0;
 let currentHourSetting = 0;
 
@@ -519,7 +518,7 @@ function hurricaneMapPoints(layer) {
             continue;
         let mostRecentStormPoint = 0;
         for (let i = 0; i < layer["storms"][stormID].length; i++) {
-            if (layer["storms"][stormID][i]["time"].isAfter(lastForecast.clone().add(currentHourSetting, 'hours')))
+            if (layer["storms"][stormID][i]["time"].isAfter(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(currentHourSetting, 'hours')))
                 break;
             else
                 mostRecentStormPoint = i;
@@ -1116,7 +1115,7 @@ function drawTimeSlide() {
         handleCtx.lineWidth = 1;
         handleCtx.beginPath();
         handleCtx.moveTo(10, 10);
-        let hourHandPos = (parseInt(lastForecast.format("hh")) + currentHourSetting) / 12 - 0.25;
+        let hourHandPos = (parseInt(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("hh")) + currentHourSetting) / 12 - 0.25;
         handleCtx.lineTo(10 + Math.cos(2 * Math.PI * hourHandPos) * 5, 10 + Math.sin(2 * Math.PI * hourHandPos) * 5);
         handleCtx.stroke();
         //minute hand
@@ -1129,7 +1128,7 @@ function drawTimeSlide() {
 
     //popup
     let popup = $('#timePopup');
-    popup.text(lastForecast.clone().add(currentHourSetting, 'hours').format("ddd HH:mm [UTC]"));
+    popup.text(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(currentHourSetting, 'hours').format("ddd HH:mm [UTC]"));
     popup.css({
         'left':Math.max(Math.min(sliderHandleCanvas.offsetLeft+10+timeSlider.offsetLeft,timeSlideContainer.clientWidth-50),50)
     })
