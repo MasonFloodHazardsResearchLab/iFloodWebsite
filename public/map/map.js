@@ -326,7 +326,7 @@ $.when.apply($, modelLoadingPromises).then(function() {
     currentHourSetting = thisHour;
     //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
     //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
-    $('#modelInfo').text("iFlood data generated "+lastForecast.format("HH:mm [UTC,] YYYY-MM-DD")+". Third party data may be older.");
+    $('#modelInfo').text("iFlood data generated "+models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD")+". Third party data may be older.");
     drawTimeSlide();
     init();
 });
