@@ -29,6 +29,9 @@ def errorOut(message):
 def lambda_handler(event, context):
     userItem = {}
 
+    if len(event["body"]) > 10000: #at some point if they submit something huge then they must be doing something wrong
+        return errorOut("Please select fewer alerts.")
+
     try:
         data = json.loads(event["body"])
     except:

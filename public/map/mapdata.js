@@ -385,10 +385,10 @@ let layers = {
         "group":0,
         "type":"geoJSON",
         "displayName":"Inundation",
+        "temporal":false, //TODO: Should this be temporal?
         "urls":[
             [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json"]
         ],
-        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json", //TODO: Should this be temporal?
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Inundation/",
         "colorRange":colorRanges["kindaJet"],
         "colorBounds":[0,6],
