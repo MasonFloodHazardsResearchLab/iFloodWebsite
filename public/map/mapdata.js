@@ -401,7 +401,7 @@ let layers = {
         "description":"Predicted maximum inundation depth above ground for the next 84 hours. Inundation is in meters above NAVD88 datum.\n",
         "visible":false
     },
-    "minpressure": {
+    "minPressure": {
         "group":0,
         "type":"geoJSON",
         "displayName":"Atmospheric Pressure",
@@ -422,7 +422,7 @@ let layers = {
         "description":"Atmospheric pressure at sea level in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Atmospheric pressure is given in Kilopascals.",
         "visible":false
     },
-    "windmag": {
+    "windMag": {
         "group":0,
         "type":"geoJSON",
         "displayName":"Wind Magnitude",

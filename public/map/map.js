@@ -102,6 +102,7 @@ function init() {
         let closeButton = newItem.find(".closeButton");
         //create tile
         let newTile = $(templateLayerTile.render(layer)).appendTo(groupDivs[layer["group"]]);
+        layer["domTile"] = newTile;
         newTile.click(function () {
             newTile.addClass("loading");
             showLayer(layer, function (worked) {
@@ -299,6 +300,16 @@ function init() {
         mapOverlayCanvas.style.display = "none";
         drawOverlay();
     });
+
+    //read hash
+    if (window.location.hash) {
+        let hashText = window.location.hash.replace("#","");
+        let hashLayers = hashText.split(",");
+        for (let i = 0; i < hashLayers.length; i++) {
+            if (layers.hasOwnProperty(hashLayers[i]))
+                layers[hashLayers[i]]["domTile"].click();
+        }
+    }
 }
 //---   initial loading of models   ---
 $('#mapContainer').removeClass("loading");
