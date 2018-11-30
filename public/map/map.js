@@ -1267,18 +1267,20 @@ function drawOverlay(currentTime) {
                     let point = new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]);
                     let worldPoint = map.getProjection().fromLatLngToPoint(point);
                     let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+                    let alpha = Math.min(0.95,((visParticles[i]["vLat"]*visParticles[i]["vLat"])+(visParticles[i]["vLng"]*visParticles[i]["vLng"]))/15)+0.05; //set the alpha based on the speed
                     if (visParticles[i]["age"] < 1) {
-                        overCtx.globalAlpha = visParticles[i]["age"];
+                        alpha *= visParticles[i]["age"];
                     }
-                    else {
-                        overCtx.globalAlpha = 1;
+                    if (visParticles[i].hasOwnProperty("death")) {
+                        alpha *= visParticles[i]["death"];
                     }
+                    overCtx.globalAlpha = alpha;
                     overCtx.fillRect(pixel.x, pixel.y, 2, 2);
                 }
                 overCtx.globalAlpha = 1;
             }
             //create new particles
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 if (map.getZoom() < 6) {
                     visParticles.push({
                         lat: Math.random() * 41 + 6,
@@ -1297,9 +1299,15 @@ function drawOverlay(currentTime) {
                         age: 0
                     });
                 }
-                if (visParticles.length > 500)
-                    visParticles.shift();
             }
+            if (visParticles.length > 600) {
+                let firstDeadIndex = 0;
+                while (visParticles[firstDeadIndex].hasOwnProperty("death"))
+                    firstDeadIndex++;
+                for (let j = 0; j < visParticles.length-700-firstDeadIndex; j++)
+                    visParticles[firstDeadIndex+j]["death"] = 1;
+            }
+            console.log(visParticles.length);
             //move
             let moveFactor;
             if (map.getZoom() < 6)
@@ -1326,6 +1334,11 @@ function drawOverlay(currentTime) {
                 visParticles[i]["age"] += frameLength;
                 if (Math.abs(visParticles[i]["vLat"]) < 0.002 && Math.abs(visParticles[i]["vLng"]) < 0.002)
                     shouldKill = true;
+                if (visParticles[i].hasOwnProperty("death")) {
+                    visParticles[i]["death"] -= frameLength;
+                    if (visParticles[i]["death"] <= 0)
+                        shouldKill = true;
+                }
                 if (shouldKill) {
                     visParticles.splice(i, 1);
                     i--;

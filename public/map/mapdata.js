@@ -1,4 +1,4 @@
-let dataDomain = "https://d2dyvyp1m8y8xp.cloudfront.net";
+let dataDomain = "https://data.iflood.vse.gmu.edu";
 
 let colorRanges = {
     "kindaJet":[
@@ -443,7 +443,7 @@ let layers = {
         "particleLat":"windx",
         "particleLng":"windy",
         "particleSpeedScale":0.15,
-        "particleColor":"rgba(255,255,255,0.5)",
+        "particleColor":"rgba(255,255,255,1)",
         "z":10,
         "img":"/map/layerIcons/wind.png",
         "description":"Wind speeds at the surface in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Winds speeds are given in meters per second.",
