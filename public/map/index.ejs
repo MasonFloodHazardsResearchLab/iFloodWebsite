@@ -1,4 +1,4 @@
-<div id="mapContainer">
+<div id="mapContainer" class="loading">
     <div id="map"></div>
     <canvas id="mapOverlayCanvas"></canvas>
     <div id="placeButtons"></div>
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div id="messageBoxFade"></div>
+    <div id="messageBoxFade" class="show"></div>
     <div id="welcomeMessageBox" class="messageBox">
         <h2>Notice</h2>
         <p>
@@ -98,12 +98,12 @@
     </div>
 </script>
 
-<script src="mapstyles.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&libraries=geometry"></script>
+<script defer src="mapstyles.js"></script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&libraries=geometry"></script>
 
-<script src="/moment.min.js"></script>
-<script src="/plotly-latest.min.js"></script>
-<script type="text/javascript" src="/arcgislink_compiled.js"></script>
+<script defer src="/moment.min.js"></script>
+<script defer src="/plotly-latest.min.js"></script>
+<script defer src="/arcgislink_compiled.js"></script>
 
-<script src="mapdata.js"></script>
-<script src="map.js"></script>
+<script defer src="mapdata.js"></script>
+<script defer src="map.js"></script>

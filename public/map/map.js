@@ -301,13 +301,9 @@ function init() {
         drawOverlay();
     });
 }
-
-//load up most recent predictions
-// $.when(
-//         $.get(pointUrl),
-//         $.get(pathUrl),
-//         $.get(polygonUrl)
-//     )
+//---   initial loading of models   ---
+$('#mapContainer').removeClass("loading");
+showMessageBox("welcomeMessageBox");
 let modelLoadingPromises = [];
 for (let modelName in models) {
     if (!models.hasOwnProperty(modelName))
@@ -500,9 +496,6 @@ $('.messageBox .dismissButton').click(function() {
     $(this).parent().removeClass('show');
     $('#messageBoxFade').removeClass('show');
 });
-//show warning
-showMessageBox("welcomeMessageBox");
-
 
 //map data/helpers
 $.colors.defaultModel = "RGB";

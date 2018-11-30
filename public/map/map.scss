@@ -57,6 +57,9 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    &.loading {
+        cursor: progress;
+    }
 }
 
 @keyframes stormRotation {
@@ -72,6 +75,7 @@ body {
     left: 0;
     right: 300px;
     height: 100%;
+    background-color: #CCC;
     .gm-style-iw {
         overflow: visible; //to allow tabs to stick out top of popup
     }
