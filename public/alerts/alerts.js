@@ -9,7 +9,7 @@ const chosenAlerts = $("#chosenAlerts");
 let contactIcon = $('#contactIcon');
 let phoneNotice = $('#phoneNotice');
 $('#primaryContactInput').on('input', function() {
-    if ($(this).val().match(/^\+?[0-9 -()]{3,}$/)) { //if it looks like a phone number
+    if ($(this).val().match(/^\+?[0-9 \-()]{3,}$/)) { //if it looks like a phone number
         contactIcon.removeClass("mail");
         contactIcon.addClass("phone");
         if (!$(this).val().includes("+")) {
