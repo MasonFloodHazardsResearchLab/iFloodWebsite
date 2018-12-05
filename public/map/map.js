@@ -263,9 +263,9 @@ function init() {
     }
 
     let zoomTimeout; //wait for the user to stop zooming before updating layers, since it sometimes freezes the main thread
-    google.maps.event.addListener(map, 'zoom_changed', function() {
+    google.maps.event.addListener(map, 'bounds_changed', function() {
         clearTimeout(zoomTimeout);
-        zoomTimeout = setTimeout(updateZoom, 600);
+        zoomTimeout = setTimeout(updateView, 600);
     });
 
     map.addListener('click', function() {
@@ -572,7 +572,7 @@ function hurricaneMapPoints(layer) {
 function showLayer(layer, oncomplete) {
     layer["visible"] = true;
     if (layer["type"] === "geoJSON") {
-        let index = getZoomDataIndex(layer, map.getZoom());
+        let index = getViewDataIndex(layer, map.getZoom());
         showData(layer, index, currentHourSetting, oncomplete);
     }
     else if (layer["type"] === "outline") {
@@ -935,12 +935,12 @@ function hideLayer(layer) {
     }
 }
 
-function getZoomDataIndex(layer, level) {
+function getViewDataIndex(layer, view) {
     for (let i = 0; i < layer["urls"].length; i++) {
-        if (layer["urls"][i][0] > level)
-            return i-1;
+        if (layer["urls"][i][0] === view)
+            return i;
     }
-    return layer["urls"].length-1;
+    return 0;
 }
 
 function hideAllData(layer, except) {
@@ -968,13 +968,24 @@ function hideAllData(layer, except) {
     }
 }
 
-//zoom levels are now based on specific bounding boxes, rather than just the gmaps zoom
-function updateZoom() {
-    let zoomLevel = map.getZoom();
+//update layers to show more detailed data for a specific area (if they have it)
+function updateView() {
+    let bounds = map.getBounds();
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+
+    let currentView = 0;
+    for (let i = 1; i < viewLevels.length; i++) { //starts at 1 because 0 has no bounds (it's the default)
+        if (sw.lng() > viewLevels[i][0][0] && ne.lat() < viewLevels[i][0][1] && ne.lng() < viewLevels[i][1][0] && sw.lat() > viewLevels[i][1][1])
+            currentView = i;
+    }
+
+    //console.log(currentView);
+
     for (let layerIndex in layers) {
         let layer = layers[layerIndex];
         if (layer["visible"] && layer["type"] === "geoJSON") {
-            let index = getZoomDataIndex(layer, map.getZoom());
+            let index = getViewDataIndex(layer, currentView);
             if ((layer["temporal"] && layer["showing"][0] !== index) || (!layer["temporal"] && layer["showing"] !== index)) {
                 showData(layer, index, currentHourSetting);
             }

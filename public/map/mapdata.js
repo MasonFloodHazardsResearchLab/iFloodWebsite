@@ -454,7 +454,7 @@ let models = {
     "ChesapeakeBay_ADCIRCSWAN":{},
 };
 
-let zoomLevels = [
+let viewLevels = [
     null, //0 is the default/global level
     [[-78.87947,41.1072],[-68.3611,32.5480]] //1 is chesapeake
 ];
