@@ -47,6 +47,8 @@ const hurricaneTimezones = {
 
 let activeDataRequests = {};
 
+let lastHoverPos = null;
+
 map = new google.maps.Map(document.getElementById('map'), {
     zoom: 8,
     gestureHandling: 'greedy',
@@ -251,16 +253,14 @@ function init() {
         }
     });
 
-    for (let placeIndex in places) {
-        if (!places.hasOwnProperty(placeIndex))
-            continue;
+    Object.keys(places).forEach(placeIndex => {
         let place = places[placeIndex];
         let newButton = $(templatePlaceButton.render(place)).appendTo(domPlaceButtons);
         newButton.click(function() {
             map.panTo(place["pos"]);
             map.setZoom(place["zoom"]);
         });
-    }
+    });
 
     let zoomTimeout; //wait for the user to stop zooming before updating layers, since it sometimes freezes the main thread
     google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -277,6 +277,62 @@ function init() {
             drawTimeSlide();
         }
     });
+
+    // Alternate method for changing the scale bars on hover. Works with multiple stacked layers but is much slower than google's own hover events.
+    //
+    // let mouseMoveTimeout = null;
+    // function hoverCheck() {
+    //     Object.keys(layers).forEach(layerIndex => {
+    //         let layer = layers[layerIndex];
+    //         if (layer["visible"] === true) {
+    //             let data;
+    //             if (layer["temporal"]) {
+    //                 data = layer["data"][layer["showing"][0]][layer["showing"][1]];
+    //             }
+    //             else {
+    //                 data = layer["data"][layer["showing"]];
+    //             }
+    //             let height = null;
+    //             data.forEach(feature => {
+    //                 setTimeout(function() {
+    //                     let geo = feature.getGeometry();
+    //                     if (geo === null)
+    //                         return;
+    //                     if (geo.getType() === "MultiPolygon") {
+    //                         geo.getArray().forEach(singleGeo => {
+    //                             let poly = new google.maps.Polygon({
+    //                                 paths: singleGeo.getAt(0).getArray()
+    //                             });
+    //                             if (google.maps.geometry.poly.containsLocation(lastHoverPos, poly))
+    //                                 height = feature.getProperty(layer["colorProperty"]);
+    //                         });
+    //                     }
+    //                     else if (geo.getType() === "Polygon") {
+    //                         let poly = new google.maps.Polygon({
+    //                             paths: geo.getAt(0).getArray()
+    //                         });
+    //                         if (google.maps.geometry.poly.containsLocation(lastHoverPos, poly))
+    //                             height = feature.getProperty(layer["colorProperty"]);
+    //                     }
+    //                 },0);
+    //             });
+    //             setTimeout(function() {
+    //                 if (height !== null)
+    //                     drawScaleBar(layer, height);
+    //             });
+    //         }
+    //     });
+    // }
+    // map.addListener('mousemove', function(event) {
+    //     lastHoverPos = event.latLng;
+    //     if (mouseMoveTimeout === null) {
+    //         setTimeout(hoverCheck, 0);
+    //         mouseMoveTimeout = setTimeout(function () {
+    //             setTimeout(hoverCheck, 0);
+    //             mouseMoveTimeout = null;
+    //         }, 200);
+    //     }
+    // });
 
     map.addListener('bounds_changed',function() {
         overCtx.clearRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
@@ -845,7 +901,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
                         fillOpacity: 1,
                         strokeColor: color,
                         strokeWeight: 1,
-                        zIndex: layer["z"]
+                        zIndex: layer["z"],
                     };
                 }
                 else {
@@ -853,7 +909,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
                         fillColor: color,
                         fillOpacity: 0.75,
                         strokeWeight: 0,
-                        zIndex: layer["z"]
+                        zIndex: layer["z"],
                     };
                 }
             });
