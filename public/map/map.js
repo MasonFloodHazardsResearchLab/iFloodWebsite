@@ -895,7 +895,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
             theDataLayer.setStyle(function (feature) {
                 let level = (feature.getProperty(layer["colorProperty"])-layer["colorBounds"][0])/(layer["colorBounds"][1]-layer["colorBounds"][0]);
                 let color = getColorPoint(layer["colorRange"], level);
-                if (layer["borderFix"]) {
+                if (layer["opacity"] === 1) {
                     return {
                         fillColor: color,
                         fillOpacity: 1,
@@ -907,7 +907,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
                 else {
                     return {
                         fillColor: color,
-                        fillOpacity: 0.75,
+                        fillOpacity: layer["opacity"],
                         strokeWeight: 0,
                         zIndex: layer["z"],
                     };

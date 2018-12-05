@@ -8,3 +8,6 @@ Dissolve layers with same height:
 
 Split timeseries:
 mapshaper WLTimeseries.json -split timestep -o
+
+Crop to an area:
+-clip bbox=<xmin,ymin,xmax,ymax>

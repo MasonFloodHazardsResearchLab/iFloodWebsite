@@ -456,7 +456,7 @@ let models = {
 
 let viewLevels = [
     null, //0 is the default/global level
-    [[-78.87947,41.1072],[-68.3611,32.5480]] //1 is chesapeake
+    [[-80.73,40.95],[-72.63,35.59]] //1 is chesapeake
 ];
 
 let layerGroups = [
@@ -479,7 +479,7 @@ let layers = {
         "colorBounds":[0,2],
         "colorProperty":"elemin",
         "unit":"m",
-        "borderFix":false,
+        "opacity":0.75,
         "reverseBar":true,
         "z":1,
         "img":"/map/layerIcons/waterLevel.png",
@@ -492,14 +492,15 @@ let layers = {
         "displayName":"Inundation",
         "temporal":false, //TODO: Should this be temporal?
         "urls":[
-            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json"]
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json"],
+            [1,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJsonHigh/maxinundationfull.json"]
         ],
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Inundation/",
         "colorRange":colorRanges["jet"],
         "colorBounds":[0,6],
         "colorProperty":"elemin",
         "unit":"m",
-        "borderFix":false,
+        "opacity":0.75,
         "reverseBar":true,
         "z":2,
         "img":"/map/layerIcons/inundation.png",
@@ -520,7 +521,7 @@ let layers = {
         "colorBounds":[9,11],
         "colorProperty":"elemin",
         "unit":"kpa",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":true,
         "z":8,
         "img":"/map/layerIcons/pressure.png",
@@ -541,7 +542,7 @@ let layers = {
         "colorBounds":[0,80],
         "colorProperty":"elemin",
         "unit":"m/s",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":true,
         "hasParticles":true,
         "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wind_vectors/{_h_}.json",
@@ -579,7 +580,7 @@ let layers = {
         "colorBounds":[0,5000],
         "colorProperty":"dmax",
         "unit":"m",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":false,
         "z":0,
         "img":"/map/layerIcons/bathy.png",
@@ -600,7 +601,7 @@ let layers = {
         "colorBounds":[0,2],
         "colorProperty":"elemin",
         "unit":"m/s",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":true,
         "hasParticles":true,
         "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/current_vectors/{_h_}.json",
@@ -627,7 +628,7 @@ let layers = {
         "colorBounds":[0,9],
         "colorProperty":"elemin",
         "unit":"m",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":true,
         "hasParticles":true,
         "particleUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/wave_vectors/{_h_}.json",
@@ -654,7 +655,7 @@ let layers = {
         "colorBounds":[0,40],
         "colorProperty":"elemin",
         "unit":"s",
-        "borderFix":true,
+        "opacity":1,
         "reverseBar":true,
         "hasParticles":false,
         "z":6,
