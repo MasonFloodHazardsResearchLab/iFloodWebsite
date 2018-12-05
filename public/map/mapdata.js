@@ -699,14 +699,6 @@ let layers = {
         "description":"Predicted path of storms from NHC.<br><img src='/map/sprites/hurricane.svg' width='28'>Hurricane<br><img src='/map/sprites/storm.svg' width='28'>Storm<br><img src='/map/sprites/depression.svg' width='28'>Depression",
         "visible":false
     }
-    // "cacheTest": {
-    //     "type":"cachedTile",
-    //     "displayName":"Cache Test",
-    //     "url":"https://d2dyvyp1m8y8xp.cloudfront.net/cacheTest/",
-    //     "img":"/map/layerIcons/temp.png",
-    //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc.",
-    //     "visible":false
-    // }
 };
 
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/plotly_bias24.tsv";
