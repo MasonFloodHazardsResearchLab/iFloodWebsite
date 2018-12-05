@@ -47,10 +47,10 @@ map = new google.maps.Map(document.getElementById('map'), {
 
 let stationMarkers = {};
 
-for (let markerIndex in markers) {
-    if (!markers.hasOwnProperty(markerIndex))
-        continue;
+Object.keys(markers).forEach(markerIndex => {
     let marker = markers[markerIndex];
+    if (marker["type"] !== "station")
+        return;
     stationMarkers[marker["stationStr"]] = new google.maps.Marker({
         map: map,
         draggable: false,
@@ -61,7 +61,7 @@ for (let markerIndex in markers) {
         if (!stationAlertExists(marker["stationStr"]))
             addStationAlert(marker["stationStr"]);
     });
-}
+});
 
 $("#addLocationButton").click(addLocationAlert);
 $("#addStationButton").click(addStationAlert);

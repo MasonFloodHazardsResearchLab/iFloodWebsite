@@ -299,6 +299,7 @@ body {
     height: 40px;
     border-left: solid 1px #AAA;
     color: #FFF;
+    background-color: $bg_dark;
     cursor: pointer;
     &:hover {
         background-color: lighten($bg_dark,5%);

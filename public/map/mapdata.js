@@ -703,13 +703,16 @@ let layers = {
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/plotly_bias24.tsv";
 let markers = {
     "DC": {
+        "type": "station",
         "pos": {
             lat: 38.8545966284, lng: -77.0245558832
         },
         "title":"District of Columbia",
         "stationStr":"WASD2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WASD2.tsv",
+        "hasWater":true,
         "hasWind":true,
+        "hasValidation":true,
         "floodLevels": [
             3.7,
             4.2,
@@ -718,13 +721,16 @@ let markers = {
         ]
     },
     "BH": {
+        "type": "station",
         "pos": {
             lat: 38.216639, lng: -76.036183
         },
         "title":"Bishop head",
         "stationStr":"BISM2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BISM2.tsv",
+        "hasWater":true,
         "hasWind":true,
+        "hasValidation":true,
         "floodLevels": [
             3.0,
             3.2,
@@ -733,13 +739,16 @@ let markers = {
         ]
     },
     "BD": {
+        "type": "station",
         "pos": {
             lat: 39.266101, lng: -76.577572
         },
         "title":"Baltimore",
         "stationStr":"BLTM2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BLTM2.tsv",
+        "hasWater":true,
         "hasWind":true,
+        "hasValidation":true,
         "floodLevels": [
             2.5,
             3.0,
@@ -748,13 +757,16 @@ let markers = {
         ]
     },
     "AN": {
+        "type": "station",
         "pos": {
             lat: 38.986885860000, lng: -76.479876450000
         },
         "title":"Annapolis",
         "stationStr":"APAM2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/APAM2.tsv",
+        "hasWater":true,
         "hasWind":false,
+        "hasValidation":true,
         "floodLevels": [
             2.0,
             2.6,
@@ -763,13 +775,16 @@ let markers = {
         ]
     },
     "SO": {
+        "type": "station",
         "pos": {
             lat: 38.315748310000, lng: -76.449921330000
         },
         "title":"Solomons Island",
         "stationStr":"SLIM2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SLIM2.tsv",
+        "hasWater":true,
         "hasWind":true,
+        "hasValidation":true,
         "floodLevels": [
             2.5,
             3.0,
@@ -778,13 +793,16 @@ let markers = {
         ]
     },
     "KP": {
+        "type": "station",
         "pos": {
             lat: 37.163433530000, lng: -75.995395910000
         },
         "title":"Kiptopeke",
         "stationStr":"KPTV2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/KPTV2.tsv",
+        "hasWater":true,
         "hasWind":true,
+        "hasValidation":true,
         "floodLevels": [
             4.0,
             4.5,
@@ -793,13 +811,16 @@ let markers = {
         ]
     },
     "SP": {
+        "type": "station",
         "pos": {
             lat: 36.950165530000, lng: -76.335476530000
         },
         "title":"Sewells Point",
         "stationStr":"SWPV2",
         "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
+        "hasWater":true,
         "hasWind":false,
+        "hasValidation":true,
         "floodLevels": [
             4.0,
             4.5,
@@ -808,6 +829,7 @@ let markers = {
         ]
     },
     "CB": {
+        "type": "station",
         "pos": {
             lat: 36.964541507100, lng: -76.123066553300
         },
@@ -815,6 +837,9 @@ let markers = {
         "stationStr":"CBBV2",
         //"timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
         //"hasWind":true,
+        "hasWater":false,
+        "hasWind":false,
+        "hasValidation":false,
         "floodLevels": [
             5.0,
             5.5,
@@ -823,6 +848,384 @@ let markers = {
         ],
         "notice":"Data for this station is temporarily unavailable."
     },
+    "CHVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 36.915,
+			"lng": -75.72
+		},
+		"title": "Cape Henry,VA",
+		"stationStr": "CHVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "SCRIPPS"
+	},
+	"WIVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 37.757,
+			"lng": -75.334
+		},
+		"title": "Wallops island,VA",
+		"stationStr": "WIVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "USACE"
+	},
+	"DBDE": {
+		"type": "buoy",
+		"pos": {
+			"lat": 38.461,
+			"lng": -74.703
+		},
+		"title": "Dalware Bay",
+		"stationStr": "DBDE",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"VBVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 36.611,
+			"lng": -74.843
+		},
+		"title": "VA Beach Eastern Shore",
+		"stationStr": "VBVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"DFNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 36.26,
+			"lng": -75.594
+		},
+		"title": "Duck FRP,NC",
+		"stationStr": "DFNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "SCRIPPS"
+	},
+	"NHNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 36.001,
+			"lng": -75.421
+		},
+		"title": "Nags head,NC",
+		"stationStr": "NHNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "UNC"
+	},
+	"OINC1": {
+		"type": "buoy",
+		"pos": {
+			"lat": 35.75,
+			"lng": -75.33
+		},
+		"title": "Oregon Inlet, NC",
+		"stationStr": "OINC1",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "UNC"
+	},
+	"DSNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 35.09,
+			"lng": -75.36
+		},
+		"title": "Diamond Shoals, NC",
+		"stationStr": "DSNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"BANJ": {
+		"type": "buoy",
+		"pos": {
+			"lat": 39.778,
+			"lng": -73.769
+		},
+		"title": "Barnegat,NJ",
+		"stationStr": "BANJ",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "USACE"
+	},
+	"EHNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 34.625,
+			"lng": -72.617
+		},
+		"title": "East Hatteras,NC",
+		"stationStr": "EHNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"OBNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 34.213,
+			"lng": -76.946
+		},
+		"title": "Onslow bay Outer,NC",
+		"stationStr": "OBNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CORMP"
+	},
+	"WH": {
+		"type": "buoy",
+		"pos": {
+			"lat": 33.721,
+			"lng": -78.015
+		},
+		"title": "Willimington Harbour,NC",
+		"stationStr": "WH",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "SCRIPPS"
+	},
+	"FSNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 33.436,
+			"lng": -77.743
+		},
+		"title": "Frying Pan Shoals,NC",
+		"stationStr": "FSNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"SCNC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 32.501,
+			"lng": -79.099
+		},
+		"title": "ShoutEast of Charleston,SC",
+		"stationStr": "SCNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"CNSC": {
+		"type": "buoy",
+		"pos": {
+			"lat": 32.803,
+			"lng": -79.624
+		},
+		"title": "Capers Neashore,SC",
+		"stationStr": "CNSC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CORMP"
+	},
+	"GRGA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 31.4,
+			"lng": -80.868
+		},
+		"title": "Grays Reef, GA",
+		"stationStr": "GRGA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"OFFL": {
+		"type": "buoy",
+		"pos": {
+			"lat": 30.709,
+			"lng": -81.292
+		},
+		"title": "Offshore Frenandina,FL",
+		"stationStr": "OFFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "SCRIPPS"
+	},
+	"CCFL": {
+		"type": "buoy",
+		"pos": {
+			"lat": 28.501,
+			"lng": -80.184
+		},
+		"title": "East of Cape Canaveral,FL",
+		"stationStr": "CCFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "NDBC"
+	},
+	"FLVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 36.998,
+			"lng": -76.087
+		},
+		"title": "First Landing,VA",
+		"stationStr": "FLVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"TSVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 37.026,
+			"lng": -76.151
+		},
+		"title": "Thimble Shoal,VA",
+		"stationStr": "TSVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "USNavy"
+	},
+	"YSVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 37.201,
+			"lng": -76.266
+		},
+		"title": "York Spit,Va",
+		"stationStr": "YSVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"SPVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 37.567,
+			"lng": -76.257
+		},
+		"title": "Stingray Point,VA",
+		"stationStr": "SPVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"POMD": {
+		"type": "buoy",
+		"pos": {
+			"lat": 38.033,
+			"lng": -76.335
+		},
+		"title": "Potomac,MD",
+		"stationStr": "POMD",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"GRMD": {
+		"type": "buoy",
+		"pos": {
+			"lat": 38.556,
+			"lng": -76.415
+		},
+		"title": "Gooses Reef, MD",
+		"stationStr": "GRMD",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"SUMD": {
+		"type": "buoy",
+		"pos": {
+			"lat": 39.54,
+			"lng": -76.074
+		},
+		"title": "Susquehanna, MD",
+		"stationStr": "SUMD",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"PAMD": {
+		"type": "buoy",
+		"pos": {
+			"lat": 39.152,
+			"lng": -76.391
+		},
+		"title": "Patapsco, MD",
+		"stationStr": "PAMD",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	},
+	"JAVA": {
+		"type": "buoy",
+		"pos": {
+			"lat": 37.211,
+			"lng": -76.787
+		},
+		"title": "Jamestown, VA",
+		"stationStr": "JAVA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidation": false,
+		"hawWaves": true,
+		"agency": "CBIBS"
+	}
 };
 
 let places = {

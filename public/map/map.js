@@ -149,9 +149,7 @@ function init() {
         });
     }
 
-    for (let markerIndex in markers) {
-        if (!markers.hasOwnProperty(markerIndex))
-            continue;
+    Object.keys(markers).forEach(markerIndex => {
         let marker = markers[markerIndex];
         marker["gMarker"] = new google.maps.Marker({
             map: map,
@@ -173,84 +171,104 @@ function init() {
             currentInfoWindow = infoWindow;
             infoWindow.addListener('closeclick', function () {
                 currentInfoWindow = null;
-                Plotly.purge(domPlot.find("#mapPopupContent1")[0]);
-                //Plotly.purge(domPlot.find("#mapPopupContent2")[0]);
-                Plotly.purge(domPlot.find("#mapPopupContent3")[0]);
+                Plotly.purge(domPlot[0]);
                 $(timeSlideContainer).removeClass("mobileHide");
                 drawTimeSlide();
             });
             infoWindow.open(map, marker["gMarker"]);
             $(timeSlideContainer).addClass("mobileHide");
             if (typeof marker["timeSeriesUrl"] !== 'undefined') {
-                $(templatePopupTabs.render()).appendTo(domPlot);
-                makePlotStationTimeseries(replaceModelPaths(marker["timeSeriesUrl"]), domPlot.find("#mapPopupContent1")[0], marker["floodLevels"],marker["title"]+": Water Level");
+                $(templatePopupTabs.render(marker)).appendTo(domPlot);
+                if (marker["hasWater"]) {
+                    makePlotStationTimeseries(replaceModelPaths(marker["timeSeriesUrl"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
+                }
                 if (marker["hasWind"]) {
-                    domPlot.find("#mapPopupContent2").append($('<img>',{
+                    domPlot.find("#mapPopupContentWind").append($('<img>',{
                         "class":"plotImg",
                         "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/WindPhotos/"+marker["stationStr"]+"_wind.png",
                     }));
                 }
-                else {
-                    domPlot.find("#mapPopupContent2").append($('<div>',{
-                        "class": "centerNote",
-                        "text": "No wind observation gauge installed at the Station"
-                    }));
+                if (marker["hasValidation"]) {
+                    makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
                 }
-                makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContent3")[0], marker["stationStr"], marker["title"]+": Validation");
-                for (let i = 1; i < 4; i++) {
-                    domPlot.find("#mapPopupTab" + i).click(function () {
-                        for (let j = 1; j < 4; j++) {
-                            if (j === i) {
-                                domPlot.find("#mapPopupContent" + j).css({"display": "block"});
-                                domPlot.find("#mapPopupTab" + j).addClass("current");
-                            }
-                            else {
-                                domPlot.find("#mapPopupContent" + j).css({"display": "none"});
-                                domPlot.find("#mapPopupTab" + j).removeClass("current");
-                            }
-                        }
-                        window.dispatchEvent(new Event('resize')); //plotly doesn't always realize it needs to resize
-                    });
-                }
+                domPlot.find(".mapPopupContent").first().css({"display": "block"});
+                domPlot.find(".tab").first().addClass("current");
+
+                domPlot.find("#mapPopupTabWater").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentWater").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize')); //plotly doesn't always realize it needs to resize
+                });
+                domPlot.find("#mapPopupTabWind").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentWind").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabWaves").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentWaves").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabValidation").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentValidation").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+
                 setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 50);
             }
             else if (typeof marker["notice"] !== 'undefined') {
                 domPlot[0].innerHTML = marker["notice"];
             }
         });
-    }
+    });
     //set icons
     $.get(models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/GeoJson/Floodlevels.json",function(markerLevels) {
-        for (let markerIndex in markers) {
-            if (!markers.hasOwnProperty(markerIndex))
-                continue;
+        Object.keys(markers).forEach(markerIndex => {
             let marker = markers[markerIndex];
-            if (markerLevels.hasOwnProperty(marker["stationStr"])) {
-                let iconUrl;
-                switch (markerLevels[marker["stationStr"]]["Flood Level"]) {
-                    case "Action":
-                        iconUrl = "/map/sprites/markers/action.svg";
-                        break;
-                    case "Minor":
-                        iconUrl = "/map/sprites/markers/minor.svg";
-                        break;
-                    case "Moderate":
-                        iconUrl = "/map/sprites/markers/moderate.svg";
-                        break;
-                    case "Major":
-                        iconUrl = "/map/sprites/markers/major.svg";
-                        break;
-                    default:
-                        iconUrl = "/map/sprites/markers/default.svg";
-                        break;
+            if (marker["type"] === "station") {
+                if (markerLevels.hasOwnProperty(marker["stationStr"])) {
+                    let iconUrl;
+                    switch (markerLevels[marker["stationStr"]]["Flood Level"]) {
+                        case "Action":
+                            iconUrl = "/map/sprites/markers/action.svg";
+                            break;
+                        case "Minor":
+                            iconUrl = "/map/sprites/markers/minor.svg";
+                            break;
+                        case "Moderate":
+                            iconUrl = "/map/sprites/markers/moderate.svg";
+                            break;
+                        case "Major":
+                            iconUrl = "/map/sprites/markers/major.svg";
+                            break;
+                        default:
+                            iconUrl = "/map/sprites/markers/default.svg";
+                            break;
+                    }
+                    marker["gMarker"].setIcon({
+                        "url": iconUrl,
+                        "anchor": new google.maps.Point(25, 65),
+                        "scaledSize": new google.maps.Size(50, 67),
+                    });
                 }
+            }
+            else if (marker["type"] === "buoy") {
                 marker["gMarker"].setIcon({
-                    "url": iconUrl,
-                    "anchor": new google.maps.Point(25, 65),
-                    "scaledSize": new google.maps.Size(50, 67),
+                    "url": "/map/sprites/markers/square.svg",
+                    "anchor": new google.maps.Point(9, 9),
+                    "scaledSize": new google.maps.Size(18, 18),
                 });
             }
-        }
+        });
     });
 
     Object.keys(places).forEach(placeIndex => {
@@ -271,8 +289,7 @@ function init() {
     map.addListener('click', function() {
         if (currentInfoWindow) {
             currentInfoWindow.close();
-            Plotly.purge($(currentInfoWindow.content).find("#mapPopupContent1")[0]);
-            Plotly.purge($(currentInfoWindow.content).find("#mapPopupContent3")[0]);
+            Plotly.purge(currentInfoWindow.content);
             $(timeSlideContainer).removeClass("mobileHide");
             drawTimeSlide();
         }
