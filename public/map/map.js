@@ -968,6 +968,7 @@ function hideAllData(layer, except) {
     }
 }
 
+//zoom levels are now based on specific bounding boxes, rather than just the gmaps zoom
 function updateZoom() {
     let zoomLevel = map.getZoom();
     for (let layerIndex in layers) {
