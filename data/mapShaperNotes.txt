@@ -10,4 +10,4 @@ Split timeseries:
 mapshaper WLTimeseries.json -split timestep -o
 
 Crop to an area:
--clip bbox=<xmin,ymin,xmax,ymax>
+-clip bbox=xmin,ymin,xmax,ymax

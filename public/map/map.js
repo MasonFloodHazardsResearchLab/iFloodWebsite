@@ -73,9 +73,7 @@ function init() {
         }).appendTo(domLayerTiles);
     }
     //create layer groups
-    for (let layerIndex in layers) {
-        if (!layers.hasOwnProperty(layerIndex))
-            continue;
+    Object.keys(layers).forEach(layerIndex => {
         let layer = layers[layerIndex];
         //create info bar
         let newItem = $(templateLayerInfo.render(layer)).css({
@@ -123,6 +121,7 @@ function init() {
                         showParticles(layer);
                 }
                 else {
+                    layer["visible"] = false;
                     newTile.addClass("error");
                     $('#layerErrorBox').addClass('show');
                 }
@@ -147,7 +146,7 @@ function init() {
                 hideParticles(layer)
             }
         });
-    }
+    });
 
     Object.keys(markers).forEach(markerIndex => {
         let marker = markers[markerIndex];
@@ -177,16 +176,19 @@ function init() {
             });
             infoWindow.open(map, marker["gMarker"]);
             $(timeSlideContainer).addClass("mobileHide");
-            if (typeof marker["timeSeriesUrl"] !== 'undefined') {
+            if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationTimeseries(replaceModelPaths(marker["timeSeriesUrl"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
+                    makePlotStationTimeseries(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
                 }
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContentWind").append($('<img>',{
                         "class":"plotImg",
                         "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/WindPhotos/"+marker["stationStr"]+"_wind.png",
                     }));
+                }
+                if (marker["hasWaves"]) {
+                    makePlotStationWaves(replaceModelPaths(stationWavesUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWaves")[0], marker["title"] + ": Significant Wave Height");
                 }
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
@@ -225,7 +227,7 @@ function init() {
 
                 setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 50);
             }
-            else if (typeof marker["notice"] !== 'undefined') {
+            else {
                 domPlot[0].innerHTML = marker["notice"];
             }
         });
@@ -239,26 +241,41 @@ function init() {
                     let iconUrl;
                     switch (markerLevels[marker["stationStr"]]["Flood Level"]) {
                         case "Action":
-                            iconUrl = "/map/sprites/markers/action.svg";
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/action.svg",
+                                "anchor": new google.maps.Point(21.5, 59),
+                                "scaledSize": new google.maps.Size(43, 60),
+                            });
                             break;
                         case "Minor":
-                            iconUrl = "/map/sprites/markers/minor.svg";
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/minor.svg",
+                                "anchor": new google.maps.Point(21.5, 59),
+                                "scaledSize": new google.maps.Size(43, 60),
+                            });
                             break;
                         case "Moderate":
-                            iconUrl = "/map/sprites/markers/moderate.svg";
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/moderate.svg",
+                                "anchor": new google.maps.Point(21.5, 59),
+                                "scaledSize": new google.maps.Size(43, 60),
+                            });
                             break;
                         case "Major":
-                            iconUrl = "/map/sprites/markers/major.svg";
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/major.svg",
+                                "anchor": new google.maps.Point(21.5, 59),
+                                "scaledSize": new google.maps.Size(43, 60),
+                            });
                             break;
                         default:
-                            iconUrl = "/map/sprites/markers/default.svg";
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/default.svg",
+                                "anchor": new google.maps.Point(13, 42),
+                                "scaledSize": new google.maps.Size(26, 43),
+                            });
                             break;
                     }
-                    marker["gMarker"].setIcon({
-                        "url": iconUrl,
-                        "anchor": new google.maps.Point(25, 65),
-                        "scaledSize": new google.maps.Size(50, 67),
-                    });
                 }
             }
             else if (marker["type"] === "buoy") {
@@ -283,7 +300,7 @@ function init() {
     let zoomTimeout; //wait for the user to stop zooming before updating layers, since it sometimes freezes the main thread
     google.maps.event.addListener(map, 'bounds_changed', function() {
         clearTimeout(zoomTimeout);
-        zoomTimeout = setTimeout(updateView, 600);
+        zoomTimeout = setTimeout(updateView, 400);
     });
 
     map.addListener('click', function() {
@@ -645,7 +662,7 @@ function hurricaneMapPoints(layer) {
 function showLayer(layer, oncomplete) {
     layer["visible"] = true;
     if (layer["type"] === "geoJSON") {
-        let index = getViewDataIndex(layer, map.getZoom());
+        let index = getViewDataIndex(layer, getCurrentView());
         showData(layer, index, currentHourSetting, oncomplete);
     }
     else if (layer["type"] === "outline") {
@@ -765,7 +782,6 @@ function showLayer(layer, oncomplete) {
                 }
             }).fail(function(a,b,c) {
                 console.log(a,b,c);
-                layer["visible"] = false;
                 if (oncomplete) {
                     oncomplete(false);
                 }
@@ -948,7 +964,10 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
             }
         }).fail(function() {
 			delete activeDataRequests[fileUrl];
-            layer["visible"] = false;
+			if (JSON.stringify(planningToShow) === JSON.stringify(layer["showing"]) && layer["visible"]) {
+                hideAllData(layer);
+            }
+			$('#layerErrorBox').addClass('show');
             if (oncomplete) {
                 oncomplete(false);
             }
@@ -1041,8 +1060,7 @@ function hideAllData(layer, except) {
     }
 }
 
-//update layers to show more detailed data for a specific area (if they have it)
-function updateView() {
+function getCurrentView() {
     let bounds = map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
@@ -1052,8 +1070,12 @@ function updateView() {
         if (sw.lng() > viewLevels[i][0][0] && ne.lat() < viewLevels[i][0][1] && ne.lng() < viewLevels[i][1][0] && sw.lat() > viewLevels[i][1][1])
             currentView = i;
     }
+    return currentView;
+}
 
-    //console.log(currentView);
+//update layers to show more detailed data for a specific area (if they have it)
+function updateView() {
+    let currentView = getCurrentView();
 
     for (let layerIndex in layers) {
         let layer = layers[layerIndex];
@@ -1403,7 +1425,6 @@ function drawOverlay(currentTime) {
                 for (let j = 0; j < visParticles.length-700-firstDeadIndex; j++)
                     visParticles[firstDeadIndex+j]["death"] = 1;
             }
-            console.log(visParticles.length);
             //move
             let moveFactor;
             if (map.getZoom() < 6)
@@ -1605,7 +1626,7 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
-                    opacity: 0.75,
+                    opacity: 0.25,
                     layer: "above"
                 }],
             annotations: [
@@ -1829,6 +1850,211 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
     });
 }
 
+function makePlotStationWaves(url, domNode, title) {
+    Plotly.d3.tsv(url, function (err, rows) {
+        let date_start_plot = rows[0]["global_time"];
+        let date_stop_plot = rows[rows.length - 1]["global_time"];
+        function unpack(rows, key) {
+            date_start_plot = rows[0]["global_time"];
+            date_stop_plot = rows[rows.length - 1]["global_time"];
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+
+        let iFLOOD = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'iflood',
+            hoverinfo: "y",
+            x: unpack(rows, 'iflood_time'),
+            y: unpack(rows, 'iflood'),
+            line: {
+                color: '#008000',
+                width: 1
+            },
+            marker: {
+                color: '#008000',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let US_East = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'regional (US East)',
+            hoverinfo: "y",
+            x: unpack(rows, 'US East_time'),
+            y: unpack(rows, 'US East'),
+            line: {
+                color: '#e78c00',
+                width: 1
+            },
+            marker: {
+                color: '#e78c00',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Global = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'global',
+            hoverinfo: "y",
+            x: unpack(rows, 'global_time'),
+            y: unpack(rows, 'global'),
+            line: {
+                color: '#00d1e7',
+                width: 1
+            },
+            marker: {
+                color: '#00d1e7',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Observed = {
+            type: "scatter",
+            mode: "lines+markers",
+            name: 'observed',
+            hoverinfo: "y",
+            x: unpack(rows, 'observed_time'),
+            y: unpack(rows, 'observed'),
+            line: {
+                color: 'blue',
+                width: 1
+            },
+            marker: {
+                color: 'blue',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let data = [iFLOOD, Global, US_East, Observed];
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            "showcrossline": "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+            },
+            //"xanchor": "center"},
+            margin: {
+                l: 60,
+                r: 0,
+                t: 40,
+                b: 0
+            },
+            // width: 500,
+            // height: 350,
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    x: .87,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }],
+            annotations: [
+                {
+                    x: date_start_plot,
+                    xshift: 10,
+                    yref: "paper",
+                    yanchor: "middle",
+                    y: 0.5,
+                    opacity: 0.95,
+                    textangle: -90,
+                    layer: "above",
+                    text: 'Forecast Start',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+            ],
+
+            shapes: [
+                {
+                    type: 'line',
+                    layer: 'above',
+                    yref: "paper",
+                    x0: date_start_plot,
+                    y0: 0,
+                    x1: date_start_plot,
+                    y1: 1,
+                    fillcolor: 'rgb(0,0,0)',
+                    opacity: 1.0,
+                    line: {
+                        width: 1
+                    }
+                },
+
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: -1,
+                    x1: 1,
+                    y1: 2.5,
+                    fillcolor: '#ffffff',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                }
+            ],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                range: [date_start_plot, date_stop_plot],
+
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Significant Wave Height (meters)',
+                autorange: true,
+                //range: [-1, 8],
+            }
+        };
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+    });
+}
+
 function makePlotStationValidation(url, domNode, stationStr, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         function unpack(rows, key) {
@@ -1980,7 +2206,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
-                    opacity: 0.75,
+                    opacity: 0.25,
                     layer: "above"
                 }],
             annotations: [

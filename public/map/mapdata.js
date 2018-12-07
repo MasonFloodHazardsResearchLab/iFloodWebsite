@@ -572,7 +572,8 @@ let layers = {
         "type":"geoJSON",
         "displayName":"Bathymetry",
         "urls":[
-            [0,"https://d2dyvyp1m8y8xp.cloudfront.net/Model/CBbathy/BathyV0.json"]
+            [0,"https://data.iflood.vse.gmu.edu/Model/CBbathy/BathyV0_simple.json"],
+            [1,"https://data.iflood.vse.gmu.edu/Model/CBbathy/BathyV0_crop.json"]
         ],
         "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/CBbathy/BathyV0.json",
         "colorRange":colorRanges["bathymetry"],
@@ -624,7 +625,7 @@ let layers = {
         "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/swanHS_max.json",
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Wave_height/",
         "colorRange":colorRanges["winter"],
-        "colorBounds":[0,9],
+        "colorBounds":[0,5],
         "colorProperty":"elemin",
         "unit":"m",
         "opacity":1,
@@ -700,7 +701,9 @@ let layers = {
     }
 };
 
+let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/{_s_}.tsv";
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/plotly_bias24.tsv";
+let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/AdditionalStations_waves/{_s_}.tsv";
 let markers = {
     "DC": {
         "type": "station",
@@ -859,7 +862,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "SCRIPPS"
 	},
 	"WIVA": {
@@ -873,7 +876,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "USACE"
 	},
 	"DBDE": {
@@ -887,7 +890,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"VBVA": {
@@ -901,7 +904,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"DFNC": {
@@ -915,7 +918,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "SCRIPPS"
 	},
 	"NHNC": {
@@ -929,7 +932,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "UNC"
 	},
 	"OINC1": {
@@ -943,7 +946,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "UNC"
 	},
 	"DSNC": {
@@ -957,7 +960,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"BANJ": {
@@ -971,7 +974,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "USACE"
 	},
 	"EHNC": {
@@ -985,7 +988,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"OBNC": {
@@ -999,7 +1002,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CORMP"
 	},
 	"WH": {
@@ -1013,7 +1016,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "SCRIPPS"
 	},
 	"FSNC": {
@@ -1027,7 +1030,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"SCNC": {
@@ -1041,7 +1044,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"CNSC": {
@@ -1055,7 +1058,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CORMP"
 	},
 	"GRGA": {
@@ -1069,7 +1072,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"OFFL": {
@@ -1083,7 +1086,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "SCRIPPS"
 	},
 	"CCFL": {
@@ -1097,7 +1100,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "NDBC"
 	},
 	"FLVA": {
@@ -1111,7 +1114,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"TSVA": {
@@ -1125,7 +1128,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "USNavy"
 	},
 	"YSVA": {
@@ -1139,7 +1142,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"SPVA": {
@@ -1153,7 +1156,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"POMD": {
@@ -1167,7 +1170,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"GRMD": {
@@ -1181,7 +1184,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"SUMD": {
@@ -1195,7 +1198,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"PAMD": {
@@ -1209,7 +1212,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	},
 	"JAVA": {
@@ -1223,7 +1226,7 @@ let markers = {
 		"hasWater": false,
 		"hasWind": false,
 		"hasValidation": false,
-		"hawWaves": true,
+		"hasWaves": true,
 		"agency": "CBIBS"
 	}
 };
