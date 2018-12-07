@@ -1852,11 +1852,11 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
 
 function makePlotStationWaves(url, domNode, title) {
     Plotly.d3.tsv(url, function (err, rows) {
-        let date_start_plot = rows[0]["global_time"];
-        let date_stop_plot = rows[rows.length - 1]["global_time"];
+        let date_start_plot;
+        let date_stop_plot;
         function unpack(rows, key) {
-            date_start_plot = rows[0]["global_time"];
-            date_stop_plot = rows[rows.length - 1]["global_time"];
+            date_start_plot = rows[0]["iflood_date"];
+            date_stop_plot = rows[rows.length - 1]["iflood_date"];
             return rows.map(function (row) {
                 return row[key];
             });
@@ -1867,7 +1867,7 @@ function makePlotStationWaves(url, domNode, title) {
             mode: 'lines+markers',
             name: 'iflood',
             hoverinfo: "y",
-            x: unpack(rows, 'iflood_time'),
+            x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'iflood'),
             line: {
                 color: '#008000',
@@ -2032,7 +2032,7 @@ function makePlotStationWaves(url, domNode, title) {
                 tickcolor: '#bfbfbf',
                 tickwidth: 4,
                 mirror: true,
-                range: [date_start_plot, date_stop_plot],
+                autorange: true
 
             },
             yaxis: {
