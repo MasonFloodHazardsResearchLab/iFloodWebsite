@@ -638,7 +638,7 @@ let layers = {
         "particleColor":"#FFFFFF",
         "z":5,
         "img":"/map/layerIcons/waveHeight.png",
-        "description":"Predicted maximum wave heights for the next 84 hours.",
+        "description":"Significant Wave Height is the average of the highest one-third (33%) of waves (measured from trough to crest) in the model domain derived from the parallel computation of ADCIRC and SWAN. Wave Height is in meters.",
         "visible":false
     },
     "wavePeriod": {
@@ -660,7 +660,7 @@ let layers = {
         "hasParticles":false,
         "z":6,
         "img":"/map/layerIcons/wavePeriod.png",
-        "description":"Predicted wave period for the next 84 hours.",
+        "description":"Peak Wave Period is the frequency of the waves in the model domain predicted for next 84 hours. Period is in seconds.",
         "visible":false
     },
     // "precip": {
