@@ -122,6 +122,7 @@ function init() {
                 }
                 else {
                     layer["visible"] = false;
+                    updateHash();
                     newTile.addClass("error");
                     $('#layerErrorBox').addClass('show');
                 }
@@ -658,9 +659,20 @@ function hurricaneMapPoints(layer) {
     }
 }
 
+//set the URL hash to include all currently enabled layers
+function updateHash() {
+    let hashStr = "";
+    Object.keys(layers).forEach(layerName => {
+        if (layers[layerName]["visible"])
+            hashStr += layerName + ","
+    });
+    window.location.hash = hashStr.slice(0,-1); //cut off extra comma
+}
+
 //show a layer
 function showLayer(layer, oncomplete) {
     layer["visible"] = true;
+    updateHash();
     if (layer["type"] === "geoJSON") {
         let index = getViewDataIndex(layer, getCurrentView());
         showData(layer, index, currentHourSetting, oncomplete);
@@ -992,6 +1004,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
 
 function hideLayer(layer) {
     layer["visible"] = false;
+    updateHash();
     if (layer["type"] === "geoJSON") {
         hideAllData(layer);
         if (layer["temporal"]) {
