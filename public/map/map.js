@@ -281,9 +281,9 @@ function init() {
             }
             else if (marker["type"] === "buoy") {
                 marker["gMarker"].setIcon({
-                    "url": "/map/sprites/markers/square.svg",
-                    "anchor": new google.maps.Point(9, 9),
-                    "scaledSize": new google.maps.Size(18, 18),
+                    "url": "/map/sprites/markers/wave.svg",
+                    "anchor": new google.maps.Point(14, 24),
+                    "scaledSize": new google.maps.Size(28, 25),
                 });
             }
         });
@@ -1922,9 +1922,19 @@ function makePlotStationWaves(url, domNode, title) {
                 color: '#00d1e7',
                 width: 1
             },
-            marker: {
-                color: '#00d1e7',
-                width: 0.25
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let nwps = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'nwps_lwx',
+            hoverinfo: "y",
+            x: unpack(rows, 'nwps_lwx_time'),
+            y: unpack(rows, 'nwps_lwx'),
+            line: {
+                color: '#e646e7',
+                width: 1
             },
             xaxis: 'x1',
             yaxis: 'y1'
@@ -1940,14 +1950,10 @@ function makePlotStationWaves(url, domNode, title) {
                 color: 'blue',
                 width: 1
             },
-            marker: {
-                color: 'blue',
-                width: 0.25
-            },
             xaxis: 'x1',
             yaxis: 'y1'
         };
-        let data = [iFLOOD, Global, US_East, Observed];
+        let data = [iFLOOD, Global, US_East, nwps, Observed];
         let layout = {
             showlegend: true,
             hovermode: "x",

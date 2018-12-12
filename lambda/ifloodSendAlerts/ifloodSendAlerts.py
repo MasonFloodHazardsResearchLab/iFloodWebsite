@@ -117,8 +117,6 @@ def lambda_handler(event, context):
         mapLink = "https://iflood.vse.gmu.edu/map/#inundation"
         unsubLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/removeuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])
 
-        print(userItem["primaryContact"])
-
         if alertTripped:
             print("run")
             if userItem["contactType"] == "email":
@@ -146,7 +144,6 @@ def lambda_handler(event, context):
                                     .replace("{{ unsubscribeLink }}",unsubLink),
                                 'Charset': 'utf-8'
                             }
-
                         }
                     }
                 )

@@ -712,7 +712,7 @@ let markers = {
             lat: 38.8545966284, lng: -77.0245558832
         },
         "title":"District of Columbia",
-        "stationStr":"WASD",
+        "stationStr":"WASD2",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -729,7 +729,7 @@ let markers = {
             lat: 38.216639, lng: -76.036183
         },
         "title":"Bishop head",
-        "stationStr":"BISM",
+        "stationStr":"BISM2",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -746,7 +746,7 @@ let markers = {
             lat: 39.266101, lng: -76.577572
         },
         "title":"Baltimore",
-        "stationStr":"BLTM",
+        "stationStr":"BLTM2",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -763,7 +763,7 @@ let markers = {
             lat: 38.986885860000, lng: -76.479876450000
         },
         "title":"Annapolis",
-        "stationStr":"APAM",
+        "stationStr":"APAM2",
         "hasWater":true,
         "hasWind":false,
         "hasValidation":true,
@@ -780,7 +780,7 @@ let markers = {
             lat: 38.315748310000, lng: -76.449921330000
         },
         "title":"Solomons Island",
-        "stationStr":"SLIM",
+        "stationStr":"SLIM2",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -797,7 +797,7 @@ let markers = {
             lat: 37.163433530000, lng: -75.995395910000
         },
         "title":"Kiptopeke",
-        "stationStr":"KPTV",
+        "stationStr":"KPTV2",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -814,7 +814,7 @@ let markers = {
             lat: 36.950165530000, lng: -76.335476530000
         },
         "title":"Sewells Point",
-        "stationStr":"SWPV",
+        "stationStr":"SWPV2",
         "hasWater":true,
         "hasWind":false,
         "hasValidation":true,
@@ -831,7 +831,7 @@ let markers = {
             lat: 36.964541507100, lng: -76.123066553300
         },
         "title":"Chesapeake Bay Bridge Tunnel",
-        "stationStr":"CBBV",
+        "stationStr":"CBBV2",
         //"hasWind":true,
         "hasWater":false,
         "hasWind":false,
