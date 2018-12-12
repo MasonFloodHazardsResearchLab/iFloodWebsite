@@ -150,8 +150,9 @@ function addStationAlert(stationStr) {
         "level":2
     };
     let select = dom.find(".stationSelect");
-    $.each(markers, function() {
-        select.append($("<option />").val(this["stationStr"]).text(this["title"]));
+    Object.values(markers).forEach(marker => {
+        if (marker["type"] === "station")
+            select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
     });
     if (typeof stationStr === "string") {
         select.val(stationStr);

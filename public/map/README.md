@@ -44,6 +44,8 @@ For `geoJSON` layers, the opacity of the layer. Self explanatory.
 For `geoJSON` layers, determines the direction that the scale bar is drawn in. `true` means the highest number is at the top.
 ####z
 For `geoJSON` layers, the stacking order of the layer. Layers with a higher z are drawn on top of those with a lower z. For best results, no two layers should have the same z value.
+####gisLayer
+For `arcGIS` layers, this is the number of the layer on the map server to read.
 ####img
 The preview icon for the layer.
 ####description

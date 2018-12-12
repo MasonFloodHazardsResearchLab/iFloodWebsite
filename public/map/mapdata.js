@@ -675,7 +675,7 @@ let layers = {
     "precip": {
         "group":1,
         "type":"arcGIS",
-        "displayName":"24 Hour Precip",
+        "displayName":"24 Hour Precipitation",
         "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer",
         "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
         "gisLayer":"19",
@@ -702,9 +702,9 @@ let layers = {
     }
 };
 
-let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/{_s_}.tsv";
+let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/{_s_}.tsv";
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/plotly_bias24.tsv";
-let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/AdditionalStations_waves/{_s_}.tsv";
+let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
 let markers = {
     "DC": {
         "type": "station",
@@ -712,8 +712,7 @@ let markers = {
             lat: 38.8545966284, lng: -77.0245558832
         },
         "title":"District of Columbia",
-        "stationStr":"WASD2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WASD2.tsv",
+        "stationStr":"WASD",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -730,8 +729,7 @@ let markers = {
             lat: 38.216639, lng: -76.036183
         },
         "title":"Bishop head",
-        "stationStr":"BISM2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BISM2.tsv",
+        "stationStr":"BISM",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -748,8 +746,7 @@ let markers = {
             lat: 39.266101, lng: -76.577572
         },
         "title":"Baltimore",
-        "stationStr":"BLTM2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/BLTM2.tsv",
+        "stationStr":"BLTM",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -766,8 +763,7 @@ let markers = {
             lat: 38.986885860000, lng: -76.479876450000
         },
         "title":"Annapolis",
-        "stationStr":"APAM2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/APAM2.tsv",
+        "stationStr":"APAM",
         "hasWater":true,
         "hasWind":false,
         "hasValidation":true,
@@ -784,8 +780,7 @@ let markers = {
             lat: 38.315748310000, lng: -76.449921330000
         },
         "title":"Solomons Island",
-        "stationStr":"SLIM2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SLIM2.tsv",
+        "stationStr":"SLIM",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -802,8 +797,7 @@ let markers = {
             lat: 37.163433530000, lng: -75.995395910000
         },
         "title":"Kiptopeke",
-        "stationStr":"KPTV2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/KPTV2.tsv",
+        "stationStr":"KPTV",
         "hasWater":true,
         "hasWind":true,
         "hasValidation":true,
@@ -820,8 +814,7 @@ let markers = {
             lat: 36.950165530000, lng: -76.335476530000
         },
         "title":"Sewells Point",
-        "stationStr":"SWPV2",
-        "timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
+        "stationStr":"SWPV",
         "hasWater":true,
         "hasWind":false,
         "hasValidation":true,
@@ -838,8 +831,7 @@ let markers = {
             lat: 36.964541507100, lng: -76.123066553300
         },
         "title":"Chesapeake Bay Bridge Tunnel",
-        "stationStr":"CBBV2",
-        //"timeSeriesUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/SWPV2.tsv",
+        "stationStr":"CBBV",
         //"hasWind":true,
         "hasWater":false,
         "hasWind":false,
@@ -858,9 +850,15 @@ let markers = {
 			"lat": 36.915,
 			"lng": -75.72
 		},
+        "floodLevels": [
+            5.0,
+            5.5,
+            6.0,
+            8.0
+        ],
 		"title": "Cape Henry,VA",
 		"stationStr": "CHVA",
-		"hasWater": false,
+		"hasWater": true,
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,

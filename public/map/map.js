@@ -1491,11 +1491,11 @@ function drawOverlay(currentTime) {
 //plotly
 function makePlotStationTimeseries(url, domNode, levels, title) {
     Plotly.d3.tsv(url, function (err, rows) {
+        let date_now_plot;
+        let date_now1_plot;
         function unpack(rows, key) {
-            date_start_plot = rows[0].Time_observed;
-            date_stop_plot = rows[rows.length - 1].Time_adcirc;
-            date_now_plot = rows[0].Time_adcirc;
-            date_now1_plot = rows[2].Time_adcirc;
+            date_now_plot = rows[0]["iflood_date"];
+            date_now1_plot = rows[2]["iflood_date"];
             return rows.map(function (row) {
                 return row[key];
             });
@@ -1506,7 +1506,7 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
             mode: 'lines+markers',
             name: 'iflood',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_adcirc'),
+            x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'iflood'),
             line: {
                 color: '#008000',
@@ -1840,7 +1840,7 @@ function makePlotStationTimeseries(url, domNode, levels, title) {
                 tickcolor: '#bfbfbf',
                 tickwidth: 4,
                 mirror: true,
-                range: [date_start_plot, date_stop_plot],
+                autorange: true,
 
             },
             yaxis: {
