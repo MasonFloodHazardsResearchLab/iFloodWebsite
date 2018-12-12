@@ -446,6 +446,40 @@ $('#expandButton').click(function() {
     domLayerBar.toggleClass('expanded');
 });
 
+//marker toggles
+$('#stationMarkerToggle').click(function() {
+    if ($(this).hasClass('showing')) {
+        $(this).removeClass('showing');
+        Object.values(markers).forEach(marker => {
+            if (marker["type"] === "station")
+                marker["gMarker"].setMap(null);
+        });
+    }
+    else {
+        $(this).addClass('showing');
+        Object.values(markers).forEach(marker => {
+            if (marker["type"] === "station")
+                marker["gMarker"].setMap(map);
+        });
+    }
+});
+$('#buoyMarkerToggle').click(function() {
+    if ($(this).hasClass('showing')) {
+        $(this).removeClass('showing');
+        Object.values(markers).forEach(marker => {
+            if (marker["type"] === "buoy")
+                marker["gMarker"].setMap(null);
+        });
+    }
+    else {
+        $(this).addClass('showing');
+        Object.values(markers).forEach(marker => {
+            if (marker["type"] === "buoy")
+                marker["gMarker"].setMap(map);
+        });
+    }
+});
+
 //time slider
 let sliderGrabbed = false;
 let sliderMouseIn = false;
