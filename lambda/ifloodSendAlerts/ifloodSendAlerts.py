@@ -1,5 +1,5 @@
 # Send out alerts to all verified users
-
+from __future__ import absolute_import
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
 import json
@@ -20,6 +20,9 @@ floodLevelNumbers = {
     "Moderate":3,
     "Major":4
 }
+
+with open('alertEmail.html', 'r') as emailFile:
+    emailTemplate = emailFile.read()
 
 def lambda_handler(event, context):
     #get flood levels from s3 file
@@ -110,11 +113,14 @@ def lambda_handler(event, context):
                 alertMessage += "\nPredicted Inundation:\n"
                 for locationStatus in locationsFlooded:
                     alertMessage += locationStatus[0] + ": " + str(locationStatus[1]) + " meters\n"
-        alertMessage += "\nView Data:\nhttps://iflood.vse.gmu.edu/map/#inundation"
 
+        mapLink = "https://iflood.vse.gmu.edu/map/#inundation"
         unsubLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/removeuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])
 
+        print(userItem["primaryContact"])
+
         if alertTripped:
+            print("run")
             if userItem["contactType"] == "email":
                 response = ses.send_email(
                     Source="iFLOOD Alerts <alerts@mail.iflood.vse.gmu.edu>",
@@ -132,18 +138,26 @@ def lambda_handler(event, context):
                             'Text': {
                                 'Data': alertMessage+"\n\n\nTo disable iFLOOD alerts, visit this link: "+unsubLink,
                                 'Charset': 'utf-8'
+                            },
+                            'Html': {
+                                'Data': emailTemplate #this is formatted in the style of a jinja template but it's just string replacements
+                                    .replace("{{ alertText }}",alertMessage)
+                                    .replace("{{ mapLink }}", mapLink)
+                                    .replace("{{ unsubscribeLink }}",unsubLink),
+                                'Charset': 'utf-8'
                             }
+
                         }
                     }
                 )
             elif userItem["contactType"] == "phone":
                 response = sns.publish(
                     PhoneNumber=userItem["primaryContact"],
-                    Message=alertMessage,
+                    Message=alertMessage+"\nView Data:\n"+mapLink,
                 )
 
 # if __name__ == "__main__":
 #     lambda_handler({
-#         "forecastID": "2018113006",
-#         "PreviousforecastID": "2018112918"
+#         "forecastID": "2018121118",
+#         "PreviousforecastID": "2018121106"
 #     }, None)
