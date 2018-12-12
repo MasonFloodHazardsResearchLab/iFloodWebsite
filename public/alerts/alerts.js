@@ -18,16 +18,19 @@ $('#primaryContactInput').on('input', function() {
         else {
             phoneNotice.removeClass("show");
         }
+        $('#alertArea').removeClass("disabled");
     }
     else if ($(this).val().match(/^[^ ]*@[^ ]*\.[^ ]*/)) { //if it looks like an email
         contactIcon.removeClass("phone");
         contactIcon.addClass("mail");
         phoneNotice.removeClass("show");
+        $('#alertArea').removeClass("disabled");
     }
     else {
         contactIcon.removeClass("mail");
         contactIcon.removeClass("phone");
         phoneNotice.removeClass("show");
+        $('#alertArea').addClass("disabled");
     }
 });
 
@@ -67,7 +70,6 @@ $("#addLocationButton").click(addLocationAlert);
 $("#addStationButton").click(addStationAlert);
 
 addLocationAlert(false); //start with one location by default
-$('#primaryContactInput').focus();
 
 function addLocationAlert(shouldFocus) {
     let uid = generateUID();

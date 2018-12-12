@@ -61,6 +61,10 @@
     flex-direction: row;
     margin-top: 20px;
     transition: opacity 0.2s;
+    &.disabled {
+        opacity: 0.05;
+        pointer-events: none;
+    }
     &.hide {
         pointer-events: none;
         opacity: 0;
