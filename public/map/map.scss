@@ -357,11 +357,10 @@ body {
         flex: 1 0 auto;
     }
     #markerToggleBox {
-        padding: 5px;
+        padding: 5px 5px 10px;
         color: #FFF;
         font-weight: bold;
         text-align: center;
-        background-color: rgba(255,255,255,0.08);
     }
     #markerToggleContainer {
         display: flex;
@@ -382,7 +381,7 @@ body {
             opacity: 0.5;
             &.showing {
                 //border: solid 3px rgba(255,255,255,0.5);
-                box-shadow: 0 1px 3px rgba(0,0,0,1);
+                box-shadow: 0 1px 3px rgba(0,0,0,0.5);
                 filter: none;
                 opacity: 1;
             }
@@ -492,7 +491,7 @@ body {
         display: grid;
         grid-template-columns: repeat(auto-fill,minmax(90px, 1fr));
         margin-top: 15px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         grid-auto-rows: 1fr;
         justify-items: center;
         align-items: start;
@@ -500,6 +499,7 @@ body {
     .layerTile {
         max-width: 100px;
         cursor: pointer;
+        padding-bottom: 5px;
         .tileImg {
             position: relative;
             width: 80px;

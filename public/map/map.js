@@ -282,8 +282,8 @@ function init() {
             else if (marker["type"] === "buoy") {
                 marker["gMarker"].setIcon({
                     "url": "/map/sprites/markers/wave.svg",
-                    "anchor": new google.maps.Point(14, 24),
-                    "scaledSize": new google.maps.Size(28, 25),
+                    "anchor": new google.maps.Point(15, 27),
+                    "scaledSize": new google.maps.Size(30, 28),
                 });
             }
         });
@@ -447,37 +447,23 @@ $('#expandButton').click(function() {
 });
 
 //marker toggles
-$('#stationMarkerToggle').click(function() {
-    if ($(this).hasClass('showing')) {
-        $(this).removeClass('showing');
-        Object.values(markers).forEach(marker => {
-            if (marker["type"] === "station")
-                marker["gMarker"].setMap(null);
-        });
-    }
-    else {
-        $(this).addClass('showing');
-        Object.values(markers).forEach(marker => {
-            if (marker["type"] === "station")
-                marker["gMarker"].setMap(map);
-        });
-    }
-});
-$('#buoyMarkerToggle').click(function() {
-    if ($(this).hasClass('showing')) {
-        $(this).removeClass('showing');
-        Object.values(markers).forEach(marker => {
-            if (marker["type"] === "buoy")
-                marker["gMarker"].setMap(null);
-        });
-    }
-    else {
-        $(this).addClass('showing');
-        Object.values(markers).forEach(marker => {
-            if (marker["type"] === "buoy")
-                marker["gMarker"].setMap(map);
-        });
-    }
+["station","buoy"].forEach(type => {
+    $('#'+type+'MarkerToggle').click(function() {
+        if ($(this).hasClass('showing')) {
+            $(this).removeClass('showing');
+            Object.values(markers).forEach(marker => {
+                if (marker["type"] === type)
+                    marker["gMarker"].setMap(null);
+            });
+        }
+        else {
+            $(this).addClass('showing');
+            Object.values(markers).forEach(marker => {
+                if (marker["type"] === type)
+                    marker["gMarker"].setMap(map);
+            });
+        }
+    });
 });
 
 //time slider
@@ -700,7 +686,7 @@ function updateHash() {
         if (layers[layerName]["visible"])
             hashStr += layerName + ","
     });
-    window.location.hash = hashStr.slice(0,-1); //cut off extra comma
+    history.replaceState(undefined, undefined, "#"+hashStr.slice(0,-1)); //cut off extra comma
 }
 
 //show a layer
