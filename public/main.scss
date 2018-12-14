@@ -347,12 +347,29 @@ footer {
 }
 
 //About Us
-.leftVideo {
-    float: left;
+.sideFigureContainer {
+    display: flex;
+    margin: 15px 0;
+}
+.sideFigure.left {
+    display: block;
     margin-right: 20px;
 }
-@media screen and (max-width: 1000px) {
-    .leftVideo.hideaway {
+.sideFigure.right {
+    display: block;
+    margin-left: 20px;
+}
+.sideFigureMain {
+    p:first-child,
+    h1:first-child,
+    h2:first-child,
+    h3:first-child,
+    h4:first-child {
+        margin-top: 0;
+    }
+}
+@media screen and (max-width: 800px) {
+    .sideFigure.hideaway {
         display: none;
     }
 }
