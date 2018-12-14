@@ -2315,7 +2315,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                     x1: 1,
                     y1: 0,
                     fillcolor: 'red',
-                    opacity: 0.5,
+                    opacity: 0.1,
                     line: {
                         width: 0
                     }
@@ -2331,7 +2331,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                     x1: 1,
                     y1: -2,
                     fillcolor: 'blue',
-                    opacity: 0.5,
+                    opacity: 0.1,
                     line: {
                         width: 0
                     }
