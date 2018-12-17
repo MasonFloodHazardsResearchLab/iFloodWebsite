@@ -180,12 +180,12 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationTimeseries(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
                 }
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContentWind").append($('<img>',{
                         "class":"plotImg",
-                        "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/WindPhotos/"+marker["stationStr"]+"_wind.png",
+                        "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/TimeSeries/Wind/"+marker["stationStr"]+".png",
                     }));
                 }
                 if (marker["hasWaves"]) {
@@ -1509,7 +1509,7 @@ function drawOverlay(currentTime) {
 
 
 //plotly
-function makePlotStationTimeseries(url, domNode, levels, title) {
+function makePlotStationWater(url, domNode, levels, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
         let date_now1_plot;
