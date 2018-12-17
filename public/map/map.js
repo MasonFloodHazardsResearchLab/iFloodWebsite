@@ -1524,7 +1524,7 @@ function makePlotStationWater(url, domNode, levels, title) {
         let iFLood = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'iflood',
+            name: 'iFLOOD',
             hoverinfo: "y",
             x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'iflood'),
@@ -1898,7 +1898,7 @@ function makePlotStationWaves(url, domNode, title) {
         let iFLOOD = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'iflood',
+            name: 'iFLOOD',
             hoverinfo: "y",
             x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'iflood'),
@@ -1916,7 +1916,7 @@ function makePlotStationWaves(url, domNode, title) {
         let US_East = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'regional (US East)',
+            name: 'WW3:Regional(US East)',
             hoverinfo: "y",
             x: unpack(rows, 'US East_time'),
             y: unpack(rows, 'US East'),
@@ -1934,7 +1934,7 @@ function makePlotStationWaves(url, domNode, title) {
         let Global = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'global',
+            name: 'WW3:Global',
             hoverinfo: "y",
             x: unpack(rows, 'global_time'),
             y: unpack(rows, 'global'),
@@ -1948,7 +1948,7 @@ function makePlotStationWaves(url, domNode, title) {
         let nwps = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'nwps_lwx',
+            name: 'NWPS:LWX',
             hoverinfo: "y",
             x: unpack(rows, 'nwps_lwx_time'),
             y: unpack(rows, 'nwps_lwx'),
@@ -1962,7 +1962,7 @@ function makePlotStationWaves(url, domNode, title) {
         let Observed = {
             type: "scatter",
             mode: "lines+markers",
-            name: 'observed',
+            name: 'Observed',
             hoverinfo: "y",
             x: unpack(rows, 'observed_time'),
             y: unpack(rows, 'observed'),
