@@ -244,39 +244,46 @@ function init() {
                         case "Action":
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/action.svg",
-                                "anchor": new google.maps.Point(21.5, 59),
-                                "scaledSize": new google.maps.Size(43, 60),
+                                "anchor": new google.maps.Point(17.5, 44),
+                                "scaledSize": new google.maps.Size(35, 45),
                             });
                             break;
                         case "Minor":
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/minor.svg",
-                                "anchor": new google.maps.Point(21.5, 59),
-                                "scaledSize": new google.maps.Size(43, 60),
+                                "anchor": new google.maps.Point(17.5, 44),
+                                "scaledSize": new google.maps.Size(35, 45),
                             });
                             break;
                         case "Moderate":
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/moderate.svg",
-                                "anchor": new google.maps.Point(21.5, 59),
-                                "scaledSize": new google.maps.Size(43, 60),
+                                "anchor": new google.maps.Point(22.5, 59),
+                                "scaledSize": new google.maps.Size(45, 50),
                             });
                             break;
                         case "Major":
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/major.svg",
-                                "anchor": new google.maps.Point(21.5, 59),
-                                "scaledSize": new google.maps.Size(43, 60),
+                                "anchor": new google.maps.Point(22.5, 49),
+                                "scaledSize": new google.maps.Size(45, 50),
                             });
                             break;
                         default:
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/default.svg",
-                                "anchor": new google.maps.Point(13, 42),
-                                "scaledSize": new google.maps.Size(26, 43),
+                                "anchor": new google.maps.Point(10, 31),
+                                "scaledSize": new google.maps.Size(21, 32),
                             });
                             break;
                     }
+                }
+                else {
+                    marker["gMarker"].setIcon({
+                        "url": "/map/sprites/markers/unknown.svg",
+                        "anchor": new google.maps.Point(10, 31),
+                        "scaledSize": new google.maps.Size(21, 32),
+                    });
                 }
             }
             else if (marker["type"] === "buoy") {
@@ -284,6 +291,13 @@ function init() {
                     "url": "/map/sprites/markers/wave.svg",
                     "anchor": new google.maps.Point(15, 27),
                     "scaledSize": new google.maps.Size(30, 28),
+                });
+            }
+            else if (marker["type"] === "iflood") {
+                marker["gMarker"].setIcon({
+                    "url": "/map/sprites/markers/iflood.svg",
+                    "anchor": new google.maps.Point(13, 33),
+                    "scaledSize": new google.maps.Size(26, 34),
                 });
             }
         });
@@ -447,7 +461,7 @@ $('#expandButton').click(function() {
 });
 
 //marker toggles
-["station","buoy"].forEach(type => {
+["station","buoy","iflood"].forEach(type => {
     $('#'+type+'MarkerToggle').click(function() {
         if ($(this).hasClass('showing')) {
             $(this).removeClass('showing');
@@ -1512,10 +1526,8 @@ function drawOverlay(currentTime) {
 function makePlotStationWater(url, domNode, levels, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
-        let date_now1_plot;
         function unpack(rows, key) {
             date_now_plot = rows[0]["iflood_date"];
-            date_now1_plot = rows[2]["iflood_date"];
             return rows.map(function (row) {
                 return row[key];
             });
@@ -1673,7 +1685,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     opacity: 0.95,
                     layer: "above",
                     "xanchor": "center",
-                    text: '                     Action: '+levels[0]+' ft',
+                    text: '                     Action: '+levels[0]+' m',
                     font: {
                         color: "black"
                     },
@@ -1692,7 +1704,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     opacity: 0.95,
                     layer: "above",
                     "xanchor": "center",
-                    text: '                     Minor: '+levels[1]+' ft',
+                    text: '                     Minor: '+levels[1]+' m',
                     font: {
                         color: "black"
                     },
@@ -1711,7 +1723,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     opacity: 0.95,
                     layer: "above",
                     "xanchor": "center",
-                    text: '                          Moderate: '+levels[2]+' ft',
+                    text: '                          Moderate: '+levels[2]+' m',
                     font: {
                         color: "black"
                     },
@@ -1730,7 +1742,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     opacity: 0.95,
                     layer: "above",
                     "xanchor": "center",
-                    text: '                     Major: '+levels[3]+' ft',
+                    text: '                     Major: '+levels[3]+' m',
                     font: {
                         color: "black"
                     },
@@ -1741,8 +1753,10 @@ function makePlotStationWater(url, domNode, levels, title) {
 
                 ,
                 {
-                    x: date_now1_plot,
-                    y: 4,
+                    x: date_now_plot,
+                    xshift: 7,
+                    y: 0.5,
+                    yref: "paper",
                     opacity: 0.95,
                     textangle: -90,
                     layer: "above",
@@ -1761,9 +1775,10 @@ function makePlotStationWater(url, domNode, levels, title) {
                     type: 'line',
                     layer: 'above',
                     x0: date_now_plot,
-                    y0: -1,
+                    y0: 0,
                     x1: date_now_plot,
-                    y1: 8,
+                    y1: 1,
+                    yref: "paper",
                     fillcolor: 'rgb(0,0,0)',
                     opacity: 1.0,
                     line: {
@@ -1840,7 +1855,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     x0: 0,
                     y0: levels[3],
                     x1: 1,
-                    y1: 8,
+                    y1: 4,
                     fillcolor: '#7c01a6',
                     opacity: 0.5,
                     line: {
@@ -1874,7 +1889,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                 tickwidth: 1,
                 nticks: 8,
                 mirror: true,
-                title: 'Stage (feet relative to MLLW)',
+                title: 'Stage (meters relative to NAVD88)',
                 autorange: true,
                 //range: [-1, 8],
             }

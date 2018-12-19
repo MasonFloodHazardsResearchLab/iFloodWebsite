@@ -397,10 +397,14 @@ body {
         }
         #stationMarkerToggle {
             background-image: url("/map/sprites/markers/action.svg");
-            background-position-y: -1px;
+            background-position-y: 3px;
         }
         #buoyMarkerToggle {
             background-image: url("/map/sprites/markers/wave.svg");
+        }
+        #ifloodMarkerToggle {
+            background-image: url("/map/sprites/markers/iflood.svg");
+            background-position-y: 2px;
         }
     }
     #layerErrorBox {

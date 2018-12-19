@@ -85,12 +85,12 @@ def lambda_handler(event, context):
                 if station in floodLevels and station in oldFloodLevels and chosenAlerts["stations"][station] > 0: #make sure their selection is valid
                     if floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["stations"][station]\
                     and floodLevelNumbers[oldFloodLevels[station]["Flood Level"]] < chosenAlerts["stations"][station]: #only trigger for stations that have just now gone above the user's threshold
-                        stationsFlooded.append((station,floodLevels[station]["Flood Level"]))
+                        stationsFlooded.append((station,floodLevels[station]))
             if stationsFlooded:
                 alertTripped = True
                 alertMessage += "\nPredicted Station Flood Levels:\n"
                 for stationStatus in stationsFlooded:
-                    alertMessage += stationStatus[0] + ": " + stationStatus[1] + "\n"
+                    alertMessage += stationStatus[0] + ": " + stationStatus[1]["Flood Level"] + " ("+str(stationStatus[1]["Flood Stage"])+"m)\n"
         if chosenAlerts.get("locations"):
             locationsFlooded = []
             for location in chosenAlerts["locations"]:

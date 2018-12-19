@@ -706,160 +706,437 @@ let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/{_s_}
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/plotly_bias24.tsv";
 let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
 let markers = {
-    "DC": {
-        "type": "station",
-        "pos": {
-            lat: 38.8545966284, lng: -77.0245558832
-        },
-        "title":"District of Columbia",
-        "stationStr":"WASD",
-        "hasWater":true,
-        "hasWind":true,
-        "hasValidation":true,
-        "floodLevels": [
-            3.7,
-            4.2,
-            5.3,
-            7.0
-        ]
-    },
-    "BH": {
-        "type": "station",
-        "pos": {
-            lat: 38.216639, lng: -76.036183
-        },
-        "title":"Bishop head",
-        "stationStr":"BISM",
-        "hasWater":true,
-        "hasWind":true,
-        "hasValidation":true,
-        "floodLevels": [
-            3.0,
-            3.2,
-            3.7,
-            4.2
-        ]
-    },
-    "BD": {
-        "type": "station",
-        "pos": {
-            lat: 39.266101, lng: -76.577572
-        },
-        "title":"Baltimore",
-        "stationStr":"BLTM",
-        "hasWater":true,
-        "hasWind":true,
-        "hasValidation":true,
-        "floodLevels": [
-            2.5,
-            3.0,
-            5.0,
-            6.0
-        ]
-    },
-    "AN": {
-        "type": "station",
-        "pos": {
-            lat: 38.986885860000, lng: -76.479876450000
-        },
-        "title":"Annapolis",
-        "stationStr":"APAM",
-        "hasWater":true,
-        "hasWind":false,
-        "hasValidation":true,
-        "floodLevels": [
-            2.0,
-            2.6,
-            3.3,
-            6.0
-        ]
-    },
-    "SO": {
-        "type": "station",
-        "pos": {
-            lat: 38.315748310000, lng: -76.449921330000
-        },
-        "title":"Solomons Island",
-        "stationStr":"SLIM",
-        "hasWater":true,
-        "hasWind":true,
-        "hasValidation":true,
-        "floodLevels": [
-            2.5,
-            3.0,
-            4.0,
-            5.0
-        ]
-    },
-    "KP": {
-        "type": "station",
-        "pos": {
-            lat: 37.163433530000, lng: -75.995395910000
-        },
-        "title":"Kiptopeke",
-        "stationStr":"KPTV",
-        "hasWater":true,
-        "hasWind":true,
-        "hasValidation":true,
-        "floodLevels": [
-            4.0,
-            4.5,
-            5.0,
-            5.5
-        ]
-    },
-    "SP": {
-        "type": "station",
-        "pos": {
-            lat: 36.950165530000, lng: -76.335476530000
-        },
-        "title":"Sewells Point",
-        "stationStr":"SWPV",
-        "hasWater":true,
-        "hasWind":false,
-        "hasValidation":true,
-        "floodLevels": [
-            4.0,
-            4.5,
-            5.5,
-            6.5
-        ]
-    },
-    "CB": {
-        "type": "station",
-        "pos": {
-            lat: 36.964541507100, lng: -76.123066553300
-        },
-        "title":"Chesapeake Bay Bridge Tunnel",
-        "stationStr":"CBBV",
-        //"hasWind":true,
-        "hasWater":false,
-        "hasWind":false,
-        "hasValidation":false,
-        "floodLevels": [
-            5.0,
-            5.5,
-            6.0,
-            8.0
-        ],
-        "notice":"Data for this station is temporarily unavailable."
-    },
+    "LWTV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.99315172,
+			"lng": -76.46280597
+		},
+		"title": "Lewisetta, VA",
+		"stationStr": "LWTV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.512, 0.664, 0.817, 0.969],
+		"agency": "NOAA"
+	},
+	"NCDV": {
+		"type": "station",
+		"pos": {
+			"lat": 38.32,
+			"lng": -77.03667
+		},
+		"title": "Dahlgren, VA",
+		"stationStr": "NCDV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.633, 0.785, 1.243, 1.852],
+		"agency": "NOAA"
+	},
+	"YTVA": {
+		"type": "station",
+		"pos": {
+			"lat": 37.22667,
+			"lng": -76.47833
+		},
+		"title": "Yorktown USCG Training Center, VA",
+		"stationStr": "YTVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.741, 0.893, 1.046, 1.198],
+		"agency": "NOAA"
+	},
+	"BISM": {
+		"type": "station",
+		"pos": {
+			"lat": 38.21663931,
+			"lng": -76.03618314
+		},
+		"title": "Bishops Head, MD",
+		"stationStr": "BISM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.532, 0.593, 0.745, 0.897],
+		"agency": "NOAA"
+	},
+	"BLTM": {
+		"type": "station",
+		"pos": {
+			"lat": 39.26610102,
+			"lng": -76.57757239
+		},
+		"title": "Baltimore, MD",
+		"stationStr": "BLTM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.508, 0.66, 1.27, 1.575],
+		"agency": "NOAA"
+	},
+	"APAM": {
+		"type": "station",
+		"pos": {
+			"lat": 38.98688586,
+			"lng": -76.47987645
+		},
+		"title": "Annapolis, MD",
+		"stationStr": "APAM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.379, 0.561, 0.775, 1.598],
+		"agency": "NOAA"
+	},
+	"SLIM": {
+		"type": "station",
+		"pos": {
+			"lat": 38.31574831,
+			"lng": -76.44992133
+		},
+		"title": "Solomons Island, MD",
+		"stationStr": "SLIM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.5, 0.652, 0.957, 1.262],
+		"agency": "NOAA"
+	},
+	"WASD": {
+		"type": "station",
+		"pos": {
+			"lat": 38.85740644,
+			"lng": -77.01952715
+		},
+		"title": "Washington,DC",
+		"stationStr": "WASD",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.703, 0.856, 1.191, 1.709],
+		"agency": "NOAA"
+	},
+	"WAVA": {
+		"type": "station",
+		"pos": {
+			"lat": 37.62042779,
+			"lng": -75.66673728
+		},
+		"title": "Wachapreague, VA",
+		"stationStr": "WAVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [1.046, 1.198, 1.503, 1.656],
+		"agency": "NOAA"
+	},
+	"KPTV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.16343353,
+			"lng": -75.99539591
+		},
+		"title": "Kiptopeke, VA",
+		"stationStr": "KPTV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.644, 0.797, 0.949, 1.101],
+		"agency": "NOAA"
+	},
+	"WMVA": {
+		"type": "station",
+		"pos": {
+			"lat": 37.60796934,
+			"lng": -76.28636827
+		},
+		"title": "Windmill Point, VA",
+		"stationStr": "WMVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.431, 0.583, 0.735, 0.888],
+		"agency": "NOAA"
+	},
+	"SWPV": {
+		"type": "station",
+		"pos": {
+			"lat": 36.95016553,
+			"lng": -76.33547653
+		},
+		"title": "Sewells Point, VA",
+		"stationStr": "SWPV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.715, 0.867, 1.172, 1.477],
+		"agency": "NOAA"
+	},
+	"CBBV": {
+		"type": "station",
+		"pos": {
+			"lat": 36.96454151,
+			"lng": -76.12306655
+		},
+		"title": "Chesapeake Bay Bridge Tunnel",
+		"stationStr": "CBBV",
+		"hasWater": false,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"floodLevels": [0.806, 0.959, 1.111, 1.263],
+		"agency": "NOAA"
+	},
+	"TBMD": {
+		"type": "station",
+		"pos": {
+			"lat": 39.21628252,
+			"lng": -76.25520895
+		},
+		"title": "Tolchester Beach, MD",
+		"stationStr": "TBMD",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.637, 0.79, 1.094, 1.399],
+		"agency": "NOAA"
+	},
+	"YKTV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.226667,
+			"lng": -76.478333
+		},
+		"title": "Cheseapeake Bay near YorkTown",
+		"stationStr": "YKTV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.741, 0.893, 1.046, 1.198],
+		"agency": "AHPS"
+	},
+	"OTVA": {
+		"type": "station",
+		"pos": {
+			"lat": 38.80968632,
+			"lng": -77.03553053
+		},
+		"title": "Old Town Alexandria,VA",
+		"stationStr": "OTVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.357, 0.601, 0.875, 1.607],
+		"agency": "EXTRA"
+	},
+	"SGVA": {
+		"type": "station",
+		"pos": {
+			"lat": 38.138333,
+			"lng": -76.5
+		},
+		"title": "St. George Creek",
+		"stationStr": "SGVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.491, 0.644, 0.796, 1.253],
+		"agency": "AHPS"
+	},
+	"CBVA": {
+		"type": "station",
+		"pos": {
+			"lat": 38.573333,
+			"lng": -76.068333
+		},
+		"title": "Chesapeake Bay at Cambridge",
+		"stationStr": "CBVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.578, 0.73, 0.91, 1.035],
+		"agency": "AHPS"
+	},
+	"CBHD": {
+		"type": "station",
+		"pos": {
+			"lat": 39.537778,
+			"lng": -76.089722
+		},
+		"title": "Chesapeake Bay at Havre De Grace",
+		"stationStr": "CBHD",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.75, 0.902, 1.36, 1.817],
+		"agency": "AHPS"
+	},
+	"CRSM": {
+		"type": "station",
+		"pos": {
+			"lat": 37.9783,
+			"lng": -75.8636
+		},
+		"title": "little annemix river",
+		"stationStr": "CRSM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.559, 0.712, 0.864, 1.169],
+		"agency": "AHPS"
+	},
+	"CHIV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.9023,
+			"lng": -75.4078
+		},
+		"title": "Chincoteague channel near Chincoteaguww bay inlet",
+		"stationStr": "CHIV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.598, 0.903, 1.055, 1.36],
+		"agency": "AHPS"
+	},
+	"NSWV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.476389,
+			"lng": -75.935278
+		},
+		"title": "Nassawadox creek near Bayford,VA",
+		"stationStr": "NSWV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.365, 0.518, 0.67, 0.975],
+		"agency": "AHPS"
+	},
+	"CCHV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.288969,
+			"lng": -75.923546
+		},
+		"title": "Oyster,VA",
+		"stationStr": "CCHV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [1.132, 1.284, 1.437, 1.742],
+		"agency": "AHPS"
+	},
+	"MJBV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.323611,
+			"lng": -76.4275
+		},
+		"title": "Chesapeake Bay near Mobjack Bay",
+		"stationStr": "MJBV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.572, 0.725, 1.03, 1.182],
+		"agency": "AHPS"
+	},
+	"FTMV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.001944,
+			"lng": -76.315
+		},
+		"title": "James River at Fort Monroe,VA",
+		"stationStr": "FTMV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.702, 0.855, 1.159, 1.464],
+		"agency": "AHPS"
+	},
+	"JSFV": {
+		"type": "station",
+		"pos": {
+			"lat": 37.220139,
+			"lng": -76.791453
+		},
+		"title": "James River at Scotland Ferry,VA",
+		"stationStr": "JSFV",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.728, 0.88, 1.032, 1.185],
+		"agency": "AHPS"
+	},
+	"DUKN": {
+		"type": "station",
+		"pos": {
+			"lat": 36.183333,
+			"lng": -75.75
+		},
+		"title": "Coastal Eastern at Duck,NC",
+		"stationStr": "DUKN",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.859, 1.012, 1.164, 1.316],
+		"agency": "AHPS"
+	},
+	"OCIM": {
+		"type": "station",
+		"pos": {
+			"lat": 38.328333,
+			"lng": -75.091667
+		},
+		"title": "Atlantic Coast near Ocean City,NJ",
+		"stationStr": "OCIM",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": true,
+		"hasWaves": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS"
+	},
+    //buoys
     "CHVA": {
 		"type": "buoy",
 		"pos": {
 			"lat": 36.915,
 			"lng": -75.72
 		},
-        "floodLevels": [
-            5.0,
-            5.5,
-            6.0,
-            8.0
-        ],
 		"title": "Cape Henry,VA",
 		"stationStr": "CHVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "SCRIPPS"
@@ -873,7 +1150,7 @@ let markers = {
 		"title": "Wallops island,VA",
 		"stationStr": "WIVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "USACE"
@@ -887,7 +1164,7 @@ let markers = {
 		"title": "Dalware Bay",
 		"stationStr": "DBDE",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "NDBC"
@@ -901,7 +1178,7 @@ let markers = {
 		"title": "VA Beach Eastern Shore",
 		"stationStr": "VBVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "NDBC"
@@ -915,192 +1192,10 @@ let markers = {
 		"title": "Duck FRP,NC",
 		"stationStr": "DFNC",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "SCRIPPS"
-	},
-	"NHNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 36.001,
-			"lng": -75.421
-		},
-		"title": "Nags head,NC",
-		"stationStr": "NHNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "UNC"
-	},
-	"OINC1": {
-		"type": "buoy",
-		"pos": {
-			"lat": 35.75,
-			"lng": -75.33
-		},
-		"title": "Oregon Inlet, NC",
-		"stationStr": "OINC1",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "UNC"
-	},
-	"DSNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 35.09,
-			"lng": -75.36
-		},
-		"title": "Diamond Shoals, NC",
-		"stationStr": "DSNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
-	},
-	"BANJ": {
-		"type": "buoy",
-		"pos": {
-			"lat": 39.778,
-			"lng": -73.769
-		},
-		"title": "Barnegat,NJ",
-		"stationStr": "BANJ",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "USACE"
-	},
-	"EHNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 34.625,
-			"lng": -72.617
-		},
-		"title": "East Hatteras,NC",
-		"stationStr": "EHNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
-	},
-	"OBNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 34.213,
-			"lng": -76.946
-		},
-		"title": "Onslow bay Outer,NC",
-		"stationStr": "OBNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "CORMP"
-	},
-	"WH": {
-		"type": "buoy",
-		"pos": {
-			"lat": 33.721,
-			"lng": -78.015
-		},
-		"title": "Willimington Harbour,NC",
-		"stationStr": "WH",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "SCRIPPS"
-	},
-	"FSNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 33.436,
-			"lng": -77.743
-		},
-		"title": "Frying Pan Shoals,NC",
-		"stationStr": "FSNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
-	},
-	"SCNC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 32.501,
-			"lng": -79.099
-		},
-		"title": "ShoutEast of Charleston,SC",
-		"stationStr": "SCNC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
-	},
-	"CNSC": {
-		"type": "buoy",
-		"pos": {
-			"lat": 32.803,
-			"lng": -79.624
-		},
-		"title": "Capers Neashore,SC",
-		"stationStr": "CNSC",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "CORMP"
-	},
-	"GRGA": {
-		"type": "buoy",
-		"pos": {
-			"lat": 31.4,
-			"lng": -80.868
-		},
-		"title": "Grays Reef, GA",
-		"stationStr": "GRGA",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
-	},
-	"OFFL": {
-		"type": "buoy",
-		"pos": {
-			"lat": 30.709,
-			"lng": -81.292
-		},
-		"title": "Offshore Frenandina,FL",
-		"stationStr": "OFFL",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "SCRIPPS"
-	},
-	"CCFL": {
-		"type": "buoy",
-		"pos": {
-			"lat": 28.501,
-			"lng": -80.184
-		},
-		"title": "East of Cape Canaveral,FL",
-		"stationStr": "CCFL",
-		"hasWater": false,
-		"hasWind": false,
-		"hasValidation": false,
-		"hasWaves": true,
-		"agency": "NDBC"
 	},
 	"FLVA": {
 		"type": "buoy",
@@ -1111,7 +1206,7 @@ let markers = {
 		"title": "First Landing,VA",
 		"stationStr": "FLVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1125,7 +1220,7 @@ let markers = {
 		"title": "Thimble Shoal,VA",
 		"stationStr": "TSVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "USNavy"
@@ -1139,7 +1234,7 @@ let markers = {
 		"title": "York Spit,Va",
 		"stationStr": "YSVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1153,7 +1248,7 @@ let markers = {
 		"title": "Stingray Point,VA",
 		"stationStr": "SPVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1167,7 +1262,7 @@ let markers = {
 		"title": "Potomac,MD",
 		"stationStr": "POMD",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1181,7 +1276,7 @@ let markers = {
 		"title": "Gooses Reef, MD",
 		"stationStr": "GRMD",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1195,7 +1290,7 @@ let markers = {
 		"title": "Susquehanna, MD",
 		"stationStr": "SUMD",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1209,7 +1304,7 @@ let markers = {
 		"title": "Patapsco, MD",
 		"stationStr": "PAMD",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
@@ -1223,10 +1318,109 @@ let markers = {
 		"title": "Jamestown, VA",
 		"stationStr": "JAVA",
 		"hasWater": false,
-		"hasWind": false,
+		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
 		"agency": "CBIBS"
+	},
+    //iflood stations
+    "DIVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 38.14841981,
+			"lng": -75.95974833
+		},
+		"title": "Deal Island,VA",
+		"stationStr": "DIVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
+	},
+	"CRVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 36.817589,
+			"lng": -75.96567401
+		},
+		"title": "Croatan,VA Beach",
+		"stationStr": "CRVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
+	},
+	"PSVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 38.65984844,
+			"lng": -77.23243127
+		},
+		"title": "Potomac Science Center,VA",
+		"stationStr": "PSVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
+	},
+	"NHMD": {
+		"type": "iflood",
+		"pos": {
+			"lat": 38.78995789,
+			"lng": -77.01942954
+		},
+		"title": "National Harbour,MD",
+		"stationStr": "NHMD",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "EXTRA"
+	},
+	"MBVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 37.14935667,
+			"lng": -75.93470159
+		},
+		"title": "Magothy Bay,VA",
+		"stationStr": "MBVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
+	},
+	"ESVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 37.11441337,
+			"lng": -75.96305337
+		},
+		"title": "Eastern Shore,VA",
+		"stationStr": "ESVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
+	},
+	"MOVA": {
+		"type": "iflood",
+		"pos": {
+			"lat": 38.22467375,
+			"lng": -75.83940896
+		},
+		"title": "Monie Bay,VA",
+		"stationStr": "MOVA",
+		"hasWater": true,
+		"hasWind": true,
+		"hasValidation": false,
+		"hasWaves": true,
+		"agency": "FHRL"
 	}
 };
 
