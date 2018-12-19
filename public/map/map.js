@@ -1676,86 +1676,9 @@ function makePlotStationWater(url, domNode, levels, title) {
                 }],
             annotations: [
                 {
-                    xref: "paper",
-                    yref: "y",
-                    x: 0,
-                    y: levels[0]+0.2,
-                    sizex: 0.25,
-                    sizey: 0.25,
-                    opacity: 0.95,
-                    layer: "above",
-                    "xanchor": "center",
-                    text: '                     Action: '+levels[0]+' m',
-                    font: {
-                        color: "black"
-                    },
-                    arrowhead: 0,
-                    ax: 0,
-                    ay: 0
-                }
-                ,
-                {
-                    xref: "paper",
-                    yref: "y",
-                    x: 0,
-                    y: levels[1]+0.2,
-                    sizex: 0.25,
-                    sizey: 0.25,
-                    opacity: 0.95,
-                    layer: "above",
-                    "xanchor": "center",
-                    text: '                     Minor: '+levels[1]+' m',
-                    font: {
-                        color: "black"
-                    },
-                    arrowhead: 0,
-                    ax: 0,
-                    ay: 0
-                }
-                ,
-                {
-                    xref: "paper",
-                    yref: "y",
-                    x: 0,
-                    y: levels[2]+0.2,
-                    sizex: 0.25,
-                    sizey: 0.25,
-                    opacity: 0.95,
-                    layer: "above",
-                    "xanchor": "center",
-                    text: '                          Moderate: '+levels[2]+' m',
-                    font: {
-                        color: "black"
-                    },
-                    arrowhead: 0,
-                    ax: 0,
-                    ay: 0
-                }
-                ,
-                {
-                    xref: "paper",
-                    yref: "y",
-                    x: 0,
-                    y: levels[3]+0.2,
-                    sizex: 0.25,
-                    sizey: 0.25,
-                    opacity: 0.95,
-                    layer: "above",
-                    "xanchor": "center",
-                    text: '                     Major: '+levels[3]+' m',
-                    font: {
-                        color: "black"
-                    },
-                    arrowhead: 0,
-                    ax: 0,
-                    ay: 0
-                }
-
-                ,
-                {
                     x: date_now_plot,
                     xshift: 7,
-                    y: 0.5,
+                    y: 0.2,
                     yref: "paper",
                     opacity: 0.95,
                     textangle: -90,
@@ -1784,24 +1707,41 @@ function makePlotStationWater(url, domNode, levels, title) {
                     line: {
                         width: 1
                     }
-                },
+                }],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                autorange: true,
 
-                {
-                    type: 'rect',
-                    layer: 'below',
-                    xref: "paper",
-                    yref: "y",
-                    x0: 0,
-                    y0: -1,
-                    x1: 1,
-                    y1: 2.5,
-                    fillcolor: '#ffffff',
-                    opacity: 0.5,
-                    line: {
-                        width: 0
-                    }
-                },
-
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Stage (meters relative to NAVD88)',
+                autorange: true,
+                //range: [-1, 8],
+            }
+        };
+        if (typeof levels !== "undefined") {
+            Array.prototype.push.apply(layout["shapes"],[
                 {
                     type: 'rect',
                     layer: 'below',
@@ -1855,45 +1795,93 @@ function makePlotStationWater(url, domNode, levels, title) {
                     x0: 0,
                     y0: levels[3],
                     x1: 1,
-                    y1: 4,
+                    y1: 2.5,
                     fillcolor: '#7c01a6',
                     opacity: 0.5,
                     line: {
                         width: 0
                     }
-                }],
-            xaxis: {
-                showgrid: true,
-                showspikes: true,
-                spikemode: "across",
-                gridcolor: 'rgba(153,153,153,0.5)',
-                gridwidth: .25,
-                linecolor: 'rgb(153, 153, 153)',
-                linewidth: 1,
-                anchor: 'y1',
-                nticks: 8,
-                tickcolor: '#bfbfbf',
-                tickwidth: 4,
-                mirror: true,
-                autorange: true,
-
-            },
-            yaxis: {
-                showgrid: true,
-                gridcolor: 'rgba(153,153,153,0.5)',
-                gridwidth: .25,
-                linecolor: 'rgb(153, 153, 153)',
-                linewidth: 1,
-                tick0: 0,
-                domain: [0, 1],
-                tickwidth: 1,
-                nticks: 8,
-                mirror: true,
-                title: 'Stage (meters relative to NAVD88)',
-                autorange: true,
-                //range: [-1, 8],
-            }
-        };
+                }
+            ]);
+            Array.prototype.push.apply(layout["annotations"],[
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[0],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Action: '+levels[0]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[1],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Minor: '+levels[1]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[2],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Moderate: '+levels[2]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[3],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Major: '+levels[3]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+            ]);
+        }
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
     });
 }
