@@ -243,35 +243,35 @@ function init() {
                     switch (markerLevels[marker["stationStr"]]["Flood Level"]) {
                         case "Action":
                             marker["gMarker"].setIcon({
-                                "url": "/map/sprites/markers/action.svg",
+                                "url": "/map/sprites/markers/station/action.svg",
                                 "anchor": new google.maps.Point(17.5, 44),
                                 "scaledSize": new google.maps.Size(35, 45),
                             });
                             break;
                         case "Minor":
                             marker["gMarker"].setIcon({
-                                "url": "/map/sprites/markers/minor.svg",
+                                "url": "/map/sprites/markers/station/minor.svg",
                                 "anchor": new google.maps.Point(17.5, 44),
                                 "scaledSize": new google.maps.Size(35, 45),
                             });
                             break;
                         case "Moderate":
                             marker["gMarker"].setIcon({
-                                "url": "/map/sprites/markers/moderate.svg",
+                                "url": "/map/sprites/markers/station/moderate.svg",
                                 "anchor": new google.maps.Point(22.5, 59),
                                 "scaledSize": new google.maps.Size(45, 50),
                             });
                             break;
                         case "Major":
                             marker["gMarker"].setIcon({
-                                "url": "/map/sprites/markers/major.svg",
+                                "url": "/map/sprites/markers/station/major.svg",
                                 "anchor": new google.maps.Point(22.5, 49),
                                 "scaledSize": new google.maps.Size(45, 50),
                             });
                             break;
                         default:
                             marker["gMarker"].setIcon({
-                                "url": "/map/sprites/markers/default.svg",
+                                "url": "/map/sprites/markers/station/default.svg",
                                 "anchor": new google.maps.Point(10, 31),
                                 "scaledSize": new google.maps.Size(21, 32),
                             });
@@ -280,7 +280,7 @@ function init() {
                 }
                 else {
                     marker["gMarker"].setIcon({
-                        "url": "/map/sprites/markers/unknown.svg",
+                        "url": "/map/sprites/markers/station/unknown.svg",
                         "anchor": new google.maps.Point(10, 31),
                         "scaledSize": new google.maps.Size(21, 32),
                     });
@@ -288,14 +288,14 @@ function init() {
             }
             else if (marker["type"] === "buoy") {
                 marker["gMarker"].setIcon({
-                    "url": "/map/sprites/markers/wave.svg",
+                    "url": "/map/sprites/markers/wave/moderate.svg",
                     "anchor": new google.maps.Point(15, 27),
                     "scaledSize": new google.maps.Size(30, 28),
                 });
             }
             else if (marker["type"] === "iflood") {
                 marker["gMarker"].setIcon({
-                    "url": "/map/sprites/markers/iflood.svg",
+                    "url": "/map/sprites/markers/iflood/iflood.svg",
                     "anchor": new google.maps.Point(13, 33),
                     "scaledSize": new google.maps.Size(26, 34),
                 });

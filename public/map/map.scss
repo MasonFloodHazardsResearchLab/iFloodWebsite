@@ -396,14 +396,14 @@ body {
             }
         }
         #stationMarkerToggle {
-            background-image: url("/map/sprites/markers/action.svg");
+            background-image: url("/map/sprites/markers/station/action.svg");
             background-position-y: 3px;
         }
         #buoyMarkerToggle {
-            background-image: url("/map/sprites/markers/wave.svg");
+            background-image: url("/map/sprites/markers/wave/moderate.svg");
         }
         #ifloodMarkerToggle {
-            background-image: url("/map/sprites/markers/iflood.svg");
+            background-image: url("/map/sprites/markers/iflood/iflood.svg");
             background-position-y: 2px;
         }
     }
