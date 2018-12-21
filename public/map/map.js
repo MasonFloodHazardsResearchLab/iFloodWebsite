@@ -157,6 +157,27 @@ function init() {
             title: marker["title"],
             position: marker["pos"]
         });
+        if (marker["type"] === "station") {
+            marker["gMarker"].setIcon({
+                "url": "/map/sprites/markers/station/unknown.svg",
+                "anchor": new google.maps.Point(10, 31),
+                "scaledSize": new google.maps.Size(21, 32),
+            });
+        }
+        else if (marker["type"] === "buoy") {
+            marker["gMarker"].setIcon({
+                "url": "/map/sprites/markers/wave/unknown.svg",
+                "anchor": new google.maps.Point(15, 27),
+                "scaledSize": new google.maps.Size(30, 28),
+            });
+        }
+        else if (marker["type"] === "iflood") {
+            marker["gMarker"].setIcon({
+                "url": "/map/sprites/markers/iflood/iflood.svg",
+                "anchor": new google.maps.Point(13, 33),
+                "scaledSize": new google.maps.Size(26, 34),
+            });
+        }
         marker["gMarker"].addListener('click', function () {
             if (currentInfoWindow) {
                 currentInfoWindow.close();
@@ -233,7 +254,7 @@ function init() {
             }
         });
     });
-    //set icons
+    //set icons based on files
     $.get(models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/GeoJson/Floodlevels.json",function(markerLevels) {
         Object.keys(markers).forEach(markerIndex => {
             let marker = markers[markerIndex];
@@ -278,27 +299,39 @@ function init() {
                             break;
                     }
                 }
-                else {
-                    marker["gMarker"].setIcon({
-                        "url": "/map/sprites/markers/station/unknown.svg",
-                        "anchor": new google.maps.Point(10, 31),
-                        "scaledSize": new google.maps.Size(21, 32),
-                    });
+            }
+        });
+    });
+    $.get(models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/GeoJson/wavelevels.json",function(markerLevels) {
+        Object.keys(markers).forEach(markerIndex => {
+            let marker = markers[markerIndex];
+            if (marker["type"] === "buoy") {
+                if (markerLevels.hasOwnProperty(marker["stationStr"])) {
+                    let iconUrl;
+                    switch (markerLevels[marker["stationStr"]]["Flood Level"]) {
+                        case "Major_swell":
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/wave/major.svg",
+                                "anchor": new google.maps.Point(15, 27),
+                                "scaledSize": new google.maps.Size(30, 28),
+                            });
+                            break;
+                        case "Action":
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/wave/moderate.svg",
+                                "anchor": new google.maps.Point(15, 27),
+                                "scaledSize": new google.maps.Size(30, 28),
+                            });
+                            break;
+                        default:
+                            marker["gMarker"].setIcon({
+                                "url": "/map/sprites/markers/wave/calm.svg",
+                                "anchor": new google.maps.Point(15, 27),
+                                "scaledSize": new google.maps.Size(30, 28),
+                            });
+                            break;
+                    }
                 }
-            }
-            else if (marker["type"] === "buoy") {
-                marker["gMarker"].setIcon({
-                    "url": "/map/sprites/markers/wave/moderate.svg",
-                    "anchor": new google.maps.Point(15, 27),
-                    "scaledSize": new google.maps.Size(30, 28),
-                });
-            }
-            else if (marker["type"] === "iflood") {
-                marker["gMarker"].setIcon({
-                    "url": "/map/sprites/markers/iflood/iflood.svg",
-                    "anchor": new google.maps.Point(13, 33),
-                    "scaledSize": new google.maps.Size(26, 34),
-                });
             }
         });
     });
