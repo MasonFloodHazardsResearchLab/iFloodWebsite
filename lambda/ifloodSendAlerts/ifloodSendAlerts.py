@@ -21,6 +21,12 @@ floodLevelNumbers = {
     "Major":4
 }
 
+waveLevelNumbers = {
+    "Calm":0,
+    "Action":1,
+    "Major_swell":2
+}
+
 with open('alertEmail.html', 'r') as emailFile:
     emailTemplate = emailFile.read()
 
@@ -36,6 +42,17 @@ def lambda_handler(event, context):
         Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json"
     )
     oldFloodLevels = json.loads(response['Body'].read().decode('utf-8'))
+    #get wave levels
+    response = s3.get_object(
+        Bucket="gmu-iflood-data",
+        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["forecastID"] + "/GeoJson/wavelevels.json"
+    )
+    waveLevels = json.loads(response['Body'].read().decode('utf-8'))
+    response = s3.get_object(
+        Bucket="gmu-iflood-data",
+        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/wavelevels.json"
+    )
+    oldWaveLevels = json.loads(response['Body'].read().decode('utf-8'))
 
     #get inundation
     response = s3.get_object(
@@ -90,6 +107,18 @@ def lambda_handler(event, context):
                 alertTripped = True
                 alertMessage += "\nPredicted Station Flood Levels:\n"
                 for stationStatus in stationsFlooded:
+                    alertMessage += stationStatus[0] + ": " + stationStatus[1]["Flood Level"] + " ("+str(stationStatus[1]["Flood Stage"])+"m)\n"
+        if chosenAlerts.get("waves"):
+            wavesFlooded = []
+            for station in chosenAlerts["stations"]:
+                if station in floodLevels and station in oldFloodLevels and chosenAlerts["waves"][station] > 0: #make sure their selection is valid
+                    if waveLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["waves"][station]\
+                    and waveLevelNumbers[oldFloodLevels[station]["Flood Level"]] < chosenAlerts["waves"][station]: #only trigger for stations that have just now gone above the user's threshold
+                        wavesFlooded.append((station,floodLevels[station]))
+            if wavesFlooded:
+                alertTripped = True
+                alertMessage += "\nPredicted Wave Heights:\n"
+                for stationStatus in wavesFlooded:
                     alertMessage += stationStatus[0] + ": " + stationStatus[1]["Flood Level"] + " ("+str(stationStatus[1]["Flood Stage"])+"m)\n"
         if chosenAlerts.get("locations"):
             locationsFlooded = []
