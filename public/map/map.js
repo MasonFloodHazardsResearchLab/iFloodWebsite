@@ -1625,7 +1625,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             mode: "lines",
             name: 'ESTOFS',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_adcirc'),
+            x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'estofs'),
             line: {
                 color: 'rgb(0, 0, 255)',
@@ -1643,7 +1643,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             mode: "lines",
             name: 'CBOFS',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_adcirc'),
+            x: unpack(rows, 'iflood_date'),
             y: unpack(rows, 'cbofs'),
             line: {
                 color: 'brown',
@@ -1674,7 +1674,61 @@ function makePlotStationWater(url, domNode, levels, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         }
-        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Observed];
+	let Ensemble = {
+            type: "scatter",
+            mode: "lines",
+            name: 'Ensemble ',
+            hoverinfo: "y",
+            x: unpack(rows, 'Time_ensemble'),
+            y: unpack(rows, 'observed'),
+            line: {
+                color: 'orange',
+                width: 1
+            },
+            marker: {
+                color: 'blue',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        }
+	let Ensemble_Upper = {
+            type: "scatter",
+            mode: "lines",
+            name: 'Upper Limits',
+            hoverinfo: "y",
+            x: unpack(rows, 'Time_ensemble'),
+            y: unpack(rows, 'observed'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            marker: {
+                color: 'blue',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        }
+	let Ensemble_Lower = {
+            type: "scatter",
+            mode: "lines",
+            name: 'Lower Limits ',
+            hoverinfo: "y",
+            x: unpack(rows, 'Time_ensemble'),
+            y: unpack(rows, 'observed'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            marker: {
+                color: 'blue',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        }
+        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
         let layout = {
             showlegend: true,
             hovermode: "x",
