@@ -1,5 +1,5 @@
 # Send out alerts to all verified users
-from __future__ import absolute_import
+#from __future__ import absolute_import
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
 import json
@@ -30,47 +30,32 @@ waveLevelNumbers = {
 with open('alertEmail.html', 'r') as emailFile:
     emailTemplate = emailFile.read()
 
+def loadJSONFromS3(filename):
+    print("Downloading: "+filename)
+    response = s3.get_object(
+        Bucket="gmu-iflood-data",
+        Key=filename
+    )
+    return json.loads(response['Body'].read().decode('utf-8'))
+
 def lambda_handler(event, context):
     #get flood levels from s3 file
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/"+event["forecastID"]+"/GeoJson/Floodlevels.json"
-    )
-    floodLevels = json.loads(response['Body'].read().decode('utf-8'))
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json"
-    )
-    oldFloodLevels = json.loads(response['Body'].read().decode('utf-8'))
+    floodLevels = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/"+event["forecastID"]+"/GeoJson/Floodlevels.json")
+    oldFloodLevels = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/Floodlevels.json")
+
     #get wave levels
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["forecastID"] + "/GeoJson/wavelevels.json"
-    )
-    waveLevels = json.loads(response['Body'].read().decode('utf-8'))
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/wavelevels.json"
-    )
-    oldWaveLevels = json.loads(response['Body'].read().decode('utf-8'))
+    waveLevels = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["forecastID"] + "/GeoJson/wavelevels.json")
+    oldWaveLevels = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJson/wavelevels.json")
 
     #get inundation
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["forecastID"] + "/GeoJsonHigh/maxinundationfull.json"
-    )
-    inundation = json.loads(response['Body'].read().decode('utf-8'))
+    inundation = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["forecastID"] + "/GeoJsonHigh/maxinundationfull.json")
     inundationShapes = []
     for feature in inundation['features']:
         inundationShapes.append((
             shape(feature['geometry']),
             feature['properties']['elemin']
         ))
-    response = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJsonHigh/maxinundationfull.json"
-    )
-    oldInundation = json.loads(response['Body'].read().decode('utf-8'))
+    oldInundation = loadJSONFromS3("Forecast/ChesapeakeBay_ADCIRCSWAN/" + event["PreviousforecastID"] + "/GeoJsonHigh/maxinundationfull.json")
     oldInundationShapes = []
     for feature in oldInundation['features']:
         oldInundationShapes.append((
@@ -96,30 +81,36 @@ def lambda_handler(event, context):
         chosenAlerts = json.loads(userItem["alerts"])
         alertTripped = False #if this stays false then no alerts were triggered
         alertMessage = "iFLOOD Alert:\n"
-        if chosenAlerts.get("stations"):
-            stationsFlooded = []
-            for station in chosenAlerts["stations"]:
-                if station in floodLevels and station in oldFloodLevels and chosenAlerts["stations"][station] > 0: #make sure their selection is valid
-                    if floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["stations"][station]\
-                    and floodLevelNumbers[oldFloodLevels[station]["Flood Level"]] < chosenAlerts["stations"][station]: #only trigger for stations that have just now gone above the user's threshold
-                        stationsFlooded.append((station,floodLevels[station]))
-            if stationsFlooded:
+        if chosenAlerts.get("water"):
+            waterFlooded = {}
+            for station in chosenAlerts["water"]:
+                if station == "*ALL*":
+                    for listedStation in floodLevels:
+                        if floodLevelNumbers[floodLevels[listedStation]["Flood Level"]] >= chosenAlerts["water"]["*ALL*"] > floodLevelNumbers[oldFloodLevels[listedStation]["Flood Level"]]:  # only trigger for stations that have just now gone above the user's threshold
+                            waterFlooded[listedStation] = floodLevels[listedStation]
+                elif station in floodLevels and station in oldFloodLevels and chosenAlerts["water"][station] > 0: #make sure their selection is valid
+                    if floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["water"][station] > floodLevelNumbers[oldFloodLevels[station]["Flood Level"]]:
+                        waterFlooded[station] = floodLevels[station]
+            if waterFlooded:
                 alertTripped = True
                 alertMessage += "\nPredicted Station Flood Levels:\n"
-                for stationStatus in stationsFlooded:
-                    alertMessage += stationStatus[0] + ": " + stationStatus[1]["Flood Level"] + " ("+str(stationStatus[1]["Flood Stage"])+"m)\n"
+                for station, status in waterFlooded.items():
+                    alertMessage += station + ": " + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
         if chosenAlerts.get("waves"):
-            wavesFlooded = []
-            for station in chosenAlerts["stations"]:
-                if station in floodLevels and station in oldFloodLevels and chosenAlerts["waves"][station] > 0: #make sure their selection is valid
-                    if waveLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["waves"][station]\
-                    and waveLevelNumbers[oldFloodLevels[station]["Flood Level"]] < chosenAlerts["waves"][station]: #only trigger for stations that have just now gone above the user's threshold
-                        wavesFlooded.append((station,floodLevels[station]))
+            wavesFlooded = {}
+            for station in chosenAlerts["waves"]:
+                if station == "*ALL*":
+                    for listedStation in waveLevels:
+                        if waveLevelNumbers[waveLevels[listedStation]["Flood Level"]] >= chosenAlerts["waves"]["*ALL*"] > waveLevelNumbers[oldWaveLevels[listedStation]["Flood Level"]]:  # only trigger for stations that have just now gone above the user's threshold
+                            wavesFlooded[listedStation] = waveLevels[listedStation]
+                elif station in waveLevels and station in oldWaveLevels and chosenAlerts["waves"][station] > 0: #make sure their selection is valid
+                    if waveLevelNumbers[waveLevels[station]["Flood Level"]] >= chosenAlerts["waves"][station] > waveLevelNumbers[oldWaveLevels[station]["Flood Level"]]:
+                        wavesFlooded[station] = waveLevels[station]
             if wavesFlooded:
                 alertTripped = True
                 alertMessage += "\nPredicted Wave Heights:\n"
-                for stationStatus in wavesFlooded:
-                    alertMessage += stationStatus[0] + ": " + stationStatus[1]["Flood Level"] + " ("+str(stationStatus[1]["Flood Stage"])+"m)\n"
+                for station, status in wavesFlooded.items():
+                    alertMessage += station + ": " + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
         if chosenAlerts.get("locations"):
             locationsFlooded = []
             for location in chosenAlerts["locations"]:
@@ -184,6 +175,6 @@ def lambda_handler(event, context):
 
 # if __name__ == "__main__":
 #     lambda_handler({
-#         "forecastID": "2018121118",
-#         "PreviousforecastID": "2018121106"
+#         "forecastID": "2019010806",
+#         "PreviousforecastID": "2019010818"
 #     }, None)
