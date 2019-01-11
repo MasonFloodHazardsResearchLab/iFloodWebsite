@@ -1680,7 +1680,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             name: 'Ensemble ',
             hoverinfo: "y",
             x: unpack(rows, 'Time_ensemble'),
-            y: unpack(rows, 'observed'),
+            y: unpack(rows, 'ensemble'),
             line: {
                 color: 'orange',
                 width: 1
@@ -1695,10 +1695,10 @@ function makePlotStationWater(url, domNode, levels, title) {
 	let Ensemble_Upper = {
             type: "scatter",
             mode: "lines",
-            name: 'Upper Limits',
+            name: '95% CI',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_ensemble'),
-            y: unpack(rows, 'observed'),
+            x: unpack(rows, 'Time_95%'),
+            y: unpack(rows, 'ensemble_upper'),
             line: {
                 color: 'gray',
                 width: 0.75
@@ -1713,10 +1713,10 @@ function makePlotStationWater(url, domNode, levels, title) {
 	let Ensemble_Lower = {
             type: "scatter",
             mode: "lines",
-            name: 'Lower Limits ',
+            name: '95% CI',
             hoverinfo: "y",
-            x: unpack(rows, 'Time_ensemble'),
-            y: unpack(rows, 'observed'),
+            x: unpack(rows, 'Time_95%'),
+            y: unpack(rows, 'ensemble_lower'),
             line: {
                 color: 'gray',
                 width: 0.75
@@ -1882,7 +1882,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     x0: 0,
                     y0: levels[3],
                     x1: 1,
-                    y1: 2.5,
+                    y1: levels[3]+0.5,
                     fillcolor: '#7c01a6',
                     opacity: 0.5,
                     line: {
@@ -2011,11 +2011,11 @@ function makePlotStationWaves(url, domNode, title) {
             x: unpack(rows, 'US East_time'),
             y: unpack(rows, 'US East'),
             line: {
-                color: '#e78c00',
+                color: 'black',
                 width: 1
             },
             marker: {
-                color: '#e78c00',
+                color: 'black',
                 width: 0.25
             },
             xaxis: 'x1',
@@ -2029,7 +2029,7 @@ function makePlotStationWaves(url, domNode, title) {
             x: unpack(rows, 'global_time'),
             y: unpack(rows, 'global'),
             line: {
-                color: '#00d1e7',
+                color: 'brown',
                 width: 1
             },
             xaxis: 'x1',
@@ -2049,6 +2049,34 @@ function makePlotStationWaves(url, domNode, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         };
+        let Ensemble= {
+            type: "scatter",
+            mode: "lines+markers",
+            name: 'Ensemble',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble'),
+            line: {
+                color: 'orange',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble_Upper= {
+            type: "scatter",
+            mode: "lines",
+            name: '95% CI',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble_upper'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
         let Observed = {
             type: "scatter",
             mode: "lines+markers",
@@ -2063,7 +2091,22 @@ function makePlotStationWaves(url, domNode, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         };
-        let data = [iFLOOD, Global, US_East, nwps, Observed];
+
+        let Ensemble_Lower= {
+            type: "scatter",
+            mode: "lines",
+            name: '95% CI',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble_lower'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let data = [iFLOOD, Global, US_East, nwps, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
         let layout = {
             showlegend: true,
             hovermode: "x",
