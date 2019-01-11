@@ -487,7 +487,11 @@ for (let modelName in models) {
     );
 }
 $.when.apply($, modelLoadingPromises).then(function() {
-    thisHour = moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H');
+    thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
+    setInterval(function() {
+        thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
+        drawTimeSlide();
+    }, 60000);
     currentHourSetting = thisHour;
     //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
     //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
