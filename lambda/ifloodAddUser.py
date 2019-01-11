@@ -83,7 +83,7 @@ def lambda_handler(event, context):
     elif userItem["contactType"] == "phone":
         response = sns.publish(
             PhoneNumber=userItem["primaryContact"],
-            Message="GMU iFlood Alerts: To verify your registration, tap here: "+verifyLink,
+            Message="GMU iFlood Alerts: To verify your registration, tap here: "+verifyLink+" .", #period at end of URL should stop iOS from automatically opening link to generate a preview
         )
 
     # send to dynamo

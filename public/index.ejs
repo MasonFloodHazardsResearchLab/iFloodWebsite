@@ -15,9 +15,16 @@
         </div>
     </header>
     <div id="homeHeroVideoContainer">
-        <video autoplay loop muted>
-            <source src="homepageSmall.mp4" type="video/mp4">
+        <video id="homepageVideoPlayer" autoplay loop muted>
+            <source id="homepageVideoSource" src="" type="video/mp4">
         </video>
+        <script>
+            if (window.matchMedia("(min-width: 600px)").matches) {
+                document.getElementById("homepageVideoSource").src = "homepageSmall.mp4#t=22.5";
+                document.getElementById("homepageVideoPlayer").load();
+                document.getElementById("homepageVideoPlayer").play();
+            }
+        </script>
     </div>
     <div id="homeLogoContainer">
         <img src="homeLogo.svg" width="833" height="321">

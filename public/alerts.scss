@@ -128,7 +128,7 @@
     &.location {
         height: 90px;
     }
-    &.station {
+    &.water {
         height: 140px;
         .thresholdLabel {
             margin-top: 10px;
@@ -198,6 +198,34 @@
                         color: $bg_dark;
                     }
                 }
+                &.wavesAction {
+                    border-left: solid 1px;
+                    border-radius: 3px 0 0 3px;
+                    color: #d47dfa;
+                    border-color: #d47dfa;
+                    background-color: transparentize(#d47dfa, 0.9);
+                    &:hover, &:focus {
+                        background-color: transparentize(#d47dfa, 0.8);
+                    }
+                    &.selected {
+                        background-color: #d47dfa;
+                        color: $bg_dark;
+                    }
+                }
+                &.wavesMajor {
+                    border-right: solid 1px;
+                    border-radius: 0 3px 3px 0;
+                    color: #fa64a0;
+                    border-color: #fa64a0;
+                    background-color: transparentize(#fa64a0, 0.9);
+                    &:hover, &:focus {
+                        background-color: transparentize(#fa64a0, 0.8);
+                    }
+                    &.selected {
+                        background-color: #fa64a0;
+                        color: $bg_dark;
+                    }
+                }
             }
         }
     }
@@ -241,7 +269,7 @@
 }
 @media screen and (max-width: 400px) {
     .alertBox {
-        &.station {
+        &.water {
             .thresholdBar {
                 .choice {
                     font-size: 10px;
@@ -309,6 +337,11 @@
     cursor: pointer;
     &:hover, &:focus {
         background-color: transparentize(#146735,0.8);
+    }
+    &.loading {
+        color: transparent;
+        background: transparentize(#146735,0.8) url("/map/tail-spin.svg") center no-repeat;
+        background-size: 25px;
     }
 }
 

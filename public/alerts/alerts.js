@@ -2,7 +2,8 @@ const apiUrl = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod";
 
 
 const templateAlertBoxLocation = $.templates("#templateAlertBoxLocation");
-const templateAlertBoxStation = $.templates("#templateAlertBoxStation");
+const templateAlertBoxWater = $.templates("#templateAlertBoxWater");
+const templateAlertBoxWaves = $.templates("#templateAlertBoxWaves");
 
 const chosenAlerts = $("#chosenAlerts");
 
@@ -48,26 +49,27 @@ map = new google.maps.Map(document.getElementById('map'), {
     styles: mapstyle
 });
 
-let stationMarkers = {};
+// let stationMarkers = {};
 
-Object.keys(markers).forEach(markerIndex => {
-    let marker = markers[markerIndex];
-    if (marker["type"] !== "station")
-        return;
-    stationMarkers[marker["stationStr"]] = new google.maps.Marker({
-        map: map,
-        draggable: false,
-        title: marker["title"],
-        position: marker["pos"]
-    });
-    stationMarkers[marker["stationStr"]].addListener('click', function () {
-        if (!stationAlertExists(marker["stationStr"]))
-            addStationAlert(marker["stationStr"]);
-    });
-});
+// Object.keys(markers).forEach(markerIndex => {
+//     let marker = markers[markerIndex];
+//     if (marker["type"] !== "station")
+//         return;
+//     stationMarkers[marker["stationStr"]] = new google.maps.Marker({
+//         map: map,
+//         draggable: false,
+//         title: marker["title"],
+//         position: marker["pos"]
+//     });
+//     stationMarkers[marker["stationStr"]].addListener('click', function () {
+//         if (!alertExists("water",marker["stationStr"]))
+//             addWaterAlert(marker["stationStr"]);
+//     });
+// });
 
 $("#addLocationButton").click(addLocationAlert);
-$("#addStationButton").click(addStationAlert);
+$("#addWaterButton").click(addWaterAlert);
+$("#addWavesButton").click(addWavesAlert);
 
 addLocationAlert(false); //start with one location by default
 
@@ -88,11 +90,11 @@ function addLocationAlert(shouldFocus) {
         let place = autocomplete.getPlace();
         if (typeof alerts[uid]["marker"] !== "undefined")
             alerts[uid]["marker"].setMap(null);
-        let marker = new google.maps.Marker({
+        alerts[uid]["marker"] = new google.maps.Marker({
             map: map,
             position: place.geometry.location
         });
-        marker.setIcon({
+        alerts[uid]["marker"].setIcon({
             "url": "icons/homeMap.svg",
             "anchor": new google.maps.Point(15, 44),
             "scaledSize": new google.maps.Size(30, 45),
@@ -105,18 +107,11 @@ function addLocationAlert(shouldFocus) {
                 (place.address_components[2] && place.address_components[2].short_name || '')
             ].join(' ');
         }
-        alerts[uid]["marker"] = marker;
         alerts[uid]["address"] = address || "Untitled Location "+uid;
         alerts[uid]["lat"] = place.geometry.location.lat();
         alerts[uid]["lng"] = place.geometry.location.lng();
         dom.find(".addressDisplay").text("Lat: "+alerts[uid]["lat"]+", Lon: "+alerts[uid]["lng"]);
         dom.removeClass("error");
-        // else {
-        //     delete alerts[uid]["address"];
-        //     delete alerts[uid]["lat"];
-        //     delete alerts[uid]["lng"];
-        //     dom.addClass("error");
-        // }
     });
     dom.find(".closeButton").click(function() {
         dom.remove();
@@ -132,14 +127,30 @@ function addLocationAlert(shouldFocus) {
 
 const levelIcons = [
     null,
-    "icons/actionMap.svg",
-    "icons/minorMap.svg",
-    "icons/moderateMap.svg",
-    "icons/majorMap.svg"
+    {
+        "url": "/map/sprites/markers/station/action.svg",
+        "anchor": new google.maps.Point(17.5, 44),
+        "scaledSize": new google.maps.Size(35, 45),
+    },
+    {
+        "url": "/map/sprites/markers/station/minor.svg",
+        "anchor": new google.maps.Point(17.5, 44),
+        "scaledSize": new google.maps.Size(35, 45),
+    },
+    {
+        "url": "/map/sprites/markers/station/moderate.svg",
+        "anchor": new google.maps.Point(22.5, 49),
+        "scaledSize": new google.maps.Size(45, 50),
+    },
+    {
+        "url": "/map/sprites/markers/station/major.svg",
+        "anchor": new google.maps.Point(22.5, 49),
+        "scaledSize": new google.maps.Size(45, 50),
+    }
 ];
-function addStationAlert(stationStr) {
+function addWaterAlert(stationStr) {
     let uid = generateUID();
-    let dom = $(templateAlertBoxStation.render());
+    let dom = $(templateAlertBoxWater.render());
     dom.data("uid",uid);
     chosenAlerts.append(dom);
     dom.offsetHeight; //hack to force browser to acknowledge height
@@ -147,37 +158,40 @@ function addStationAlert(stationStr) {
         dom.removeClass("hide");
     },0);
     alerts[uid] = {
-        "type":"station",
+        "type":"water",
         "dom":dom,
-        "level":2
+        "level":2,
+        "station":"*ALL*"
     };
     let select = dom.find(".stationSelect");
+    select.append($("<option />").val("*ALL*").text("[ All Stations ]"));
     Object.values(markers).forEach(marker => {
-        if (marker["type"] === "station")
+        if (marker["hasWater"])
             select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
     });
     if (typeof stationStr === "string") {
         select.val(stationStr);
         alerts[uid]["station"] = stationStr;
-        stationMarkers[stationStr].setIcon({
-            "url": "icons/minorMap.svg",
-            "anchor": new google.maps.Point(15, 44),
-            "scaledSize": new google.maps.Size(30, 45),
+        alerts[uid]["marker"] = new google.maps.Marker({
+            map: map,
+            position: markers[stationStr]["pos"],
+            icon: levelIcons[alerts[uid]["level"]]
         });
     }
     else {
-        select.val("");
+        select.val("*ALL*");
     }
     select.on("input",function() {
-        if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "")
-            stationMarkers[alerts[uid]["station"]].setIcon(null);
         alerts[uid]["station"] = $(this).val();
-        stationMarkers[alerts[uid]["station"]].setIcon({
-            "url": levelIcons[alerts[uid]["level"]],
-            "anchor": new google.maps.Point(15, 44),
-            "scaledSize": new google.maps.Size(30, 45),
-        });
-        updateStationDropdowns();
+        if (alerts[uid]["marker"])
+            alerts[uid]["marker"].setMap(null);
+        if (alerts[uid]["station"] !== "*ALL*")
+            alerts[uid]["marker"] = new google.maps.Marker({
+                map: map,
+                position: markers[alerts[uid]["station"]]["pos"],
+                icon: levelIcons[alerts[uid]["level"]]
+            });
+        updateStationDropdowns("water");
     });
     dom.find(".thresholdBar .choice").click(function() {
         dom.find(".thresholdBar .choice").removeClass("selected");
@@ -191,23 +205,100 @@ function addStationAlert(stationStr) {
         else if ($(this).hasClass("major"))
             alerts[uid]["level"] = 4;
         if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "") {
-            stationMarkers[alerts[uid]["station"]].setIcon({
-                "url": levelIcons[alerts[uid]["level"]],
-                "anchor": new google.maps.Point(15, 44),
-                "scaledSize": new google.maps.Size(30, 45),
-            });
+            alerts[uid]["marker"].setIcon(levelIcons[alerts[uid]["level"]]);
         }
     });
     dom.find(".closeButton").click(function() {
-        if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "")
-            stationMarkers[alerts[uid]["station"]].setIcon(null);
+        if (alerts[uid]["marker"])
+            alerts[uid]["marker"].setMap(null);
         dom.remove();
         delete alerts[uid];
-        updateStationDropdowns();
+        updateStationDropdowns("water");
     });
     $("html, body").animate({ scrollTop: $(document).height() }, 150);
-    updateStationDropdowns();
+    updateStationDropdowns("water");
 }
+
+const wavesIcons = [
+    null,
+    {
+        "url": "/map/sprites/markers/wave/moderate.svg",
+        "anchor": new google.maps.Point(15, 27),
+        "scaledSize": new google.maps.Size(30, 28),
+    },
+    {
+        "url": "/map/sprites/markers/wave/major.svg",
+        "anchor": new google.maps.Point(15, 27),
+        "scaledSize": new google.maps.Size(30, 28),
+    }
+];
+function addWavesAlert(stationStr) {
+    let uid = generateUID();
+    let dom = $(templateAlertBoxWaves.render());
+    dom.data("uid",uid);
+    chosenAlerts.append(dom);
+    dom.offsetHeight; //hack to force browser to acknowledge height
+    setTimeout(function() {
+        dom.removeClass("hide");
+    },0);
+    alerts[uid] = {
+        "type":"waves",
+        "dom":dom,
+        "level":1,
+        "station":"*ALL*"
+    };
+    let select = dom.find(".stationSelect");
+    select.append($("<option />").val("*ALL*").text("[ All Stations ]"));
+    Object.values(markers).forEach(marker => {
+        if (marker["hasWaves"])
+            select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
+    });
+    if (typeof stationStr === "string") {
+        select.val(stationStr);
+        alerts[uid]["station"] = stationStr;
+        alerts[uid]["marker"] = new google.maps.Marker({
+            map: map,
+            position: markers[stationStr]["pos"],
+            icon: wavesIcons[alerts[uid]["level"]]
+        });
+    }
+    else {
+        select.val("*ALL*");
+    }
+    select.on("input",function() {
+        alerts[uid]["station"] = $(this).val();
+        if (alerts[uid]["marker"])
+            alerts[uid]["marker"].setMap(null);
+        if (alerts[uid]["station"] !== "*ALL*")
+            alerts[uid]["marker"] = new google.maps.Marker({
+                map: map,
+                position: markers[alerts[uid]["station"]]["pos"],
+                icon: wavesIcons[alerts[uid]["level"]]
+            });
+        updateStationDropdowns("water");
+    });
+    dom.find(".thresholdBar .choice").click(function() {
+        dom.find(".thresholdBar .choice").removeClass("selected");
+        $(this).addClass("selected");
+        if ($(this).hasClass("wavesAction"))
+            alerts[uid]["level"] = 1;
+        else if ($(this).hasClass("wavesMajor"))
+            alerts[uid]["level"] = 2;
+        if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "") {
+            alerts[uid]["marker"].setIcon(wavesIcons[alerts[uid]["level"]]);
+        }
+    });
+    dom.find(".closeButton").click(function() {
+        if (alerts[uid]["marker"])
+            alerts[uid]["marker"].setMap(null);
+        dom.remove();
+        delete alerts[uid];
+        updateStationDropdowns("water");
+    });
+    $("html, body").animate({ scrollTop: $(document).height() }, 150);
+    updateStationDropdowns("water");
+}
+
 
 $('#submitAlertsButton').click(submit);
 function submit() {
@@ -240,7 +331,8 @@ function submit() {
         "primaryContact": primaryContact,
         "alerts": {
             "locations": [],
-            "stations": {}
+            "water": {},
+            "waves": {}
         }
     };
     for (let alertIndex in alerts) {
@@ -262,7 +354,7 @@ function submit() {
                 });
             }
         }
-        else if (alert["type"] === "station") {
+        else if (alert["type"] === "water") {
             if (typeof alert["station"] === "undefined") {
                 alert["dom"].addClass("error");
                 $('#submitError').text("Select a station.");
@@ -270,10 +362,22 @@ function submit() {
             }
             else {
                 alert["dom"].removeClass("error");
-                alertsObject["alerts"]["stations"][alert["station"]] = alert["level"];
+                alertsObject["alerts"]["water"][alert["station"]] = alert["level"];
+            }
+        }
+        else if (alert["type"] === "waves") {
+            if (typeof alert["station"] === "undefined") {
+                alert["dom"].addClass("error");
+                $('#submitError').text("Select a station.");
+                return;
+            }
+            else {
+                alert["dom"].removeClass("error");
+                alertsObject["alerts"]["waves"][alert["station"]] = alert["level"];
             }
         }
     }
+    $('#submitAlertsButton').addClass("loading");
     $.ajax({
         url: apiUrl+"/adduser",
         type: 'POST',
@@ -289,30 +393,33 @@ function submit() {
             }
             else {
                 $('#submitError').text(data);
+                $('#submitAlertsButton').removeClass("loading");
             }
+        },
+        error: function(xhr) {
+            $('#submitError').text(xhr.responseText || "Something went wrong. Try again later.");
+            $('#submitAlertsButton').removeClass("loading");
         }
-    }).fail(function() {
-        $('#submitError').text("Something went wrong. Try again later.");
     });
 }
 
-function updateStationDropdowns() {
-    for (let stationIndex in stationMarkers) {
-        if (!stationMarkers.hasOwnProperty(stationIndex))
+function updateStationDropdowns(type) {
+    for (let stationIndex in markers) {
+        if (!markers.hasOwnProperty(stationIndex))
             continue;
-        if (stationAlertExists(stationIndex))
-            $('option[value="'+stationIndex+'"]').prop( "disabled", true);
+        if (alertExists(type,stationIndex))
+            $('.alertBox.'+type+' option[value="'+stationIndex+'"]').prop( "disabled", true);
         else
-            $('option[value="'+stationIndex+'"]').prop( "disabled", false);
+            $('.alertBox.'+type+' option[value="'+stationIndex+'"]').prop( "disabled", false);
     }
 }
 
-function stationAlertExists(stationStr) {
+function alertExists(type,stationStr) {
     for (let alertIndex in alerts) {
         if (!alerts.hasOwnProperty(alertIndex))
             continue;
         let alert = alerts[alertIndex];
-        if (alert["type"] === "station" && alert["station"] === stationStr)
+        if (alert["type"] === type && alert["station"] === stationStr)
             return true;
     }
     return false;

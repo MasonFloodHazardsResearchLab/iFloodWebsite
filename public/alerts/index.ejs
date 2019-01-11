@@ -18,9 +18,13 @@
                 <img src="icons/home.svg" width="64">
                 Location
             </button>
-            <button class="tile" id="addStationButton">
-                <img src="icons/station.svg" width="64">
-                Station
+            <button class="tile" id="addWaterButton">
+                <img src="icons/water.svg" width="64">
+                Water
+            </button>
+            <button class="tile" id="addWavesButton">
+                <img src="icons/waves.svg" width="64">
+                Waves
             </button>
         </div>
         <div id="submitBar">
@@ -46,10 +50,10 @@
     </div>
 </script>
 
-<script id="templateAlertBoxStation" type="text/x-jsrender">
-    <div class="alertBox station hide">
+<script id="templateAlertBoxWater" type="text/x-jsrender">
+    <div class="alertBox water hide">
         <button class="closeButton"></button>
-        <img src="icons/station.svg">
+        <img src="icons/water.svg">
         <div class="alertInfo">
             <select class="niceInput stationSelect" title="address" type="text" tabindex="2">
             </select>
@@ -59,6 +63,22 @@
                 <button class="choice minor selected">Minor</button>
                 <button class="choice moderate">Moderate</button>
                 <button class="choice major">Major</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="templateAlertBoxWaves" type="text/x-jsrender">
+    <div class="alertBox water hide">
+        <button class="closeButton"></button>
+        <img src="icons/waves.svg">
+        <div class="alertInfo">
+            <select class="niceInput stationSelect" title="address" type="text" tabindex="2">
+            </select>
+            <div class="smallLabel thresholdLabel">Threshold</div>
+            <div class="thresholdBar">
+                <button class="choice wavesAction selected">Action</button>
+                <button class="choice wavesMajor">Major Swell</button>
             </div>
         </div>
     </div>

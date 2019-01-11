@@ -279,7 +279,7 @@ function init() {
                         case "Moderate":
                             marker["gMarker"].setIcon({
                                 "url": "/map/sprites/markers/station/moderate.svg",
-                                "anchor": new google.maps.Point(22.5, 59),
+                                "anchor": new google.maps.Point(22.5, 49),
                                 "scaledSize": new google.maps.Size(45, 50),
                             });
                             break;

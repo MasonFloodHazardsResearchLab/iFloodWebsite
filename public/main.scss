@@ -184,6 +184,8 @@ header {
     height: 550px;
     z-index: -15;
     overflow: hidden;
+    background: url("homepageFreeze.jpg") center;
+    background-size: cover;
     video {
         min-width: 100%;
         min-height: 100%;
