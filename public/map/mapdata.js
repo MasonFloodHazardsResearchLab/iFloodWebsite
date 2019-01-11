@@ -453,6 +453,7 @@ let colorRanges = {
 
 let models = {
     "ChesapeakeBay_ADCIRCSWAN":{},
+    "ChesapeakeBay_XBEACH":{}
 };
 
 let viewLevels = [
@@ -1350,6 +1351,8 @@ let markers = {
 		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasXbeachVideo": true,
+        "xbeachVideoUrl": "{_ChesapeakeBay_XBEACH_FILES_}/croatan/xbeach.mp4",
 		"agency": "FHRL"
 	},
 	"PSVA": {
@@ -1392,6 +1395,8 @@ let markers = {
 		"hasWind": true,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasXbeachVideo": true,
+        "xbeachVideoUrl": "{_ChesapeakeBay_XBEACH_FILES_}/magothy_bay/xbeach.mp4",
 		"agency": "FHRL"
 	},
 	"ESVA": {

@@ -89,6 +89,9 @@
         {{if hasValidation}}
             <div class="tab" id="mapPopupTabValidation" role="button" tabindex="0">Validation</div>
         {{/if}}
+        {{if hasXbeachVideo}}
+            <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
+        {{/if}}
     </div>
     {{if hasWater}}
         <div class="mapPopupContent" id="mapPopupContentWater"></div>
@@ -101,6 +104,9 @@
     {{/if}}
     {{if hasValidation}}
         <div class="mapPopupContent" id="mapPopupContentValidation"></div>
+    {{/if}}
+    {{if hasXbeachVideo}}
+        <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>
     {{/if}}
 </script>
 

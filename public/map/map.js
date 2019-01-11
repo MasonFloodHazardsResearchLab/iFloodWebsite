@@ -215,6 +215,19 @@ function init() {
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
                 }
+                if (marker["hasXbeachVideo"]) {
+                    domPlot.find("#mapPopupContentXbeachVideo").append(
+                        $('<video>', {
+                            'class':'popupVideo',
+                            'autoplay':'',
+                            'loop':'',
+                            'muted':''
+                        }).append($('<source>', {
+                            'type':'video/mp4',
+                            'src':replaceModelPaths(marker["xbeachVideoUrl"])
+                        }))
+                    );
+                }
                 domPlot.find(".mapPopupContent").first().css({"display": "block"});
                 domPlot.find(".tab").first().addClass("current");
 
@@ -243,6 +256,14 @@ function init() {
                     domPlot.find(".mapPopupContent").css({"display": "none"});
                     domPlot.find("#mapPopupContentValidation").css({"display": "block"});
                     domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabXbeachVideo").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentXbeachVideo").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    domPlot.find("#mapPopupContentXbeachVideo video")[0].play();
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
