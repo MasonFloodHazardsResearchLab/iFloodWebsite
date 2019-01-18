@@ -1490,7 +1490,7 @@ function drawOverlay(currentTime) {
                     let point = new google.maps.LatLng(visParticles[i]["lat"], visParticles[i]["lng"]);
                     let worldPoint = map.getProjection().fromLatLngToPoint(point);
                     let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-                    let alpha = Math.min(0.95,((visParticles[i]["vLat"]*visParticles[i]["vLat"])+(visParticles[i]["vLng"]*visParticles[i]["vLng"]))/15)+0.05; //set the alpha based on the speed
+                    let alpha = Math.min(0.95,((visParticles[i]["vLat"]*visParticles[i]["vLat"])+(visParticles[i]["vLng"]*visParticles[i]["vLng"]))/16)+0.05; //set the alpha based on the speed
                     if (visParticles[i]["age"] < 1) {
                         alpha *= visParticles[i]["age"];
                     }
@@ -1503,7 +1503,7 @@ function drawOverlay(currentTime) {
                 overCtx.globalAlpha = 1;
             }
             //create new particles
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 10; i++) {
                 if (map.getZoom() < 6) {
                     visParticles.push({
                         lat: Math.random() * 41 + 6,
@@ -1523,11 +1523,11 @@ function drawOverlay(currentTime) {
                     });
                 }
             }
-            if (visParticles.length > 600) {
+            if (visParticles.length > 900) {
                 let firstDeadIndex = 0;
                 while (visParticles[firstDeadIndex].hasOwnProperty("death"))
                     firstDeadIndex++;
-                for (let j = 0; j < visParticles.length-700-firstDeadIndex; j++)
+                for (let j = 0; j < visParticles.length-1000-firstDeadIndex; j++)
                     visParticles[firstDeadIndex+j]["death"] = 1;
             }
             //move
@@ -1893,7 +1893,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     y0: levels[2],
                     x1: 1,
                     y1: levels[3],
-                    fillcolor: 'rgb(255,0,0)',
+                    fillcolor: '#FF0000',
                     opacity: 0.5,
                     line: {
                         width: 0
@@ -1908,7 +1908,7 @@ function makePlotStationWater(url, domNode, levels, title) {
                     y0: levels[3],
                     x1: 1,
                     y1: levels[3]+0.5,
-                    fillcolor: '#7c01a6',
+                    fillcolor: '#d90093',
                     opacity: 0.5,
                     line: {
                         width: 0

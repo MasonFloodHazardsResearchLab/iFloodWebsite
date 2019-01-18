@@ -201,28 +201,28 @@
                 &.wavesAction {
                     border-left: solid 1px;
                     border-radius: 3px 0 0 3px;
-                    color: #d47dfa;
-                    border-color: #d47dfa;
-                    background-color: transparentize(#d47dfa, 0.9);
+                    color: #c597fc;
+                    border-color: #c597fc;
+                    background-color: transparentize(#c597fc, 0.9);
                     &:hover, &:focus {
-                        background-color: transparentize(#d47dfa, 0.8);
+                        background-color: transparentize(#c597fc, 0.8);
                     }
                     &.selected {
-                        background-color: #d47dfa;
+                        background-color: #c597fc;
                         color: $bg_dark;
                     }
                 }
                 &.wavesMajor {
                     border-right: solid 1px;
                     border-radius: 0 3px 3px 0;
-                    color: #fa64a0;
-                    border-color: #fa64a0;
-                    background-color: transparentize(#fa64a0, 0.9);
+                    color: #ff66cc;
+                    border-color: #ff66cc;
+                    background-color: transparentize(#ff66cc, 0.9);
                     &:hover, &:focus {
-                        background-color: transparentize(#fa64a0, 0.8);
+                        background-color: transparentize(#ff66cc, 0.8);
                     }
                     &.selected {
-                        background-color: #fa64a0;
+                        background-color: #ff66cc;
                         color: $bg_dark;
                     }
                 }
