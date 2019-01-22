@@ -106,6 +106,8 @@ body {
     display: flex;
     .scaleCanvas {
         display: none;
+        width: 60px;
+        height: 200px;
         margin-left: 5px;
     }
 }

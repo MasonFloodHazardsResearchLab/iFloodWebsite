@@ -1225,7 +1225,12 @@ function updateTime() {
 }
 
 function drawScaleBar(layer, current) {
+    layer["scaleCanvas"].width = 60*window.devicePixelRatio;
+    layer["scaleCanvas"].height = 200*window.devicePixelRatio;
+
     let context = layer["scaleCanvasContext"];
+
+    context.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
 
     context.clearRect(0,0,60,200);
     context.fillStyle = "rgba(255,255,255,0.6)";
@@ -1233,13 +1238,19 @@ function drawScaleBar(layer, current) {
     if (layer["reverseBar"]) {
         for (let i = 0; i < 185; i++) {
             context.fillStyle = getColorPoint(layer["colorRange"], 1-(i/185));
-            context.fillRect(0, i, 20, 1);
+            if (i === 184)
+                context.fillRect(0, i, 20, 1);
+            else
+                context.fillRect(0, i, 20, 2);
         }
     }
     else {
         for (let i = 0; i < 185; i++) {
             context.fillStyle = getColorPoint(layer["colorRange"], i/185);
-            context.fillRect(0, i, 20, 1);
+            if (i === 184)
+                context.fillRect(0, i, 20, 1);
+            else
+                context.fillRect(0, i, 20, 2);
         }
     }
     let currentAdjusted;
