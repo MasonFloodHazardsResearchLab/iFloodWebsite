@@ -9,7 +9,10 @@ def errorOut(message):
     return {
         "isBase64Encoded": False,
         "statusCode": 400,
-        "headers": {"Content-Type": "text/html"},
+        "headers": {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*"
+        },
         "body": message
     }
 

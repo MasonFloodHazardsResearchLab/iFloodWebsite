@@ -61,7 +61,7 @@ if (window.location.hash && window.location.hash.includes(",")) {
     let primaryContact = parts[0];
     verifyCode = parts[1];
     console.log({primaryContact, verifyCode});
-    $.get(apiUrl+"/getuser?primaryContact="+primaryContact+"&code="+verifyCode, function(data) {
+    $.get(apiUrl+"/getuser?primaryContact="+encodeURIComponent(primaryContact)+"&code="+verifyCode, function(data) {
         $('#primaryContactInput').val(primaryContact).prop('disabled',true);
         $('#alertArea').removeClass("disabled");
         if (typeof data['water'] !== 'undefined') {

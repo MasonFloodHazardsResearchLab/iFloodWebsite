@@ -717,7 +717,7 @@ let markers = {
 		"stationStr": "LWTV",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.512, 0.664, 0.817, 0.969],
 		"agency": "NOAA"
@@ -732,7 +732,7 @@ let markers = {
 		"stationStr": "NCDV",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.633, 0.785, 1.243, 1.852],
 		"agency": "NOAA"
@@ -837,7 +837,7 @@ let markers = {
 		"stationStr": "WAVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [1.046, 1.198, 1.503, 1.656],
 		"agency": "NOAA"
@@ -867,7 +867,7 @@ let markers = {
 		"stationStr": "WMVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.431, 0.583, 0.735, 0.888],
 		"agency": "NOAA"
@@ -897,7 +897,7 @@ let markers = {
 		"stationStr": "CBBV",
 		"hasWater": false,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.806, 0.959, 1.111, 1.263],
 		"agency": "NOAA"
@@ -912,7 +912,7 @@ let markers = {
 		"stationStr": "TBMD",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.637, 0.79, 1.094, 1.399],
 		"agency": "NOAA"
@@ -942,7 +942,7 @@ let markers = {
 		"stationStr": "OTVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.357, 0.601, 0.875, 1.607],
 		"agency": "EXTRA"
@@ -957,7 +957,7 @@ let markers = {
 		"stationStr": "SGVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.491, 0.644, 0.796, 1.253],
 		"agency": "AHPS"
@@ -972,7 +972,7 @@ let markers = {
 		"stationStr": "CBVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.578, 0.73, 0.91, 1.035],
 		"agency": "AHPS"
@@ -987,7 +987,7 @@ let markers = {
 		"stationStr": "CBHD",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.75, 0.902, 1.36, 1.817],
 		"agency": "AHPS"
@@ -1107,7 +1107,7 @@ let markers = {
 		"stationStr": "DUKN",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.859, 1.012, 1.164, 1.316],
 		"agency": "AHPS"
@@ -1122,7 +1122,7 @@ let markers = {
 		"stationStr": "OCIM",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.557, 0.709, 1.014, 1.319],
 		"agency": "AHPS"
@@ -1335,7 +1335,7 @@ let markers = {
 		"stationStr": "DIVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"agency": "FHRL"
 	},
@@ -1349,7 +1349,7 @@ let markers = {
 		"stationStr": "CRVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
         "hasXbeachVideo": true,
         "xbeachVideoUrl": "{_ChesapeakeBay_XBEACH_FILES_}/croatan/xbeach.mp4",
@@ -1365,7 +1365,7 @@ let markers = {
 		"stationStr": "PSVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"agency": "FHRL"
 	},
@@ -1379,7 +1379,7 @@ let markers = {
 		"stationStr": "NHMD",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"agency": "EXTRA"
 	},
@@ -1393,7 +1393,7 @@ let markers = {
 		"stationStr": "MBVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
         "hasXbeachVideo": true,
         "xbeachVideoUrl": "{_ChesapeakeBay_XBEACH_FILES_}/magothy_bay/xbeach.mp4",
@@ -1409,7 +1409,7 @@ let markers = {
 		"stationStr": "ESVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"agency": "FHRL"
 	},
@@ -1423,7 +1423,7 @@ let markers = {
 		"stationStr": "MOVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidation": false,
+		"hasValidation": true,
 		"hasWaves": true,
 		"agency": "FHRL"
 	}
