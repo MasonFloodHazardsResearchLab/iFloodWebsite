@@ -136,9 +136,9 @@ def lambda_handler(event, context):
 
         mapLink = "https://iflood.vse.gmu.edu/map/#inundation"
         unsubLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/removeuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])
-        updateLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/updateuser?primaryContact=" + urllib.parse.quote_plus(userItem["primaryContact"])
+        updateLink = "https://iflood.vse.gmu.edu/alerts#" + userItem["primaryContact"] + "," + userItem["verifyCode"]
 
-        if alertTripped:
+        if alertTripped and userItem["primaryContact"]:
             print("run")
             if userItem["contactType"] == "email":
                 response = ses.send_email(

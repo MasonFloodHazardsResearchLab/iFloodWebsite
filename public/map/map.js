@@ -213,7 +213,7 @@ function init() {
                     makePlotStationWaves(replaceModelPaths(stationWavesUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWaves")[0], marker["title"] + ": Significant Wave Height");
                 }
                 if (marker["hasValidation"]) {
-                    makePlotStationValidation(replaceModelPaths(stationValidationUrl), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
+                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
                 }
                 if (marker["hasXbeachVideo"]) {
                     domPlot.find("#mapPopupContentXbeachVideo").append(
@@ -2263,26 +2263,26 @@ function makePlotStationWaves(url, domNode, title) {
     });
 }
 
-function makePlotStationValidation(url, domNode, stationStr, title) {
+function makePlotStationValidation(url, domNode, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         function unpack(rows, key) {
-            date_start_plot = rows[0].Time_observed;
-            date_stop_plot = rows[rows.length - 1].Time_adcirc;
-            date_now_plot = rows[0].Time_adcirc;
-            date_now1_plot = rows[2].Time_adcirc;
+            date_start_plot = rows[0].iflood_date;
+            date_stop_plot = rows[rows.length - 1].iflood_date;
+            date_now_plot = rows[0].iflood_date;
+            date_now1_plot = rows[2].iflood_date;
 
             return rows.map(function (row) {
                 return row[key];
             });
         }
 
-        let iFLood = {
+        let iFLOOD = {
             type: "scatter",
             mode: 'lines+markers',
             name: 'iflood',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+'_iflood'),
+            y: unpack(rows, 'iflood_bias'),
             line: {
                 color: '#008000',
                 width: 1
@@ -2300,7 +2300,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             name: 'ETSS',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+'_etss'),
+            y: unpack(rows, 'etss_bias'),
             line: {
                 color: 'rgb(204, 0, 204)',
                 width: 1
@@ -2318,7 +2318,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             name: 'AHPS',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+''),
+            y: unpack(rows, 'ahps_bias'),
             line: {
                 color: 'red',
                 width: 1
@@ -2336,7 +2336,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             name: 'ESTOFS',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+'_estofs'),
+            y: unpack(rows, 'estofs_bias'),
             line: {
                 color: 'rgb(0, 0, 255)',
                 width: 1
@@ -2354,7 +2354,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             name: 'CBOFS',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+'_cbofs'),
+            y: unpack(rows, 'cbofs_bias'),
             line: {
                 color: 'rgb(0, 255, 255)',
                 width: 1
@@ -2366,25 +2366,49 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         };
-        let Unbiased_ETSS = {
+        let Ensemble = {
             type: "scatter",
-            mode: 'lines+markers',
-            name: 'unbiased_ETSS ',
+            mode: 'lines',
+            name: 'Ensemble',
             hoverinfo: "y",
             x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, stationStr+'_unbiasedEtss'),
+            y: unpack(rows, 'ensemble_bias'),
             line: {
-                color: 'black',
+                color: 'orange',
                 width: 1
-            },
-            marker: {
-                color: 'black',
-                width: 0.25
             },
             xaxis: 'x1',
             yaxis: 'y1'
         };
-        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Unbiased_ETSS];
+        let Ensemble_Upper = {
+            type: "scatter",
+            mode: 'lines',
+            name: '95% CI',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'ensemble_upper_bias'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble_Lower = {
+            type: "scatter",
+            mode: 'lines',
+            name: '95% CI',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'ensemble_lower_bias'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let data = [iFLOOD, AHPS, ETSS, ESTOFS, CBOFS, Ensemble, Ensemble_Upper, Ensemble_Lower];
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2484,7 +2508,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                     x1: 1,
                     y1: 0,
                     fillcolor: 'red',
-                    opacity: 0.1,
+                    opacity: 0.05,
                     line: {
                         width: 0
                     }
@@ -2500,7 +2524,7 @@ function makePlotStationValidation(url, domNode, stationStr, title) {
                     x1: 1,
                     y1: -2,
                     fillcolor: 'blue',
-                    opacity: 0.1,
+                    opacity: 0.05,
                     line: {
                         width: 0
                     }
