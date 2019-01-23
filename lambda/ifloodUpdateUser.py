@@ -45,7 +45,7 @@ def lambda_handler(event, context):
     )
 
     if not response.get("Item"):
-        return errorOut("Verification failed. Make sure you copied the entire URL.")
+        return errorOut("User not found.")
     userItem = response.get("Item")
 
     if not userItem["verified"]:
@@ -56,7 +56,7 @@ def lambda_handler(event, context):
 
     if not data.get("code"):
         return errorOut("Please provide verification code.")
-    if data.get("code") != userItem["verifyCode"]:
+    if str(data.get("code")) != userItem["verifyCode"]:
         return errorOut("Incorrect verification code.")
 
     userItem["alerts"] = json.dumps(data["alerts"])
