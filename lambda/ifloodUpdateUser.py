@@ -1,4 +1,4 @@
-# Add a user to the database and send them a message with a confirmation code
+# Update an existing user with new alerts (given the confirmation code)
 
 import boto3
 import json

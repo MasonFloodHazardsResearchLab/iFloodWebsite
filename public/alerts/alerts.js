@@ -36,6 +36,8 @@ $('#primaryContactInput').on('input', function() {
 });
 
 let alerts = {};
+let updating = false;
+let verifyCode = null;
 
 map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
@@ -49,31 +51,39 @@ map = new google.maps.Map(document.getElementById('map'), {
     styles: mapstyle
 });
 
-// let stationMarkers = {};
+$("#addLocationButton").click(() => {addLocationAlert();});
+$("#addWaterButton").click(() => {addWaterAlert();});
+$("#addWavesButton").click(() => {addWavesAlert();});
 
-// Object.keys(markers).forEach(markerIndex => {
-//     let marker = markers[markerIndex];
-//     if (marker["type"] !== "station")
-//         return;
-//     stationMarkers[marker["stationStr"]] = new google.maps.Marker({
-//         map: map,
-//         draggable: false,
-//         title: marker["title"],
-//         position: marker["pos"]
-//     });
-//     stationMarkers[marker["stationStr"]].addListener('click', function () {
-//         if (!alertExists("water",marker["stationStr"]))
-//             addWaterAlert(marker["stationStr"]);
-//     });
-// });
+//check hash to see if we are editing a subscription rather than creating one
+if (window.location.hash && window.location.hash.includes(",")) {
+    let parts = window.location.hash.slice(1).split(",");
+    let primaryContact = parts[0];
+    verifyCode = parts[1];
+    console.log({primaryContact, verifyCode});
+    $.get(apiUrl+"/getuser?primaryContact="+primaryContact+"&code="+verifyCode, function(data) {
+        $('#primaryContactInput').val(primaryContact).prop('disabled',true);
+        $('#alertArea').removeClass("disabled");
+        if (typeof data['water'] !== 'undefined') {
+            data['locations'].forEach((locationObj) => {
+                addLocationAlert(false,locationObj);
+            });
+            Object.keys(data['water']).forEach((stationStr) => {
+                addWaterAlert(stationStr,data['water'][stationStr]);
+            });
+            Object.keys(data['waves']).forEach((stationStr) => {
+                addWavesAlert(stationStr,data['waves'][stationStr]);
+            });
+        }
+        updating = true;
+        $('#submitAlertsButton').text("Update");
+    })
+}
+else {
+    addLocationAlert(false); //start with one location by default
+}
 
-$("#addLocationButton").click(addLocationAlert);
-$("#addWaterButton").click(addWaterAlert);
-$("#addWavesButton").click(addWavesAlert);
-
-addLocationAlert(false); //start with one location by default
-
-function addLocationAlert(shouldFocus) {
+function addLocationAlert(shouldFocus, initialObj) {
     let uid = generateUID();
     let dom = $(templateAlertBoxLocation.render());
     dom.data("uid",uid);
@@ -85,6 +95,22 @@ function addLocationAlert(shouldFocus) {
         "type":"location",
         "dom":dom
     };
+    if (initialObj) {
+        dom.find('.addressInput').val(initialObj["displayName"]);
+        alerts[uid]["address"] = initialObj["displayName"];
+        alerts[uid]["lat"] = initialObj["lat"];
+        alerts[uid]["lng"] = initialObj["lng"];
+        dom.find(".addressDisplay").text("Lat: "+alerts[uid]["lat"]+", Lon: "+alerts[uid]["lng"]);
+        alerts[uid]["marker"] = new google.maps.Marker({
+            map: map,
+            position: {lat: alerts[uid]["lat"], lng: alerts[uid]["lng"]},
+            icon: {
+                "url": "icons/homeMap.svg",
+                "anchor": new google.maps.Point(15, 44),
+                "scaledSize": new google.maps.Size(30, 45),
+            }
+        });
+    }
     let autocomplete = new google.maps.places.Autocomplete(dom.find(".addressInput")[0]);
     autocomplete.addListener('place_changed', function() {
         let place = autocomplete.getPlace();
@@ -92,12 +118,12 @@ function addLocationAlert(shouldFocus) {
             alerts[uid]["marker"].setMap(null);
         alerts[uid]["marker"] = new google.maps.Marker({
             map: map,
-            position: place.geometry.location
-        });
-        alerts[uid]["marker"].setIcon({
-            "url": "icons/homeMap.svg",
-            "anchor": new google.maps.Point(15, 44),
-            "scaledSize": new google.maps.Size(30, 45),
+            position: place.geometry.location,
+            icon: {
+                "url": "icons/homeMap.svg",
+                "anchor": new google.maps.Point(15, 44),
+                "scaledSize": new google.maps.Size(30, 45),
+            }
         });
         let address = "";
         if (place.address_components) {
@@ -148,7 +174,7 @@ const levelIcons = [
         "scaledSize": new google.maps.Size(45, 50),
     }
 ];
-function addWaterAlert(stationStr) {
+function addWaterAlert(stationStr, level) {
     let uid = generateUID();
     let dom = $(templateAlertBoxWater.render());
     dom.data("uid",uid);
@@ -160,8 +186,8 @@ function addWaterAlert(stationStr) {
     alerts[uid] = {
         "type":"water",
         "dom":dom,
-        "level":2,
-        "station":"*ALL*"
+        "level":level || 2,
+        "station":stationStr || "*ALL*"
     };
     let select = dom.find(".stationSelect");
     select.append($("<option />").val("*ALL*").text("[ All Stations ]"));
@@ -169,17 +195,25 @@ function addWaterAlert(stationStr) {
         if (marker["hasWater"])
             select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
     });
-    if (typeof stationStr === "string") {
-        select.val(stationStr);
-        alerts[uid]["station"] = stationStr;
+    if (alerts[uid]["station"] !== "*ALL*") {
+        select.val(alerts[uid]["station"]);
         alerts[uid]["marker"] = new google.maps.Marker({
             map: map,
-            position: markers[stationStr]["pos"],
+            position: markers[alerts[uid]["station"]]["pos"],
             icon: levelIcons[alerts[uid]["level"]]
         });
     }
     else {
         select.val("*ALL*");
+    }
+    if (alerts[uid]["level"] !== 2) {
+        dom.find(".thresholdBar .choice").removeClass("selected");
+        if (alerts[uid]["level"] === 1)
+            dom.find(".thresholdBar .choice.action").addClass("selected");
+        if (alerts[uid]["level"] === 3)
+            dom.find(".thresholdBar .choice.moderate").addClass("selected");
+        if (alerts[uid]["level"] === 4)
+            dom.find(".thresholdBar .choice.major").addClass("selected");
     }
     select.on("input",function() {
         alerts[uid]["station"] = $(this).val();
@@ -204,7 +238,7 @@ function addWaterAlert(stationStr) {
             alerts[uid]["level"] = 3;
         else if ($(this).hasClass("major"))
             alerts[uid]["level"] = 4;
-        if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "") {
+        if (typeof alerts[uid]["station"] !== "undefined" && alerts[uid]["station"] !== "*ALL*") {
             alerts[uid]["marker"].setIcon(levelIcons[alerts[uid]["level"]]);
         }
     });
@@ -232,7 +266,7 @@ const wavesIcons = [
         "scaledSize": new google.maps.Size(30, 28),
     }
 ];
-function addWavesAlert(stationStr) {
+function addWavesAlert(stationStr, level) {
     let uid = generateUID();
     let dom = $(templateAlertBoxWaves.render());
     dom.data("uid",uid);
@@ -244,8 +278,8 @@ function addWavesAlert(stationStr) {
     alerts[uid] = {
         "type":"waves",
         "dom":dom,
-        "level":1,
-        "station":"*ALL*"
+        "level":level || 1,
+        "station":stationStr || "*ALL*"
     };
     let select = dom.find(".stationSelect");
     select.append($("<option />").val("*ALL*").text("[ All Stations ]"));
@@ -253,17 +287,21 @@ function addWavesAlert(stationStr) {
         if (marker["hasWaves"])
             select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
     });
-    if (typeof stationStr === "string") {
+    if (alerts[uid]["station"] !== "*ALL*") {
         select.val(stationStr);
-        alerts[uid]["station"] = stationStr;
         alerts[uid]["marker"] = new google.maps.Marker({
             map: map,
-            position: markers[stationStr]["pos"],
+            position: markers[alerts[uid]["station"]]["pos"],
             icon: wavesIcons[alerts[uid]["level"]]
         });
     }
     else {
         select.val("*ALL*");
+    }
+    if (alerts[uid]["level"] !== 1) {
+        dom.find(".thresholdBar .choice").removeClass("selected");
+        if (alerts[uid]["level"] === 2)
+            dom.find(".thresholdBar .choice.wavesMajor").addClass("selected");
     }
     select.on("input",function() {
         alerts[uid]["station"] = $(this).val();
@@ -378,29 +416,57 @@ function submit() {
         }
     }
     $('#submitAlertsButton').addClass("loading");
-    $.ajax({
-        url: apiUrl+"/adduser",
-        type: 'POST',
-        crossDomain: true,
-        data: JSON.stringify(alertsObject),
-        contentType: "application/json",
-        success: function(data, textStatus, xhr) {
-            if (xhr.status === 200) {
-                $('#primaryContactInput').prop('disabled', true);
-                $('#alertArea').addClass('hide');
-                $('#successMessage').removeClass('hide');
-                $('#successMessage .details').text($('#successMessage .details').text().replace("{primary}",primaryContact));
-            }
-            else {
-                $('#submitError').text(data);
+    if (updating) {
+        alertsObject["code"] = verifyCode;
+        $.ajax({
+            url: apiUrl + "/updateuser",
+            type: 'POST',
+            crossDomain: true,
+            data: JSON.stringify(alertsObject),
+            contentType: "application/json",
+            success: function (data, textStatus, xhr) {
+                if (xhr.status === 200) {
+                    $('#primaryContactInput').prop('disabled', true);
+                    $('#alertArea').addClass('hide');
+                    $('#updateMessage').removeClass('hide');
+                    $('#updateMessage .details').text($('#updateMessage .details').text().replace("{primary}", primaryContact));
+                }
+                else {
+                    $('#submitError').text(data);
+                    $('#submitAlertsButton').removeClass("loading");
+                }
+            },
+            error: function (xhr) {
+                $('#submitError').text(xhr.responseText || "Something went wrong. Try again later.");
                 $('#submitAlertsButton').removeClass("loading");
             }
-        },
-        error: function(xhr) {
-            $('#submitError').text(xhr.responseText || "Something went wrong. Try again later.");
-            $('#submitAlertsButton').removeClass("loading");
-        }
-    });
+        });
+    }
+    else {
+        $.ajax({
+            url: apiUrl + "/adduser",
+            type: 'POST',
+            crossDomain: true,
+            data: JSON.stringify(alertsObject),
+            contentType: "application/json",
+            success: function (data, textStatus, xhr) {
+                if (xhr.status === 200) {
+                    $('#primaryContactInput').prop('disabled', true);
+                    $('#alertArea').addClass('hide');
+                    $('#successMessage').removeClass('hide');
+                    $('#successMessage .details').text($('#successMessage .details').text().replace("{primary}", primaryContact));
+                }
+                else {
+                    $('#submitError').text(data);
+                    $('#submitAlertsButton').removeClass("loading");
+                }
+            },
+            error: function (xhr) {
+                $('#submitError').text(xhr.responseText || "Something went wrong. Try again later.");
+                $('#submitAlertsButton').removeClass("loading");
+            }
+        });
+    }
 }
 
 function updateStationDropdowns(type) {

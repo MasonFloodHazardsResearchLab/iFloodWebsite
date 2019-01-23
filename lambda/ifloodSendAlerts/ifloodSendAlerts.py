@@ -136,6 +136,7 @@ def lambda_handler(event, context):
 
         mapLink = "https://iflood.vse.gmu.edu/map/#inundation"
         unsubLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/removeuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])
+        updateLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/updateuser?primaryContact=" + urllib.parse.quote_plus(userItem["primaryContact"])
 
         if alertTripped:
             print("run")
@@ -161,7 +162,8 @@ def lambda_handler(event, context):
                                 'Data': emailTemplate #this is formatted in the style of a jinja template but it's just string replacements
                                     .replace("{{ alertText }}",alertMessage)
                                     .replace("{{ mapLink }}", mapLink)
-                                    .replace("{{ unsubscribeLink }}",unsubLink),
+                                    .replace("{{ updateLink }}", updateLink)
+                                    .replace("{{ unsubscribeLink }}", unsubLink),
                                 'Charset': 'utf-8'
                             }
                         }

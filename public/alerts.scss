@@ -20,6 +20,10 @@
     &:focus {
         box-shadow: 0 1px 8px rgba(0,0,0,0.6);
     }
+    &:disabled {
+        color: #AAA;
+        cursor: not-allowed;
+    }
     &.error {
         border: solid 1px #e65c5c;
         box-shadow: 0 0px 8px rgba(200,0,0,0.8);
@@ -345,7 +349,7 @@
     }
 }
 
-#successMessage {
+#successMessage, #updateMessage {
     position: absolute;
     top: 300px;
     left: 50%;
