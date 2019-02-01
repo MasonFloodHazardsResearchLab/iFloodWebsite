@@ -204,7 +204,7 @@ function init() {
                     makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
                 }
                 if (marker["hasValidation"]) {
-                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
+                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
                 }
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContentWind").append($('<img>',{
@@ -216,7 +216,7 @@ function init() {
                     makePlotStationWaves(replaceModelPaths(stationWavesUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWaves")[0], marker["title"] + ": Significant Wave Height");
                 }
                 if (marker["hasWavesValidation"]) {
-                    makePlotStationWavesValidation(replaceModelPaths(stationWavesValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWavesValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
+                    makePlotStationWavesValidation(replaceModelPaths(stationWavesValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWavesValidation")[0], marker["title"] + ": Wave Validation");
                 }
                 if (marker["hasXbeachVideo"]) {
                     domPlot.find("#mapPopupContentXbeachVideo").append(
