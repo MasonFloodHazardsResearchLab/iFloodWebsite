@@ -203,6 +203,9 @@ function init() {
                 if (marker["hasWater"]) {
                     makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
                 }
+                if (marker["hasValidation"]) {
+                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
+                }
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContentWind").append($('<img>',{
                         "class":"plotImg",
@@ -212,8 +215,8 @@ function init() {
                 if (marker["hasWaves"]) {
                     makePlotStationWaves(replaceModelPaths(stationWavesUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWaves")[0], marker["title"] + ": Significant Wave Height");
                 }
-                if (marker["hasValidation"]) {
-                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
+                if (marker["hasWavesValidation"]) {
+                    makePlotStationWavesValidation(replaceModelPaths(stationWavesValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWavesValidation")[0], marker["stationStr"], marker["title"] + ": Validation");
                 }
                 if (marker["hasXbeachVideo"]) {
                     domPlot.find("#mapPopupContentXbeachVideo").append(
@@ -255,6 +258,13 @@ function init() {
                 domPlot.find("#mapPopupTabValidation").click(function() {
                     domPlot.find(".mapPopupContent").css({"display": "none"});
                     domPlot.find("#mapPopupContentValidation").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabWavesValidation").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentWavesValidation").css({"display": "block"});
                     domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
@@ -2557,7 +2567,291 @@ function makePlotStationValidation(url, domNode, title) {
                 tickwidth: 1,
                 nticks: 4,
                 mirror: true,
-                title: 'BIAS (feet relative to MLLW)',
+                title: 'BIAS (meters relative to NAVD)',
+                range: [-2, 2],
+            }
+        };
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+    });
+}
+
+function makePlotStationWavesValidation(url, domNode, title) {
+    Plotly.d3.tsv(url, function (err, rows) {
+        function unpack(rows, key) {
+            date_start_plot = rows[0].iflood_date;
+            date_stop_plot = rows[rows.length - 1].iflood_date;
+            date_now_plot = rows[0].iflood_date;
+            date_now1_plot = rows[2].iflood_date;
+
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+
+        let iFLOOD = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'iflood',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'iflood_bias'),
+            line: {
+                color: '#008000',
+                width: 1
+            },
+            marker: {
+                color: '#008000',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Global = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'Global',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'global_bias'),
+            line: {
+                color: 'rgb(204, 0, 204)',
+                width: 1
+            },
+            marker: {
+                color: 'rgb(204, 0, 204)',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let East = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'US East',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'US_East_bias'),
+            line: {
+                color: 'red',
+                width: 1
+            },
+            marker: {
+                color: 'red',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let NWPS = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'NWPS LWX',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'nwps_lwx_bias'),
+            line: {
+                color: 'rgb(0, 0, 255)',
+                width: 1
+            },
+            marker: {
+                color: 'rgb(0, 0, 255)',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble = {
+            type: "scatter",
+            mode: 'lines',
+            name: 'Ensemble',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'ensemble_bias'),
+            line: {
+                color: 'orange',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble_Upper = {
+            type: "scatter",
+            mode: 'lines',
+            name: '95% CI',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'ensemble_upper_bias'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble_Lower = {
+            type: "scatter",
+            mode: 'lines',
+            name: '95% CI',
+            hoverinfo: "y",
+            x: Array.from(Array(25).keys()).slice(1),
+            y: unpack(rows, 'ensemble_lower_bias'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let data = [iFLOOD, Global, East, NWPS, Ensemble, Ensemble_Upper, Ensemble_Lower];
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            showcrossline: "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.5,
+            },
+            margin: {
+                l: 60,
+                r: 0,
+                t: 40,
+                b: 0
+            },
+            // width: 500,
+            // height: 350,
+            //"xanchor": "center"},
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    x: .87,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }],
+            annotations: [
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.25,
+                    y: 1.5,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "center",
+                    text: '                     Over Prediction',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+                ,
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.25,
+                    y: -1.5,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "center",
+                    text: '                     Under Prediction',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+
+            ],
+
+            shapes: [
+                {
+                    type: 'line',
+                    layer: 'above',
+                    x0: 1,
+                    y0: 0,
+                    x1: 6,
+                    y1: 0,
+                    fillcolor: 'rgb(0,0,0)',
+                    opacity: 1.0,
+                    line: {
+                        width: 1
+                    }
+                },
+
+
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: 2,
+                    x1: 1,
+                    y1: 0,
+                    fillcolor: 'red',
+                    opacity: 0.05,
+                    line: {
+                        width: 0
+                    }
+                },
+
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: 0,
+                    x1: 1,
+                    y1: -2,
+                    fillcolor: 'blue',
+                    opacity: 0.05,
+                    line: {
+                        width: 0
+                    }
+                }
+            ],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(255,255,255,0.3)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 24,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                title: 'Lead Time (hours)',
+                range: [1, 24],
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(255,255,255,0.3)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 4,
+                mirror: true,
+                title: 'BIAS (meters)',
                 range: [-2, 2],
             }
         };

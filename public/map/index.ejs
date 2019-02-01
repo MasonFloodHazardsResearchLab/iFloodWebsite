@@ -80,14 +80,17 @@
         {{if hasWater}}
             <div class="tab" id="mapPopupTabWater" role="button" tabindex="0">Water Level</div>
         {{/if}}
+        {{if hasValidation}}
+            <div class="tab" id="mapPopupTabValidation" role="button" tabindex="0">Validation</div>
+        {{/if}}
         {{if hasWind}}
             <div class="tab" id="mapPopupTabWind" role="button" tabindex="0">Wind</div>
         {{/if}}
         {{if hasWaves}}
             <div class="tab" id="mapPopupTabWaves" role="button" tabindex="0">Waves</div>
         {{/if}}
-        {{if hasValidation}}
-            <div class="tab" id="mapPopupTabValidation" role="button" tabindex="0">Validation</div>
+        {{if hasWavesValidation}}
+            <div class="tab" id="mapPopupTabWavesValidation" role="button" tabindex="0">Validation</div>
         {{/if}}
         {{if hasXbeachVideo}}
             <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
@@ -96,14 +99,17 @@
     {{if hasWater}}
         <div class="mapPopupContent" id="mapPopupContentWater"></div>
     {{/if}}
+    {{if hasValidation}}
+        <div class="mapPopupContent" id="mapPopupContentValidation"></div>
+    {{/if}}
     {{if hasWind}}
         <div class="mapPopupContent" id="mapPopupContentWind"></div>
     {{/if}}
     {{if hasWaves}}
         <div class="mapPopupContent" id="mapPopupContentWaves"></div>
     {{/if}}
-    {{if hasValidation}}
-        <div class="mapPopupContent" id="mapPopupContentValidation"></div>
+    {{if hasWavesValidation}}
+        <div class="mapPopupContent" id="mapPopupContentWavesValidation"></div>
     {{/if}}
     {{if hasXbeachVideo}}
         <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>

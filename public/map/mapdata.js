@@ -706,6 +706,7 @@ let layers = {
 let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/{_s_}.tsv";
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/water/{_s_}.tsv";
 let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
+let stationWavesValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/waves/{_s_}.tsv";
 let markers = {
     "LWTV": {
 		"type": "station",
@@ -895,7 +896,7 @@ let markers = {
 		},
 		"title": "Chesapeake Bay Bridge Tunnel",
 		"stationStr": "CBBV",
-		"hasWater": false,
+		"hasWater": true,
 		"hasWind": true,
 		"hasValidation": true,
 		"hasWaves": true,
@@ -1140,6 +1141,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasWavesValidation": true,
 		"agency": "SCRIPPS"
 	},
 	"WIVA": {
@@ -1154,6 +1156,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasWavesValidation": true,
 		"agency": "USACE"
 	},
 	"DBDE": {
@@ -1182,6 +1185,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasWavesValidation": true,
 		"agency": "NDBC"
 	},
 	"DFNC": {
@@ -1196,6 +1200,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasWavesValidation": true,
 		"agency": "SCRIPPS"
 	},
 	"FLVA": {
@@ -1224,6 +1229,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidation": false,
 		"hasWaves": true,
+        "hasWavesValidation": true,
 		"agency": "USNavy"
 	},
 	"YSVA": {
