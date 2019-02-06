@@ -80,7 +80,7 @@ def lambda_handler(event, context):
     for userItem in allUsers:
         chosenAlerts = json.loads(userItem["alerts"])
         alertTripped = False #if this stays false then no alerts were triggered
-        alertMessage = "iFLOOD Alert:\n"
+        alertMessage = ("🌎 " if userItem["contactType"] == "phone" else "") + "iFLOOD Alert:\n"
         if chosenAlerts.get("water"):
             waterFlooded = {}
             for station in chosenAlerts["water"]:
@@ -93,9 +93,12 @@ def lambda_handler(event, context):
                         waterFlooded[station] = floodLevels[station]
             if waterFlooded:
                 alertTripped = True
-                alertMessage += "\nPredicted Station Flood Levels:\n"
+                alertMessage += "\n" + ("💧 " if userItem["contactType"] == "phone" else "") + "Predicted Station Flood Levels:\n"
                 for station, status in waterFlooded.items():
-                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
+                    if userItem["contactType"] == "phone":
+                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
+                    else:
+                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m) at " + status["Flood Time"] + "\n"
         if chosenAlerts.get("waves"):
             wavesFlooded = {}
             for station in chosenAlerts["waves"]:
@@ -108,9 +111,12 @@ def lambda_handler(event, context):
                         wavesFlooded[station] = waveLevels[station]
             if wavesFlooded:
                 alertTripped = True
-                alertMessage += "\nPredicted Wave Heights:\n"
+                alertMessage += "\n" + ("🌊 " if userItem["contactType"] == "phone" else "") + "Predicted Wave Heights:\n"
                 for station, status in wavesFlooded.items():
-                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
+                    if userItem["contactType"] == "phone":
+                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
+                    else:
+                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n"
         if chosenAlerts.get("locations"):
             locationsFlooded = []
             for location in chosenAlerts["locations"]:
@@ -130,7 +136,7 @@ def lambda_handler(event, context):
                     ))
             if locationsFlooded:
                 alertTripped = True
-                alertMessage += "\nPredicted Inundation:\n"
+                alertMessage += "\n" + ("📍 " if userItem["contactType"] == "phone" else "") + "Predicted Inundation:\n"
                 for locationStatus in locationsFlooded:
                     alertMessage += locationStatus[0] + ": " + str(locationStatus[1]) + " meters\n"
 
@@ -139,7 +145,6 @@ def lambda_handler(event, context):
         updateLink = "https://iflood.vse.gmu.edu/alerts#" + userItem["primaryContact"] + "," + userItem["verifyCode"]
 
         if alertTripped and userItem["primaryContact"]:
-            print("run")
             if userItem["contactType"] == "email":
                 response = ses.send_email(
                     Source="iFLOOD Alerts <alerts@mail.iflood.vse.gmu.edu>",
@@ -172,7 +177,7 @@ def lambda_handler(event, context):
             elif userItem["contactType"] == "phone":
                 response = sns.publish(
                     PhoneNumber=userItem["primaryContact"],
-                    Message=alertMessage+"\nView Data:\n"+mapLink,
+                    Message=alertMessage+"\n🗺️ View Data:\n"+mapLink,
                 )
 
 # if __name__ == "__main__":
