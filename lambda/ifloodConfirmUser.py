@@ -1,9 +1,12 @@
 # Verify a user if provided the correct confirmation code
 
 import boto3
+import urllib.parse
 
 dynamodb = boto3.resource('dynamodb')
 userTable = dynamodb.Table('ifloodAlertsUsers')
+
+sns = boto3.client('sns') #AWS Simple Notification Service (for SMS)
 
 def errorOut(message):
     return {
@@ -30,14 +33,16 @@ def lambda_handler(event, context):
     if not response.get("Item"):
         return errorOut("Verification failed. Make sure you copied the entire URL.")
 
-    if response["Item"]["verified"]:
+    userItem = response.get("Item")
+
+    if userItem["verified"]:
         return errorOut("You've already been verified. You're all set!")
 
-    if data["code"] != response["Item"]["verifyCode"]:
+    if data["code"] != userItem["verifyCode"]:
         return errorOut("Verification failed. Make sure you copied the entire URL.")
 
     #if everything looks good we mark the user verified
-    response = userTable.update_item(
+    userTable.update_item(
         Key={
             "primaryContact": data["primaryContact"]
         },
@@ -46,6 +51,14 @@ def lambda_handler(event, context):
             ":t":True
         }
     )
+
+    if userItem["contactType"] == "phone":
+        unsubLink = "https://iflood.vse.gmu.edu/alerts/link#removeuser?primaryContact=" + urllib.parse.quote_plus(userItem["primaryContact"])
+        updateLink = "iflood.vse.gmu.edu/alerts#" + userItem["primaryContact"] + "," + userItem["verifyCode"]
+        response = sns.publish(
+            PhoneNumber=userItem["primaryContact"],
+            Message="Registration complete. To edit your alert subscription, tap here:\n" + updateLink + "\n\nTo unsubscribe, tap here:\n" + unsubLink,  # period at end of URL should stop iOS from automatically opening link to generate a preview
+        )
 
     return {
         "isBase64Encoded": False,

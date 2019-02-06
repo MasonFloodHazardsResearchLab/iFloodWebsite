@@ -56,7 +56,7 @@ def lambda_handler(event, context):
     userItem["verified"] = False
     userItem["verifyCode"] = str(random.randint(100000,999999))
 
-    verifyLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/confirmuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])+"&code="+urllib.parse.quote_plus(userItem["verifyCode"])
+    verifyLink = "https://iflood.vse.gmu.edu/alerts/link#confirmuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])+"&code="+urllib.parse.quote_plus(userItem["verifyCode"])
 
     #now we send their verification message
     if userItem["contactType"] == "email":

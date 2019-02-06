@@ -60,6 +60,9 @@ body {
     &.loading {
         cursor: progress;
     }
+    &.historical {
+        border: solid 4px #f39c12;
+    }
 }
 
 @keyframes stormRotation {
@@ -284,6 +287,9 @@ body {
     color: #FFF;
     font-size: 12px;
     padding: 2px 5px;
+    &.historical {
+        background-color: #f39c12;
+    }
 }
 #playPauseButton {
     flex: 0 0 40px;
