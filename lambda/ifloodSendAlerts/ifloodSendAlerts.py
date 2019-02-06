@@ -81,8 +81,8 @@ def lambda_handler(event, context):
         chosenAlerts = json.loads(userItem["alerts"])
         alertTripped = False #if this stays false then no alerts were triggered
         alertMessage = ("🌎 " if userItem["contactType"] == "phone" else "") + "iFLOOD Alert:\n"
+        waterFlooded = {}
         if chosenAlerts.get("water"):
-            waterFlooded = {}
             for station in chosenAlerts["water"]:
                 if station == "*ALL*":
                     for listedStation in floodLevels:
@@ -91,16 +91,8 @@ def lambda_handler(event, context):
                 elif station in floodLevels and station in oldFloodLevels and chosenAlerts["water"][station] > 0: #make sure their selection is valid
                     if floodLevelNumbers[floodLevels[station]["Flood Level"]] >= chosenAlerts["water"][station] > floodLevelNumbers[oldFloodLevels[station]["Flood Level"]]:
                         waterFlooded[station] = floodLevels[station]
-            if waterFlooded:
-                alertTripped = True
-                alertMessage += "\n" + ("💧 " if userItem["contactType"] == "phone" else "") + "Predicted Station Flood Levels:\n"
-                for station, status in waterFlooded.items():
-                    if userItem["contactType"] == "phone":
-                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
-                    else:
-                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m) at " + status["Flood Time"] + "\n"
+        wavesFlooded = {}
         if chosenAlerts.get("waves"):
-            wavesFlooded = {}
             for station in chosenAlerts["waves"]:
                 if station == "*ALL*":
                     for listedStation in waveLevels:
@@ -109,14 +101,7 @@ def lambda_handler(event, context):
                 elif station in waveLevels and station in oldWaveLevels and chosenAlerts["waves"][station] > 0: #make sure their selection is valid
                     if waveLevelNumbers[waveLevels[station]["Flood Level"]] >= chosenAlerts["waves"][station] > waveLevelNumbers[oldWaveLevels[station]["Flood Level"]]:
                         wavesFlooded[station] = waveLevels[station]
-            if wavesFlooded:
-                alertTripped = True
-                alertMessage += "\n" + ("🌊 " if userItem["contactType"] == "phone" else "") + "Predicted Wave Heights:\n"
-                for station, status in wavesFlooded.items():
-                    if userItem["contactType"] == "phone":
-                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " ("+str(status["Flood Stage"])+"m)\n"
-                    else:
-                        alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n"
+        locationsFlooded = []
         if chosenAlerts.get("locations"):
             locationsFlooded = []
             for location in chosenAlerts["locations"]:
@@ -134,9 +119,39 @@ def lambda_handler(event, context):
                         location["displayName"],
                         floodHeight
                     ))
+
+        #write message
+        if userItem["contactType"] == "phone":
+            if waterFlooded:
+                alertTripped = True
+                alertMessage += "\n💧 Predicted Station Flood Levels:\n\n"
+                for station, status in waterFlooded.items():
+                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n\n"
+            if wavesFlooded:
+                alertTripped = True
+                alertMessage += "\n🌊 Predicted Wave Heights:\n\n"
+                for station, status in wavesFlooded.items():
+                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ":\n" + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n\n"
             if locationsFlooded:
                 alertTripped = True
-                alertMessage += "\n" + ("📍 " if userItem["contactType"] == "phone" else "") + "Predicted Inundation:\n"
+                alertMessage += "\n📍 Predicted Inundation:\n\n"
+                for locationStatus in locationsFlooded:
+                    if userItem["contactType"] == "phone":
+                        alertMessage += locationStatus[0] + ": " + str(locationStatus[1]) + " meters\n\n"
+        else:
+            if waterFlooded:
+                alertTripped = True
+                alertMessage += "\nPredicted Station Flood Levels:\n"
+                for station, status in waterFlooded.items():
+                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m) at " + status["Flood Time"] + "\n"
+            if wavesFlooded:
+                alertTripped = True
+                alertMessage += "\nPredicted Wave Heights:\n"
+                for station, status in wavesFlooded.items():
+                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n"
+            if locationsFlooded:
+                alertTripped = True
+                alertMessage += "\nPredicted Inundation:\n"
                 for locationStatus in locationsFlooded:
                     alertMessage += locationStatus[0] + ": " + str(locationStatus[1]) + " meters\n"
 
@@ -144,7 +159,7 @@ def lambda_handler(event, context):
         unsubLink = "https://qkwvc38gw2.execute-api.us-east-1.amazonaws.com/prod/removeuser?primaryContact="+urllib.parse.quote_plus(userItem["primaryContact"])
         updateLink = "https://iflood.vse.gmu.edu/alerts#" + userItem["primaryContact"] + "," + userItem["verifyCode"]
 
-        if alertTripped and userItem["primaryContact"]:
+        if alertTripped:
             if userItem["contactType"] == "email":
                 response = ses.send_email(
                     Source="iFLOOD Alerts <alerts@mail.iflood.vse.gmu.edu>",
