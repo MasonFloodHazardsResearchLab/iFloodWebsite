@@ -313,7 +313,7 @@ function addWavesAlert(stationStr, level) {
                 position: markers[alerts[uid]["station"]]["pos"],
                 icon: wavesIcons[alerts[uid]["level"]]
             });
-        updateStationDropdowns("water");
+        updateStationDropdowns("waves");
     });
     dom.find(".thresholdBar .choice").click(function() {
         dom.find(".thresholdBar .choice").removeClass("selected");
@@ -331,10 +331,10 @@ function addWavesAlert(stationStr, level) {
             alerts[uid]["marker"].setMap(null);
         dom.remove();
         delete alerts[uid];
-        updateStationDropdowns("water");
+        updateStationDropdowns("waves");
     });
     $("html, body").animate({ scrollTop: $(document).height() }, 150);
-    updateStationDropdowns("water");
+    updateStationDropdowns("waves");
 }
 
 
