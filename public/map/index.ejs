@@ -95,6 +95,9 @@
         {{if hasXbeachVideo}}
             <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
         {{/if}}
+        {{if hasCamera}}
+            <div class="tab" id="mapPopupTabCamera" role="button" tabindex="0">Webcam</div>
+        {{/if}}
     </div>
     {{if hasWater}}
         <div class="mapPopupContent" id="mapPopupContentWater"></div>
@@ -113,6 +116,9 @@
     {{/if}}
     {{if hasXbeachVideo}}
         <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>
+    {{/if}}
+    {{if hasCamera}}
+        <div class="mapPopupContent" id="mapPopupContentCamera"></div>
     {{/if}}
 </script>
 

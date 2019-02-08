@@ -1,0 +1,13 @@
+<div id="m7_hls_content" ></div>
+<script type="text/javascript" src="https://www.microseven.com/assets/hls/m7_hls_lib.v2.min.js"></script>
+<script type="text/javascript">
+    new m7_hls_player_v2().setup("m7_hls_content","https://www.microseven.com/",{
+        video_id:"m7_hls_video",
+        stream_id:window.location.hash.slice(1),
+        w:"320",
+        h:"240",
+        auto_play:true,
+        muted:true,
+        poster:""
+    });
+</script>

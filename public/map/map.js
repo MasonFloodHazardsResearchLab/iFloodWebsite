@@ -231,6 +231,17 @@ function init() {
                         }))
                     );
                 }
+                if (marker["hasCamera"]) {
+                    domPlot.find("#mapPopupContentCamera").append(
+                        $('<iframe>', {
+                            'src': '/webcam#'+marker["cameraStreamId"],
+                            'class': 'cameraEmbedFrame'
+                        })
+                    );
+                    domPlot.find("#mapPopupContentCamera").click(function() {
+                        window.open('/webcam#'+marker["cameraStreamId"], '_blank');
+                    });
+                }
                 domPlot.find(".mapPopupContent").first().css({"display": "block"});
                 domPlot.find(".tab").first().addClass("current");
 
@@ -274,6 +285,13 @@ function init() {
                     domPlot.find("#mapPopupContentXbeachVideo").css({"display": "block"});
                     domPlot.find(".tab").removeClass("current");
                     domPlot.find("#mapPopupContentXbeachVideo video")[0].play();
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabCamera").click(function() {
+                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    domPlot.find("#mapPopupContentCamera").css({"display": "block"});
+                    domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<%- partial("../_headTag") %>
+    <style>
+        body {
+            overflow: hidden;
+            background-color: #000000;
+        }
+        #m7_hls_video {
+            width: 100vw;
+            height: 100vh;
+        }
+        #m7_hls_content_logo {
+            display: none;
+        }
+        #m7_hls_video_link {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <%- yield %>
+</body>
+</html>

@@ -221,6 +221,7 @@ body {
 }
 .mapPopupContent {
     display: none;
+    position: relative;
     min-width: 400px;
     min-height: 250px;
     max-width: 650px;
@@ -239,6 +240,18 @@ body {
         transform: translate(0,-50%);
         max-height: 100%;
     }
+    .cameraEmbedFrame {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border: none;
+        pointer-events: none; //sends pointer events to mapPopupContent instead since that's where we attach the listener
+    }
     .centerNote {
         position: absolute;
         top: 40%;
@@ -246,8 +259,9 @@ body {
         text-align: center;
     }
 }
-#mapPopupContent1 {
-    display: block;
+#mapPopupContentCamera {
+    overflow: hidden;
+    cursor: pointer;
 }
 
 #timeSlideContainer {

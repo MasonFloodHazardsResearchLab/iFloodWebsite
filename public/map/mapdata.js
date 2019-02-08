@@ -1373,7 +1373,10 @@ let markers = {
 		"hasWind": true,
 		"hasValidation": true,
 		"hasWaves": true,
-		"agency": "FHRL"
+        "hasCamera": true,
+        "cameraStreamId": "1UI9hNhQ1RR",
+		"agency": "FHRL",
+        "iotId": "SN180050"
 	},
 	"NHMD": {
 		"type": "iflood",
