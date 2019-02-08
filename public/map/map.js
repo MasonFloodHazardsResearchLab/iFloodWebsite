@@ -201,7 +201,7 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level");
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"]);
                 }
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
@@ -1620,7 +1620,7 @@ function drawOverlay(currentTime) {
 
 
 //plotly
-function makePlotStationWater(url, domNode, levels, title) {
+function makePlotStationWater(url, domNode, levels, title, iot) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
         function unpack(rows, key) {
@@ -1738,7 +1738,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         }
-	let Ensemble = {
+        let Ensemble = {
             type: "scatter",
             mode: "lines",
             name: 'Ensemble ',
@@ -1756,7 +1756,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         }
-	let Ensemble_Upper = {
+        let Ensemble_Upper = {
             type: "scatter",
             mode: "lines",
             name: '95% CI',
@@ -1774,7 +1774,7 @@ function makePlotStationWater(url, domNode, levels, title) {
             xaxis: 'x1',
             yaxis: 'y1'
         }
-	let Ensemble_Lower = {
+        let Ensemble_Lower = {
             type: "scatter",
             mode: "lines",
             name: '95% CI',
@@ -2034,6 +2034,31 @@ function makePlotStationWater(url, domNode, levels, title) {
             ]);
         }
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+        if (typeof iot !== 'undefined') {
+            $.get(dataDomain+"/IOT/"+iot+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
+                Plotly.d3.csv(dataDomain+"/IOT/"+iot+"/"+recentRun+".csv", function (err, rows) {
+                    let sensorObservation = {
+                        type: "scatter",
+                        mode: 'lines+markers',
+                        name: 'IoT Sensor',
+                        hoverinfo: "y",
+                        x: unpack(rows, 'date'),
+                        y: unpack(rows, 'water_level'),
+                        line: {
+                            color: '#44cbcb',
+                            width: 1
+                        },
+                        marker: {
+                            color: '#44cbcb',
+                            width: 0.25
+                        },
+                        xaxis: 'x1',
+                        yaxis: 'y1'
+                    };
+                    Plotly.addTraces(domNode, sensorObservation);
+                });
+            })
+        }
     });
 }
 
