@@ -2149,7 +2149,7 @@ function makePlotStationWaves(url, domNode, title) {
         let US_East = {
             type: "scatter",
             mode: 'lines+markers',
-            name: 'WW3:Regional(US East)',
+            name: 'WW3:Regional',
             hoverinfo: "y",
             x: unpack(rows, 'US East_time'),
             y: unpack(rows, 'US East'),
