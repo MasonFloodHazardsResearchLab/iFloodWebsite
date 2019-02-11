@@ -736,7 +736,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.633, 0.785, 1.243, 1.852],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8635027",
+        "navdOffset": -0.281
 	},
 	"YTVA": {
 		"type": "station",
@@ -1014,7 +1016,7 @@ let markers = {
 			"lat": 37.9023,
 			"lng": -75.4078
 		},
-		"title": "Chincoteague channel near Chincoteaguww bay inlet",
+		"title": "Chincoteague channel near Chincoteague bay inlet",
 		"stationStr": "CHIV",
 		"hasWater": true,
 		"hasWind": true,

@@ -201,7 +201,7 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"]);
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"], marker["noaaId"], marker["navdOffset"]);
                 }
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
@@ -1620,7 +1620,7 @@ function drawOverlay(currentTime) {
 
 
 //plotly
-function makePlotStationWater(url, domNode, levels, title, iot) {
+function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffset) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
         function unpack(rows, key) {
@@ -2034,30 +2034,61 @@ function makePlotStationWater(url, domNode, levels, title, iot) {
             ]);
         }
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+        //if this station has an IOT sensor we'll load the recent data and add it to the chart
         if (typeof iot !== 'undefined') {
-            $.get(dataDomain+"/IOT/"+iot+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
-                Plotly.d3.csv(dataDomain+"/IOT/"+iot+"/"+recentRun+".csv", function (err, rows) {
-                    let sensorObservation = {
-                        type: "scatter",
-                        mode: 'lines+markers',
-                        name: 'IoT Sensor',
-                        hoverinfo: "y",
-                        x: unpack(rows, 'date'),
-                        y: unpack(rows, 'water_level'),
-                        line: {
-                            color: '#44cbcb',
-                            width: 1
-                        },
-                        marker: {
-                            color: '#44cbcb',
-                            width: 0.25
-                        },
-                        xaxis: 'x1',
-                        yaxis: 'y1'
-                    };
-                    Plotly.addTraces(domNode, sensorObservation);
+            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv", function (err, rows) {
+                let sensorObservation = {
+                    type: "scatter",
+                    mode: 'markers',
+                    name: 'IoT Sensor',
+                    hoverinfo: "y",
+                    x: unpack(rows, 'date'),
+                    y: unpack(rows, 'water_level_2'), //sensor 2 is the good one
+                    line: {
+                        color: '#44cbcb',
+                        width: 1
+                    },
+                    marker: {
+                        color: '#44cbcb',
+                        width: 0.25
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, sensorObservation);
+            });
+        }
+        //if this station has NOAA observation data we'll load that too
+        if (typeof noaaId !== 'undefined') {
+            function noaaWaterUnpack(rows, key) {
+                return rows.map(function (row) {
+                    return parseFloat(row[key]) + navdOffset;
                 });
-            })
+            }
+            let noaaStart = moment().subtract(1,'days').format('YYYYMMDD');
+            let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
+            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station=8635027&time_zone=GMT&units=metric&format=csv";
+            Plotly.d3.csv(noaaUrl, function (err, rows) {
+                let noaaObservation = {
+                    type: "scatter",
+                    mode: 'lines+markers',
+                    name: 'NOAA Observed',
+                    hoverinfo: "y",
+                    x: unpack(rows, 'Date Time'),
+                    y: noaaWaterUnpack(rows, ' Water Level'),
+                    line: {
+                        color: '#44cbcb',
+                        width: 1
+                    },
+                    marker: {
+                        color: '#44cbcb',
+                        width: 0.25
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, noaaObservation);
+            });
         }
     });
 }

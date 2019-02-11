@@ -151,7 +151,7 @@ def lambda_handler(event, context):
                     alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n"
             if locationsFlooded:
                 alertTripped = True
-                alertMessage += "\nPredicted Inundation:\n"
+                alertMessage += "\nPredicted Flooding:\n"
                 for locationStatus in locationsFlooded:
                     alertMessage += locationStatus[0] + ": " + str(locationStatus[1]) + " meters\n"
 
