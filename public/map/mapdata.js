@@ -681,7 +681,7 @@ let layers = {
         "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
         "gisLayer":"19",
         "img":"/map/layerIcons/temp.png",
-        "description":"24-Hr Quantitative Precipitation Accumulation from NOAA",
+        "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
         "visible":false
     },
     "stormPath": {
