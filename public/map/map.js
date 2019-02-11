@@ -201,7 +201,7 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"], marker["noaaId"], marker["navdOffset"]);
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"], marker["agency"] === "NOAA" ? marker["noaaId"] : undefined, marker["navdOffset"]);
                 }
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
@@ -516,10 +516,27 @@ for (let modelName in models) {
 }
 $.when.apply($, modelLoadingPromises).then(function() {
     thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
+    //check time every minute so timeline updates when the hour ticks over
     setInterval(function() {
         thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
         drawTimeSlide();
     }, 60000);
+    //also check the model data age every hour and remind user to refresh if they're viewing stale data
+    setInterval(function() {
+        Object.keys(models).forEach(modelName => {
+            let model = models[modelName];
+            modelLoadingPromises.push(
+                $.get(dataDomain+"/Forecast/"+modelName+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
+                    if (!model["lastForecast"].isSame(moment.utc(recentRun, "YYYYMMDDHH"))) {
+                        $('#mapContainer').addClass("historical");
+                        $('#modelInfo')
+                            .addClass("historical")
+                            .text("Viewing iFlood data generated "+models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD")+". Refresh to view latest forecast.");
+                    }
+                })
+            );
+        });
+    }, 60000*60);
     currentHourSetting = thisHour;
     //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
     //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
@@ -1792,7 +1809,9 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
             xaxis: 'x1',
             yaxis: 'y1'
         }
-        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
+        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Ensemble, Ensemble_Upper, Ensemble_Lower];
+        if (typeof noaaId === 'undefined') // only show observed from csv if we don't have something fresher to pull
+            data.push(Observed);
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2036,7 +2055,7 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
         //if this station has an IOT sensor we'll load the recent data and add it to the chart
         if (typeof iot !== 'undefined') {
-            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv", function (err, rows) {
+            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
                 let sensorObservation = {
                     type: "scatter",
                     mode: 'markers',
@@ -2067,7 +2086,7 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
             }
             let noaaStart = moment().subtract(1,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
-            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station=8635027&time_zone=GMT&units=metric&format=csv";
+            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
             Plotly.d3.csv(noaaUrl, function (err, rows) {
                 let noaaObservation = {
                     type: "scatter",
@@ -2077,11 +2096,11 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
                     x: unpack(rows, 'Date Time'),
                     y: noaaWaterUnpack(rows, ' Water Level'),
                     line: {
-                        color: '#44cbcb',
+                        color: '#0000FF',
                         width: 1
                     },
                     marker: {
-                        color: '#44cbcb',
+                        color: '#0000FF',
                         width: 0.25
                     },
                     xaxis: 'x1',

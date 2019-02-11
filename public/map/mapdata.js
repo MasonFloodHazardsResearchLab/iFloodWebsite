@@ -721,7 +721,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.512, 0.664, 0.817, 0.969],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8635750",
+        "navdOffset": -0.25
 	},
 	"NCDV": {
 		"type": "station",
@@ -768,7 +770,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.532, 0.593, 0.745, 0.897],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8571421",
+        "navdOffset": -0.383
 	},
 	"BLTM": {
 		"type": "station",
@@ -783,7 +787,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.508, 0.66, 1.27, 1.575],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8574680",
+        "navdOffset": -0.254
 	},
 	"APAM": {
 		"type": "station",
@@ -798,7 +804,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.379, 0.561, 0.775, 1.598],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8575512",
+        "navdOffset": -0.231
 	},
 	"SLIM": {
 		"type": "station",
@@ -813,7 +821,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.5, 0.652, 0.957, 1.262],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8577330",
+        "navdOffset": -0.262
 	},
 	"WASD": {
 		"type": "station",
@@ -828,7 +838,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.703, 0.856, 1.191, 1.709],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8594900",
+        "navdOffset": -0.424
 	},
 	"WAVA": {
 		"type": "station",
@@ -843,7 +855,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [1.046, 1.198, 1.503, 1.656],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8631044",
+        "navdOffset": -0.783
 	},
 	"KPTV": {
 		"type": "station",
@@ -858,7 +872,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.644, 0.797, 0.949, 1.101],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8632200",
+        "navdOffset": -0.575
 	},
 	"WMVA": {
 		"type": "station",
@@ -873,7 +889,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.431, 0.583, 0.735, 0.888],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8636580",
+        "navdOffset": -0.331
 	},
 	"SWPV": {
 		"type": "station",
@@ -888,7 +906,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.715, 0.867, 1.172, 1.477],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8638610",
+        "navdOffset": -0.504
 	},
 	"CBBV": {
 		"type": "station",
@@ -903,7 +923,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": true,
 		"floodLevels": [0.806, 0.959, 1.111, 1.263],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8638901",
+        "navdOffset": -0.566
 	},
 	"TBMD": {
 		"type": "station",
@@ -918,7 +940,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.637, 0.79, 1.094, 1.399],
-		"agency": "NOAA"
+		"agency": "NOAA",
+        "noaaId": "8573364",
+        "navdOffset": -0.277
 	},
 	"YKTV": {
 		"type": "station",
@@ -933,7 +957,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.741, 0.893, 1.046, 1.198],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "8637689",
+        "navdOffset": -0.478
 	},
 	"OTVA": {
 		"type": "station",
@@ -948,7 +974,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.357, 0.601, 0.875, 1.607],
-		"agency": "EXTRA"
+		"agency": "EXTRA",
+        "noaaId": "860005",
+        "navdOffset": -0.405
 	},
 	"SGVA": {
 		"type": "station",
@@ -963,7 +991,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.491, 0.644, 0.796, 1.253],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860009",
+        "navdOffset": -0.271
 	},
 	"CBVA": {
 		"type": "station",
@@ -978,7 +1008,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.578, 0.73, 0.91, 1.035],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860010",
+        "navdOffset": -0.337
 	},
 	"CBHD": {
 		"type": "station",
@@ -993,7 +1025,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.75, 0.902, 1.36, 1.817],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860011",
+        "navdOffset": -0.317
 	},
 	"CRSM": {
 		"type": "station",
@@ -1008,7 +1042,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.559, 0.712, 0.864, 1.169],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860012",
+        "navdOffset": -0.355
 	},
 	"CHIV": {
 		"type": "station",
@@ -1023,7 +1059,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.598, 0.903, 1.055, 1.36],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860013",
+        "navdOffset": -0.468
 	},
 	"NSWV": {
 		"type": "station",
@@ -1038,7 +1076,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.365, 0.518, 0.67, 0.975],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860014",
+        "navdOffset": -0.397
 	},
 	"CCHV": {
 		"type": "station",
@@ -1053,7 +1093,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [1.132, 1.284, 1.437, 1.742],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860015",
+        "navdOffset": -0.849
 	},
 	"MJBV": {
 		"type": "station",
@@ -1068,7 +1110,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.572, 0.725, 1.03, 1.182],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860016",
+        "navdOffset": -0.494
 	},
 	"FTMV": {
 		"type": "station",
@@ -1083,7 +1127,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.702, 0.855, 1.159, 1.464],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860018",
+        "navdOffset": -0.517
 	},
 	"JSFV": {
 		"type": "station",
@@ -1098,7 +1144,9 @@ let markers = {
 		"hasValidation": false,
 		"hasWaves": false,
 		"floodLevels": [0.728, 0.88, 1.032, 1.185],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860019",
+        "navdOffset": -0.339
 	},
 	"DUKN": {
 		"type": "station",
@@ -1113,7 +1161,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.859, 1.012, 1.164, 1.316],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860020",
+        "navdOffset": -0.665
 	},
 	"OCIM": {
 		"type": "station",
@@ -1128,7 +1178,9 @@ let markers = {
 		"hasValidation": true,
 		"hasWaves": false,
 		"floodLevels": [0.557, 0.709, 1.014, 1.319],
-		"agency": "AHPS"
+		"agency": "AHPS",
+        "noaaId": "860021",
+        "navdOffset": -0.51
 	},
     //buoys
     "CHVA": {
