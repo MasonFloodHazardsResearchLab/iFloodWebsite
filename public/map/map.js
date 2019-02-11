@@ -201,7 +201,7 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["floodLevels"], marker["title"] + ": Water Level", marker["iotId"], marker["agency"] === "NOAA" ? marker["noaaId"] : undefined, marker["navdOffset"]);
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
                 }
                 if (marker["hasValidation"]) {
                     makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
@@ -1637,7 +1637,11 @@ function drawOverlay(currentTime) {
 
 
 //plotly
-function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffset) {
+function makePlotStationWater(url, domNode, title, marker) {
+    let levels = marker["floodLevels"];
+    let iot = marker["iotId"];
+    let noaaId = marker["noaaId"];
+    let navdOffset = marker["navdOffset"];
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
         function unpack(rows, key) {
@@ -1810,7 +1814,7 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
             yaxis: 'y1'
         }
         let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Ensemble, Ensemble_Upper, Ensemble_Lower];
-        if (typeof noaaId === 'undefined') // only show observed from csv if we don't have something fresher to pull
+        if (marker["agency"] !== "NOAA") // only show observed from csv if we don't have something fresher to pull
             data.push(Observed);
         let layout = {
             showlegend: true,
@@ -2078,7 +2082,7 @@ function makePlotStationWater(url, domNode, levels, title, iot, noaaId, navdOffs
             });
         }
         //if this station has NOAA observation data we'll load that too
-        if (typeof noaaId !== 'undefined') {
+        if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
             function noaaWaterUnpack(rows, key) {
                 return rows.map(function (row) {
                     return parseFloat(row[key]) + navdOffset;
