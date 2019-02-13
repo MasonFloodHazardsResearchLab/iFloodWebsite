@@ -201,8 +201,8 @@ body {
     width: 100%;
     display: flex;
     position: absolute;
-    top: -38px;
-    left: -15px;
+    top: -30px;
+    left: 6px;
     .tab {
         height: 30px;
         padding: 3px 5px;
@@ -225,12 +225,12 @@ body {
     min-width: 400px;
     min-height: 250px;
     max-width: 650px;
-    width: calc(60vw - 300px);
+    width: calc(50vw - 350px);
     height: 50vh;
     .plotImg {
         display: block;
         margin: auto;
-        width: 100%;
+        max-width: 100%;
         max-height: 100%;
     }
     .popupVideo {
