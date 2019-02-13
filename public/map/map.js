@@ -1139,6 +1139,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
     }
 }
 
+//hide data from a specific layer on the map
 function hideLayer(layer) {
     layer["visible"] = false;
     updateHash();
@@ -1147,7 +1148,7 @@ function hideLayer(layer) {
         if (layer["temporal"]) {
             for (let i = 0; i < 84; i++) {
                 if (layer["data"][layer["showing"][0]][i]) {
-                    layer["data"][layer["showing"][0]][i] = null;
+                    layer["data"][layer["showing"][0]][i] = null; //the actual geoJSON data takes up a lot of space so allow it to be garbage collected
                 }
             }
         }
@@ -1177,6 +1178,7 @@ function hideLayer(layer) {
     }
 }
 
+//given a layer and a view level, get the index of the best url to use for that layer at that view level
 function getViewDataIndex(layer, view) {
     for (let i = 0; i < layer["urls"].length; i++) {
         if (layer["urls"][i][0] === view)
@@ -1185,6 +1187,7 @@ function getViewDataIndex(layer, view) {
     return 0;
 }
 
+//for geoJSON layers, hide all data contained within (this function is called by hideLayer())
 function hideAllData(layer, except) {
     if (layer["temporal"]) {
         for (let i = 0; i < layer["data"].length; i++) {
@@ -1210,6 +1213,7 @@ function hideAllData(layer, except) {
     }
 }
 
+//find current view level
 function getCurrentView() {
     let bounds = map.getBounds();
     let ne = bounds.getNorthEast();
@@ -1238,6 +1242,7 @@ function updateView() {
     }
 }
 
+//update layers to show data for the currently selected time
 function updateTime() {
     let promises = [];
     for (let layerIndex in layers) {
@@ -1269,6 +1274,7 @@ function updateTime() {
     return promises;
 }
 
+//draw the scale bar that shows the color mapping for a layer
 function drawScaleBar(layer, current) {
     layer["scaleCanvas"].width = 60*window.devicePixelRatio;
     layer["scaleCanvas"].height = 200*window.devicePixelRatio;
@@ -1334,6 +1340,7 @@ function drawScaleBar(layer, current) {
     context.fillText(layer["unit"].toString(),30,196);
 }
 
+//draw the time slider at the bottom of the screen
 function drawTimeSlide() {
     let bgCtx = sliderBGCanvas.getContext("2d");
     let handleCtx = sliderHandleCanvas.getContext("2d");
@@ -1411,15 +1418,6 @@ function drawTimeSlide() {
     popup.css({
         'left':Math.max(Math.min(sliderHandleCanvas.offsetLeft+10+timeSlider.offsetLeft,timeSlideContainer.clientWidth-50),50)
     })
-}
-
-function getPixelFromMapPoint(latLng) {
-    let topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
-    let bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
-    let scale = Math.pow(2, map.getZoom());
-    let worldPoint = map.getProjection().fromLatLngToPoint(latLng);
-    let point = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-    return point;
 }
 
 function setParticleFile(layer) {
@@ -2062,7 +2060,7 @@ function makePlotStationWater(url, domNode, title, marker) {
             Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
                 let sensorObservation = {
                     type: "scatter",
-                    mode: 'markers',
+                    mode: 'lines+markers',
                     name: 'IoT Sensor',
                     hoverinfo: "y",
                     x: unpack(rows, 'date'),
