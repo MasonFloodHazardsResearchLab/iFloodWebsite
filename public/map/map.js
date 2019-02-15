@@ -2307,6 +2307,9 @@ function makePlotStationWaves(url, domNode, title) {
                 orientation: "h",
                 yanchor: "bottom",
                 y: -0.35,
+                font: {
+                    size: 10
+                }
             },
             //"xanchor": "center"},
             margin: {
@@ -2586,6 +2589,9 @@ function makePlotStationValidation(url, domNode, title) {
                 orientation: "h",
                 yanchor: "bottom",
                 y: -0.5,
+                font: {
+                    size: 10
+                }
             },
             margin: {
                 l: 60,
@@ -2870,6 +2876,9 @@ function makePlotStationWavesValidation(url, domNode, title) {
                 orientation: "h",
                 yanchor: "bottom",
                 y: -0.5,
+                font: {
+                    size: 10
+                }
             },
             margin: {
                 l: 60,
