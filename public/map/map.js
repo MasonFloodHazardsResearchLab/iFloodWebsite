@@ -1242,8 +1242,33 @@ function updateView() {
     }
 }
 
-//update layers to show data for the currently selected time
+//update layers and plots to show data for the currently selected time
 function updateTime() {
+    //update plotly if needed
+    if (currentInfoWindow) {
+        $('#mapPopupContentWater, #mapPopupContentWaves').each(function() {
+            Plotly.relayout(this, {
+                'shapes[0]': null
+            });
+            Plotly.relayout(this, {
+                'shapes[0]': {
+                    type: 'line',
+                    layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgb(32,81,124)',
+                        width: 2
+                    }
+                }
+            });
+        })
+    }
+    //update data layers
     let promises = [];
     for (let layerIndex in layers) {
         let layer = layers[layerIndex];
@@ -1420,6 +1445,11 @@ function drawTimeSlide() {
     })
 }
 
+//produce a YYYY-MM-DD HH:MM:SS string for plotly, based on the current time on the slider
+function getRealSelectedTimeString() {
+    return models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(currentHourSetting, "hours").format("YYYY-MM-DD HH:MM:SS")
+}
+
 function setParticleFile(layer) {
     if (currentHourSetting === -1)
         return;
@@ -1469,6 +1499,7 @@ function setParticleFile(layer) {
     });
 }
 
+//particles
 let overCtx = mapOverlayCanvas.getContext('2d');
 window.addEventListener('resize',function() {
     mapOverlayCanvas.width = mapOverlayCanvas.clientWidth;
@@ -1869,17 +1900,32 @@ function makePlotStationWater(url, domNode, title, marker) {
                 {
                     type: 'line',
                     layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgb(32,81,124)',
+                        width: 2
+                    }
+                },
+                {
+                    type: 'line',
+                    layer: 'above',
                     x0: date_now_plot,
                     y0: 0,
                     x1: date_now_plot,
                     y1: 1,
                     yref: "paper",
-                    fillcolor: 'rgb(0,0,0)',
                     opacity: 1.0,
                     line: {
+                        color: 'rgb(0,0,0)',
                         width: 1
                     }
-                }],
+                }
+            ],
             xaxis: {
                 showgrid: true,
                 showspikes: true,
@@ -2304,6 +2350,20 @@ function makePlotStationWaves(url, domNode, title) {
                 {
                     type: 'line',
                     layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgb(32,81,124)',
+                        width: 2
+                    }
+                },
+                {
+                    type: 'line',
+                    layer: 'above',
                     yref: "paper",
                     x0: date_start_plot,
                     y0: 0,
@@ -2315,7 +2375,6 @@ function makePlotStationWaves(url, domNode, title) {
                         width: 1
                     }
                 },
-
                 {
                     type: 'rect',
                     layer: 'below',
