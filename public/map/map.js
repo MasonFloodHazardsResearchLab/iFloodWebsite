@@ -1855,6 +1855,9 @@ function makePlotStationWater(url, domNode, title, marker) {
                 orientation: "h",
                 yanchor: "bottom",
                 y: -0.35,
+                font: {
+                    size: 10
+                }
             },
             //"xanchor": "center"},
             margin: {
