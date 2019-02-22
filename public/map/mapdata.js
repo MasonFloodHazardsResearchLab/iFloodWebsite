@@ -475,7 +475,7 @@ let layers = {
         "temporal":true,
         "urls":[
             [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/water/{_h_}.json"],
-            //[2,"https://data.iflood.vse.gmu.edu/test/PRmaxele.json"]
+            [2,"https://data.iflood.vse.gmu.edu/Forecast/PotomacRiver_ADCIRC/DCmodel/Water/Splits/{_h_}.json"]
         ],
         "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/CBmaxele.json",
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
