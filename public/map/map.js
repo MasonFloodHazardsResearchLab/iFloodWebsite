@@ -2142,7 +2142,7 @@ function makePlotStationWater(url, domNode, title, marker) {
                 let noaaObservation = {
                     type: "scatter",
                     mode: 'lines+markers',
-                    name: 'NOAA Observed',
+                    name: 'Observed',
                     hoverinfo: "y",
                     x: unpack(rows, 'Date Time'),
                     y: noaaWaterUnpack(rows, ' Water Level'),
