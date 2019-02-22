@@ -458,7 +458,8 @@ let models = {
 
 let viewLevels = [
     null, //0 is the default/global level
-    [[-80.73,40.95],[-72.63,35.59]] //1 is chesapeake
+    [[-80.73,40.95],[-72.63,35.59]], //1 is chesapeake
+    [[-79.0,40.0],[-76.40,37.96]] //2 is DC
 ];
 
 let layerGroups = [
@@ -474,6 +475,7 @@ let layers = {
         "temporal":true,
         "urls":[
             [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/water/{_h_}.json"],
+            //[2,"https://data.iflood.vse.gmu.edu/test/PRmaxele.json"]
         ],
         "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/CBmaxele.json",
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
