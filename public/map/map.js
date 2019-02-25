@@ -811,7 +811,7 @@ function showLayer(layer, oncomplete) {
     layer["visible"] = true;
     updateHash();
     if (layer["type"] === "geoJSON") {
-        let index = getViewDataIndex(layer, getCurrentView());
+        let index = getViewDataIndex(layer);
         showData(layer, index, currentHourSetting, oncomplete);
     }
     else if (layer["type"] === "outline") {
@@ -1037,12 +1037,20 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
     if (!layer["data"][dataIndex]
     || (layer["temporal"] && !layer["data"][dataIndex][timeIndex])
     ) {
-        let fileUrl = replaceModelPaths(layer["urls"][dataIndex][1]);
+        let fileUrl;
         if (layer["temporal"]) {
-            if (timeIndex === -1)
-                fileUrl = replaceModelPaths(layer["maxUrl"]);
-            else
-                fileUrl = fileUrl.replace("{_h_}", (timeIndex+1).toString());
+            if (timeIndex === -1) {
+                if (Array.isArray(layer["maxUrl"]))
+                    fileUrl = replaceModelPaths(layer["maxUrl"][dataIndex][1]);
+                else
+                    fileUrl = replaceModelPaths(layer["maxUrl"]);
+            }
+            else {
+                fileUrl = replaceModelPaths(layer["urls"][dataIndex][1]).replace("{_h_}", (timeIndex + 1).toString());
+            }
+        }
+        else {
+            fileUrl = replaceModelPaths(layer["urls"][dataIndex][1]);
         }
         let planningToShow = layer["showing"];
 		if (activeDataRequests.hasOwnProperty(fileUrl)) {
@@ -1178,15 +1186,6 @@ function hideLayer(layer) {
     }
 }
 
-//given a layer and a view level, get the index of the best url to use for that layer at that view level
-function getViewDataIndex(layer, view) {
-    for (let i = 0; i < layer["urls"].length; i++) {
-        if (layer["urls"][i][0] === view)
-            return i;
-    }
-    return 0;
-}
-
 //for geoJSON layers, hide all data contained within (this function is called by hideLayer())
 function hideAllData(layer, except) {
     if (layer["temporal"]) {
@@ -1213,28 +1212,29 @@ function hideAllData(layer, except) {
     }
 }
 
-//find current view level
-function getCurrentView() {
+//given a layer and a view level, get the index of the best url to use for that layer at that view level
+function getViewDataIndex(layer) {
     let bounds = map.getBounds();
     let ne = bounds.getNorthEast();
     let sw = bounds.getSouthWest();
 
     let currentView = 0;
-    for (let i = 1; i < viewLevels.length; i++) { //starts at 1 because 0 has no bounds (it's the default)
-        if (sw.lng() > viewLevels[i][0][0] && ne.lat() < viewLevels[i][0][1] && ne.lng() < viewLevels[i][1][0] && sw.lat() > viewLevels[i][1][1])
-            currentView = i;
+    for (let i = 0; i < layer["urls"].length; i++) { //starts at 1 because 0 has no bounds (it's the default)
+        let level = layer["urls"][i][0];
+        if (level !== 0) {
+            if (sw.lng() > viewLevels[level][0][0] && ne.lat() < viewLevels[level][0][1] && ne.lng() < viewLevels[level][1][0] && sw.lat() > viewLevels[level][1][1])
+                currentView = i;
+        }
     }
     return currentView;
 }
 
 //update layers to show more detailed data for a specific area (if they have it)
 function updateView() {
-    let currentView = getCurrentView();
-
     for (let layerIndex in layers) {
         let layer = layers[layerIndex];
         if (layer["visible"] && layer["type"] === "geoJSON") {
-            let index = getViewDataIndex(layer, currentView);
+            let index = getViewDataIndex(layer);
             if ((layer["temporal"] && layer["showing"][0] !== index) || (!layer["temporal"] && layer["showing"] !== index)) {
                 showData(layer, index, currentHourSetting);
             }

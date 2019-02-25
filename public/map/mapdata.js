@@ -477,7 +477,10 @@ let layers = {
             [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/Splits/water/{_h_}.json"],
             [2,"https://data.iflood.vse.gmu.edu/Forecast/PotomacRiver_ADCIRC/DCmodel/Water/Splits/{_h_}.json"]
         ],
-        "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/CBmaxele.json",
+        "maxUrl":[
+            [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/CBmaxele.json"],
+            [2,"https://data.iflood.vse.gmu.edu/Forecast/PotomacRiver_ADCIRC/DCmodel/Water/MaxWater/PRmaxele.json"]
+        ],
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
         "colorRange":colorRanges["jet"],
         "colorBounds":[0,2],
