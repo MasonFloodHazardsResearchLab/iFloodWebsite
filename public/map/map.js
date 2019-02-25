@@ -2163,276 +2163,6 @@ function makePlotStationWater(url, domNode, title, marker) {
     });
 }
 
-function makePlotStationWaves(url, domNode, title) {
-    Plotly.d3.tsv(url, function (err, rows) {
-        let date_start_plot;
-        let date_stop_plot;
-        function unpack(rows, key) {
-            date_start_plot = rows[0]["iflood_date"];
-            date_stop_plot = rows[rows.length - 1]["iflood_date"];
-            return rows.map(function (row) {
-                return row[key];
-            });
-        }
-
-        let iFLOOD = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'iFLOOD',
-            hoverinfo: "y",
-            x: unpack(rows, 'iflood_date'),
-            y: unpack(rows, 'iflood'),
-            line: {
-                color: '#008000',
-                width: 1
-            },
-            marker: {
-                color: '#008000',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let US_East = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'WW3:Regional',
-            hoverinfo: "y",
-            x: unpack(rows, 'US East_time'),
-            y: unpack(rows, 'US East'),
-            line: {
-                color: 'black',
-                width: 1
-            },
-            marker: {
-                color: 'black',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Global = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'WW3:Global',
-            hoverinfo: "y",
-            x: unpack(rows, 'global_time'),
-            y: unpack(rows, 'global'),
-            line: {
-                color: 'brown',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let nwps = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'NWPS:LWX',
-            hoverinfo: "y",
-            x: unpack(rows, 'nwps_lwx_time'),
-            y: unpack(rows, 'nwps_lwx'),
-            line: {
-                color: '#e646e7',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble= {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'Ensemble',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble'),
-            line: {
-                color: 'orange',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Upper= {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble_upper'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Observed = {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'Observed',
-            hoverinfo: "y",
-            x: unpack(rows, 'observed_time'),
-            y: unpack(rows, 'observed'),
-            line: {
-                color: 'blue',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-
-        let Ensemble_Lower= {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble_lower'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let data = [iFLOOD, Global, US_East, nwps, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
-        let layout = {
-            showlegend: true,
-            hovermode: "x",
-            "spikedistance": "data",
-            "showcrossline": "true",
-            title: title,
-            legend: {
-                orientation: "h",
-                yanchor: "bottom",
-                y: -0.35,
-                font: {
-                    size: 10
-                }
-            },
-            //"xanchor": "center"},
-            margin: {
-                l: 60,
-                r: 0,
-                t: 40,
-                b: 0
-            },
-            // width: 500,
-            // height: 350,
-            images: [
-                {
-                    source: "/MasonM.png",
-                    xref: "paper",
-                    yref: "paper",
-                    x: .87,
-                    y: .985,
-                    sizex: 0.25,
-                    sizey: 0.25,
-                    opacity: 0.25,
-                    layer: "above"
-                }],
-            annotations: [
-                {
-                    x: date_start_plot,
-                    xshift: 10,
-                    yref: "paper",
-                    yanchor: "middle",
-                    y: 0.5,
-                    opacity: 0.95,
-                    textangle: -90,
-                    layer: "above",
-                    text: 'Forecast Start',
-                    font: {
-                        color: "black"
-                    },
-                    arrowhead: 0,
-                    ax: 0,
-                    ay: 0
-                }
-            ],
-
-            shapes: [
-                {
-                    type: 'line',
-                    layer: 'above',
-                    x0: getRealSelectedTimeString(),
-                    y0: 0,
-                    x1: getRealSelectedTimeString(),
-                    y1: 1,
-                    yref: "paper",
-                    opacity: 0.5,
-                    line: {
-                        color: 'rgb(32,81,124)',
-                        width: 2
-                    }
-                },
-                {
-                    type: 'line',
-                    layer: 'above',
-                    yref: "paper",
-                    x0: date_start_plot,
-                    y0: 0,
-                    x1: date_start_plot,
-                    y1: 1,
-                    fillcolor: 'rgb(0,0,0)',
-                    opacity: 1.0,
-                    line: {
-                        width: 1
-                    }
-                },
-                {
-                    type: 'rect',
-                    layer: 'below',
-                    xref: "paper",
-                    yref: "y",
-                    x0: 0,
-                    y0: -1,
-                    x1: 1,
-                    y1: 2.5,
-                    fillcolor: '#ffffff',
-                    opacity: 0.5,
-                    line: {
-                        width: 0
-                    }
-                }
-            ],
-            xaxis: {
-                showgrid: true,
-                showspikes: true,
-                spikemode: "across",
-                gridcolor: 'rgba(153,153,153,0.5)',
-                gridwidth: .25,
-                linecolor: 'rgb(153, 153, 153)',
-                linewidth: 1,
-                anchor: 'y1',
-                nticks: 8,
-                tickcolor: '#bfbfbf',
-                tickwidth: 4,
-                mirror: true,
-                autorange: true
-
-            },
-            yaxis: {
-                showgrid: true,
-                gridcolor: 'rgba(153,153,153,0.5)',
-                gridwidth: .25,
-                linecolor: 'rgb(153, 153, 153)',
-                linewidth: 1,
-                tick0: 0,
-                domain: [0, 1],
-                tickwidth: 1,
-                nticks: 8,
-                mirror: true,
-                title: 'Significant Wave Height (meters)',
-                autorange: true,
-                //range: [-1, 8],
-            }
-        };
-        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
-    });
-}
-
 function makePlotStationValidation(url, domNode, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         function unpack(rows, key) {
@@ -2732,6 +2462,276 @@ function makePlotStationValidation(url, domNode, title) {
                 mirror: true,
                 title: 'BIAS (meters relative to NAVD)',
                 range: [-2, 2],
+            }
+        };
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+    });
+}
+
+function makePlotStationWaves(url, domNode, title) {
+    Plotly.d3.tsv(url, function (err, rows) {
+        let date_start_plot;
+        let date_stop_plot;
+        function unpack(rows, key) {
+            date_start_plot = rows[0]["iflood_date"];
+            date_stop_plot = rows[rows.length - 1]["iflood_date"];
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+
+        let iFLOOD = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'iFLOOD',
+            hoverinfo: "y",
+            x: unpack(rows, 'iflood_date'),
+            y: unpack(rows, 'iflood'),
+            line: {
+                color: '#008000',
+                width: 1
+            },
+            marker: {
+                color: '#008000',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let US_East = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'WW3:Regional',
+            hoverinfo: "y",
+            x: unpack(rows, 'US East_time'),
+            y: unpack(rows, 'US East'),
+            line: {
+                color: 'black',
+                width: 1
+            },
+            marker: {
+                color: 'black',
+                width: 0.25
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Global = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'WW3:Global',
+            hoverinfo: "y",
+            x: unpack(rows, 'global_time'),
+            y: unpack(rows, 'global'),
+            line: {
+                color: 'brown',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let nwps = {
+            type: "scatter",
+            mode: 'lines+markers',
+            name: 'NWPS:LWX',
+            hoverinfo: "y",
+            x: unpack(rows, 'nwps_lwx_time'),
+            y: unpack(rows, 'nwps_lwx'),
+            line: {
+                color: '#e646e7',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble= {
+            type: "scatter",
+            mode: "lines+markers",
+            name: 'Ensemble',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble'),
+            line: {
+                color: 'orange',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Ensemble_Upper= {
+            type: "scatter",
+            mode: "lines",
+            name: '95% CI',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble_upper'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let Observed = {
+            type: "scatter",
+            mode: "lines+markers",
+            name: 'Observed',
+            hoverinfo: "y",
+            x: unpack(rows, 'observed_time'),
+            y: unpack(rows, 'observed'),
+            line: {
+                color: 'blue',
+                width: 1
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+
+        let Ensemble_Lower= {
+            type: "scatter",
+            mode: "lines",
+            name: '95% CI',
+            hoverinfo: "y",
+            x: unpack(rows, 'ensemble_index'),
+            y: unpack(rows, 'ensemble_lower'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        };
+        let data = [iFLOOD, Global, US_East, nwps, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            "showcrossline": "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+                font: {
+                    size: 10
+                }
+            },
+            //"xanchor": "center"},
+            margin: {
+                l: 60,
+                r: 0,
+                t: 40,
+                b: 0
+            },
+            // width: 500,
+            // height: 350,
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    x: .87,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }],
+            annotations: [
+                {
+                    x: date_start_plot,
+                    xshift: 10,
+                    yref: "paper",
+                    yanchor: "middle",
+                    y: 0.5,
+                    opacity: 0.95,
+                    textangle: -90,
+                    layer: "above",
+                    text: 'Forecast Start',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+            ],
+
+            shapes: [
+                {
+                    type: 'line',
+                    layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgb(32,81,124)',
+                        width: 2
+                    }
+                },
+                {
+                    type: 'line',
+                    layer: 'above',
+                    yref: "paper",
+                    x0: date_start_plot,
+                    y0: 0,
+                    x1: date_start_plot,
+                    y1: 1,
+                    fillcolor: 'rgb(0,0,0)',
+                    opacity: 1.0,
+                    line: {
+                        width: 1
+                    }
+                },
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: -1,
+                    x1: 1,
+                    y1: 2.5,
+                    fillcolor: '#ffffff',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                }
+            ],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                autorange: true
+
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Significant Wave Height (meters)',
+                autorange: true,
+                //range: [-1, 8],
             }
         };
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
