@@ -39,7 +39,7 @@ def lambda_handler(event, context):
         selected['gust_speed'] = row['Gust Speed (S-WCF 20160692:20199524-2), m/s, Neptune']
         selected['wind_direction'] = row['Wind Direction (S-WCF 20160692:20199524-3), *, Neptune']
         selected['rain_level'] = row['Inches of Rain (S-UCD 20160692:20153413-1), Inches, Neptune Rainfall']
-        selected['water_level'] = str(float(row['Water Level (T-SDX-93720 (0-5 ft) 20160692:20142885-3), meters, Neptune']) - 0.52)
+        selected['water_level'] = str(float(row['Water Level (T-SDX-93720 (0-5 ft) 20160692:20142885-3), meters, Neptune']) - 0.52) if row['Water Level (T-SDX-93720 (0-5 ft) 20160692:20142885-3), meters, Neptune'] != "" else ""
         selRows.append(selected)
     fields = ['date', 'battery', 'wind_speed', 'gust_speed', 'wind_direction', 'rain_level', 'water_level']
     outStr = io.StringIO()
