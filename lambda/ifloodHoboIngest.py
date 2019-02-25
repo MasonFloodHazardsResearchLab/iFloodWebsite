@@ -33,7 +33,7 @@ def lambda_handler(event, context):
     selRows = []
     for row in dataReader:
         selected = dict()
-        selected['date'] = row['Date']
+        selected['date'] = datetime.datetime.strptime(row['Date'],"%m/%d/%y %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S")
         selected['battery'] = row['Battery (RX3000 BATTERY 20160692:20160692-B), V, Neptune']
         selected['wind_speed'] = row['Wind Speed (S-WCF 20160692:20199524-1), m/s, Neptune']
         selected['gust_speed'] = row['Gust Speed (S-WCF 20160692:20199524-2), m/s, Neptune']
