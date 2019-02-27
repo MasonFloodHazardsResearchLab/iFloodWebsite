@@ -1679,172 +1679,186 @@ function makePlotStationWater(url, domNode, title, marker) {
                 return row[key];
             });
         }
-
-        let iFLood = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'iFLOOD',
-            hoverinfo: "y",
-            x: unpack(rows, 'iflood_date'),
-            y: unpack(rows, 'iflood'),
-            line: {
-                color: '#008000',
-                width: 1
-            },
-            marker: {
-                color: '#008000',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        console.log(rows);
+        let data = [];
+        if (rows[0].hasOwnProperty("iflood")) { //only add the data if it's actually present
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'iFLOOD',
+                hoverinfo: "y",
+                x: unpack(rows, 'iflood_date'),
+                y: unpack(rows, 'iflood'),
+                line: {
+                    color: '#008000',
+                    width: 1
+                },
+                marker: {
+                    color: '#008000',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let ETSS = {
-            type: "scatter",
-            mode: "lines",
-            name: 'ETSS',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_etss'),
-            y: unpack(rows, 'etss'),
-            line: {
-                color: 'rgb(204, 0, 204)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(204, 0, 204)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("etss")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: 'ETSS',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_etss'),
+                y: unpack(rows, 'etss'),
+                line: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            })
         }
-        let AHPS = {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'AHPS',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_ahps'),
-            y: unpack(rows, 'ahps'),
-            line: {
-                color: 'red',
-                width: 1
-            },
-            marker: {
-                color: 'red',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("ahps")) {
+            data.push({
+                type: "scatter",
+                mode: "lines+markers",
+                name: 'AHPS',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_ahps'),
+                y: unpack(rows, 'ahps'),
+                line: {
+                    color: 'red',
+                    width: 1
+                },
+                marker: {
+                    color: 'red',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let ESTOFS = {
-            type: "scatter",
-            mode: "lines",
-            name: 'ESTOFS',
-            hoverinfo: "y",
-            x: unpack(rows, 'iflood_date'),
-            y: unpack(rows, 'estofs'),
-            line: {
-                color: 'rgb(0, 0, 255)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(0, 0, 255)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("estofs")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: 'ESTOFS',
+                hoverinfo: "y",
+                x: unpack(rows, 'iflood_date'),
+                y: unpack(rows, 'estofs'),
+                line: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let CBOFS = {
-            type: "scatter",
-            mode: "lines",
-            name: 'CBOFS',
-            hoverinfo: "y",
-            x: unpack(rows, 'iflood_date'),
-            y: unpack(rows, 'cbofs'),
-            line: {
-                color: 'brown',
-                width: 1
-            },
-            marker: {
-                color: 'brown',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("cbofs")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: 'CBOFS',
+                hoverinfo: "y",
+                x: unpack(rows, 'iflood_date'),
+                y: unpack(rows, 'cbofs'),
+                line: {
+                    color: 'brown',
+                    width: 1
+                },
+                marker: {
+                    color: 'brown',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let Observed = {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'Observed ',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_observed'),
-            y: unpack(rows, 'observed'),
-            line: {
-                color: 'blue',
-                width: 1
-            },
-            marker: {
-                color: 'blue',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("observed") && marker["agency"] !== "NOAA") { // only show observed from csv if we don't have something fresher to pull)
+            data.push({
+                type: "scatter",
+                mode: "lines+markers",
+                name: 'Observed ',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_observed'),
+                y: unpack(rows, 'observed'),
+                line: {
+                    color: 'blue',
+                    width: 1
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let Ensemble = {
-            type: "scatter",
-            mode: "lines",
-            name: 'Ensemble ',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_ensemble'),
-            y: unpack(rows, 'ensemble'),
-            line: {
-                color: 'orange',
-                width: 1
-            },
-            marker: {
-                color: 'blue',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("ensemble")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: 'Ensemble ',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_ensemble'),
+                y: unpack(rows, 'ensemble'),
+                line: {
+                    color: 'orange',
+                    width: 1
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let Ensemble_Upper = {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_95%'),
-            y: unpack(rows, 'ensemble_upper'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            marker: {
-                color: 'blue',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
+        if (rows[0].hasOwnProperty("ensemble_upper")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_95%'),
+                y: unpack(rows, 'ensemble_upper'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_95%'),
+                y: unpack(rows, 'ensemble_lower'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
         }
-        let Ensemble_Lower = {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'Time_95%'),
-            y: unpack(rows, 'ensemble_lower'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            marker: {
-                color: 'blue',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        }
-        let data = [iFLood, AHPS, ETSS, ESTOFS, CBOFS, Ensemble, Ensemble_Upper, Ensemble_Lower];
-        if (marker["agency"] !== "NOAA") // only show observed from csv if we don't have something fresher to pull
-            data.push(Observed);
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2127,6 +2141,27 @@ function makePlotStationWater(url, domNode, title, marker) {
                 };
                 Plotly.addTraces(domNode, sensorObservation);
             });
+            // Plotly.d3.csv(dataDomain + "/IOT/hobo1/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
+            //     let sensorObservation = {
+            //         type: "scatter",
+            //         mode: 'lines+markers',
+            //         name: 'HOBO Sensor',
+            //         hoverinfo: "y",
+            //         x: unpack(rows, 'date'),
+            //         y: unpack(rows, 'water_level'), //sensor 2 is the good one
+            //         line: {
+            //             color: '#44cb00',
+            //             width: 1
+            //         },
+            //         marker: {
+            //             color: '#44cb00',
+            //             width: 0.25
+            //         },
+            //         xaxis: 'x1',
+            //         yaxis: 'y1'
+            //     };
+            //     Plotly.addTraces(domNode, sensorObservation);
+            // });
         }
         //if this station has NOAA observation data we'll load that too
         if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
@@ -2175,140 +2210,153 @@ function makePlotStationValidation(url, domNode, title) {
                 return row[key];
             });
         }
-
-        let iFLOOD = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'iflood',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'iflood_bias'),
-            line: {
-                color: '#008000',
-                width: 1
-            },
-            marker: {
-                color: '#008000',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let ETSS = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'ETSS',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'etss_bias'),
-            line: {
-                color: 'rgb(204, 0, 204)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(204, 0, 204)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let AHPS = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'AHPS',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ahps_bias'),
-            line: {
-                color: 'red',
-                width: 1
-            },
-            marker: {
-                color: 'red',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let ESTOFS = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'ESTOFS',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'estofs_bias'),
-            line: {
-                color: 'rgb(0, 0, 255)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(0, 0, 255)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let CBOFS = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'CBOFS',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'cbofs_bias'),
-            line: {
-                color: 'rgb(0, 255, 255)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(0, 255, 255)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble = {
-            type: "scatter",
-            mode: 'lines',
-            name: 'Ensemble',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_bias'),
-            line: {
-                color: 'orange',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Upper = {
-            type: "scatter",
-            mode: 'lines',
-            name: '95% CI',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_upper_bias'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Lower = {
-            type: "scatter",
-            mode: 'lines',
-            name: '95% CI',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_lower_bias'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let data = [iFLOOD, AHPS, ETSS, ESTOFS, CBOFS, Ensemble, Ensemble_Upper, Ensemble_Lower];
+        let data = [];
+        if (rows[0].hasOwnProperty("iflood_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'iflood',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'iflood_bias'),
+                line: {
+                    color: '#008000',
+                    width: 1
+                },
+                marker: {
+                    color: '#008000',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("etss_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'ETSS',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'etss_bias'),
+                line: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ahps_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'AHPS',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ahps_bias'),
+                line: {
+                    color: 'red',
+                    width: 1
+                },
+                marker: {
+                    color: 'red',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("estofs_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'ESTOFS',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'estofs_bias'),
+                line: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("cbofs_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'CBOFS',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'cbofs_bias'),
+                line: {
+                    color: 'rgb(0, 255, 255)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(0, 255, 255)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: 'Ensemble',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_bias'),
+                line: {
+                    color: 'orange',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_upper_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: '95% CI',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_upper_bias'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: '95% CI',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_lower_bias'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2479,129 +2527,142 @@ function makePlotStationWaves(url, domNode, title) {
                 return row[key];
             });
         }
+        let data = [];
+        if (rows[0].hasOwnProperty("iflood")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'iFLOOD',
+                hoverinfo: "y",
+                x: unpack(rows, 'iflood_date'),
+                y: unpack(rows, 'iflood'),
+                line: {
+                    color: '#008000',
+                    width: 1
+                },
+                marker: {
+                    color: '#008000',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("US East")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'WW3:Regional',
+                hoverinfo: "y",
+                x: unpack(rows, 'US East_time'),
+                y: unpack(rows, 'US East'),
+                line: {
+                    color: 'black',
+                    width: 1
+                },
+                marker: {
+                    color: 'black',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("global")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'WW3:Global',
+                hoverinfo: "y",
+                x: unpack(rows, 'global_time'),
+                y: unpack(rows, 'global'),
+                line: {
+                    color: 'brown',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("nwps_lwx")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'NWPS:LWX',
+                hoverinfo: "y",
+                x: unpack(rows, 'nwps_lwx_time'),
+                y: unpack(rows, 'nwps_lwx'),
+                line: {
+                    color: '#e646e7',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble")) {
+            data.push({
+                type: "scatter",
+                mode: "lines+markers",
+                name: 'Ensemble',
+                hoverinfo: "y",
+                x: unpack(rows, 'ensemble_index'),
+                y: unpack(rows, 'ensemble'),
+                line: {
+                    color: 'orange',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_upper")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'ensemble_index'),
+                y: unpack(rows, 'ensemble_upper'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'ensemble_index'),
+                y: unpack(rows, 'ensemble_lower'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("observed")) {
+            data.push({
+                type: "scatter",
+                mode: "lines+markers",
+                name: 'Observed',
+                hoverinfo: "y",
+                x: unpack(rows, 'observed_time'),
+                y: unpack(rows, 'observed'),
+                line: {
+                    color: 'blue',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
 
-        let iFLOOD = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'iFLOOD',
-            hoverinfo: "y",
-            x: unpack(rows, 'iflood_date'),
-            y: unpack(rows, 'iflood'),
-            line: {
-                color: '#008000',
-                width: 1
-            },
-            marker: {
-                color: '#008000',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let US_East = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'WW3:Regional',
-            hoverinfo: "y",
-            x: unpack(rows, 'US East_time'),
-            y: unpack(rows, 'US East'),
-            line: {
-                color: 'black',
-                width: 1
-            },
-            marker: {
-                color: 'black',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Global = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'WW3:Global',
-            hoverinfo: "y",
-            x: unpack(rows, 'global_time'),
-            y: unpack(rows, 'global'),
-            line: {
-                color: 'brown',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let nwps = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'NWPS:LWX',
-            hoverinfo: "y",
-            x: unpack(rows, 'nwps_lwx_time'),
-            y: unpack(rows, 'nwps_lwx'),
-            line: {
-                color: '#e646e7',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble= {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'Ensemble',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble'),
-            line: {
-                color: 'orange',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Upper= {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble_upper'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Observed = {
-            type: "scatter",
-            mode: "lines+markers",
-            name: 'Observed',
-            hoverinfo: "y",
-            x: unpack(rows, 'observed_time'),
-            y: unpack(rows, 'observed'),
-            line: {
-                color: 'blue',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-
-        let Ensemble_Lower= {
-            type: "scatter",
-            mode: "lines",
-            name: '95% CI',
-            hoverinfo: "y",
-            x: unpack(rows, 'ensemble_index'),
-            y: unpack(rows, 'ensemble_lower'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let data = [iFLOOD, Global, US_East, nwps, Observed,Ensemble,Ensemble_Upper,Ensemble_Lower];
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2750,122 +2811,134 @@ function makePlotStationWavesValidation(url, domNode, title) {
                 return row[key];
             });
         }
+        let data = [];
+        if (rows[0].hasOwnProperty("iflood_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'iflood',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'iflood_bias'),
+                line: {
+                    color: '#008000',
+                    width: 1
+                },
+                marker: {
+                    color: '#008000',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("global_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'Global',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'global_bias'),
+                line: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(204, 0, 204)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("US_East_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'US East',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'US_East_bias'),
+                line: {
+                    color: 'red',
+                    width: 1
+                },
+                marker: {
+                    color: 'red',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("nwps_lwx_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines+markers',
+                name: 'NWPS LWX',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'nwps_lwx_bias'),
+                line: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 1
+                },
+                marker: {
+                    color: 'rgb(0, 0, 255)',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: 'Ensemble',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_bias'),
+                line: {
+                    color: 'orange',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_upper_bias")) {
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: '95% CI',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_upper_bias'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+            data.push({
+                type: "scatter",
+                mode: 'lines',
+                name: '95% CI',
+                hoverinfo: "y",
+                x: Array.from(Array(25).keys()).slice(1),
+                y: unpack(rows, 'ensemble_lower_bias'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
 
-        let iFLOOD = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'iflood',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'iflood_bias'),
-            line: {
-                color: '#008000',
-                width: 1
-            },
-            marker: {
-                color: '#008000',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Global = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'Global',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'global_bias'),
-            line: {
-                color: 'rgb(204, 0, 204)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(204, 0, 204)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let East = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'US East',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'US_East_bias'),
-            line: {
-                color: 'red',
-                width: 1
-            },
-            marker: {
-                color: 'red',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let NWPS = {
-            type: "scatter",
-            mode: 'lines+markers',
-            name: 'NWPS LWX',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'nwps_lwx_bias'),
-            line: {
-                color: 'rgb(0, 0, 255)',
-                width: 1
-            },
-            marker: {
-                color: 'rgb(0, 0, 255)',
-                width: 0.25
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble = {
-            type: "scatter",
-            mode: 'lines',
-            name: 'Ensemble',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_bias'),
-            line: {
-                color: 'orange',
-                width: 1
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Upper = {
-            type: "scatter",
-            mode: 'lines',
-            name: '95% CI',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_upper_bias'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let Ensemble_Lower = {
-            type: "scatter",
-            mode: 'lines',
-            name: '95% CI',
-            hoverinfo: "y",
-            x: Array.from(Array(25).keys()).slice(1),
-            y: unpack(rows, 'ensemble_lower_bias'),
-            line: {
-                color: 'gray',
-                width: 0.75
-            },
-            xaxis: 'x1',
-            yaxis: 'y1'
-        };
-        let data = [iFLOOD, Global, East, NWPS, Ensemble, Ensemble_Upper, Ensemble_Lower];
         let layout = {
             showlegend: true,
             hovermode: "x",
