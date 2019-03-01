@@ -1402,6 +1402,8 @@ let markers = {
 		"hasWind": true,
 		"hasValidation": true,
 		"hasWaves": true,
+        "hasXbeachVideo": true,
+        "xbeachVideoUrl": "{_ChesapeakeBay_XBEACH_FILES_}/deal_island/xbeach.mp4",
 		"agency": "FHRL"
 	},
 	"CRVA": {
