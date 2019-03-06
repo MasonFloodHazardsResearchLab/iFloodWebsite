@@ -689,6 +689,17 @@ let layers = {
         "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
         "visible":false
     },
+    // "precipForecast": {
+    //     "group":1,
+    //     "type":"arcGIS",
+    //     "displayName":"24 Hour Precipitation",
+    //     "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer",
+    //     "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
+    //     "gisLayer":"23",
+    //     "img":"/map/layerIcons/temp.png",
+    //     "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
+    //     "visible":false
+    // },
     "stormPath": {
         "group":1,
         "type":"stormPath",

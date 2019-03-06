@@ -21,9 +21,51 @@
                 <div id="markerToggleBox">
                     Forecast Stations
                     <div id="markerToggleContainer">
-                        <div id="stationMarkerToggle" title="Water Stations" class="markerToggle showing"><div class="label">Water</div></div>
-                        <div id="buoyMarkerToggle" title="Wave Stations" class="markerToggle showing"><div class="label">Waves</div></div>
-                        <div id="ifloodMarkerToggle" title="iFLOOD Stations" class="markerToggle showing"><div class="label">iFLOOD</div></div>
+                        <div id="stationMarkerToggle" class="markerToggleRow showing">
+                            <div title="Water Stations" class="markerToggleButton"><div class="label">Water</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #25C829"></div>
+                                    <div class="colorBar" style="background-color: #E9D834"></div>
+                                    <div class="colorBar" style="background-color: #FF881C"></div>
+                                    <div class="colorBar" style="background-color: #DD2E2E"></div>
+                                    <div class="colorBar" style="background-color: #DD2EA8"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">Normal</div>
+                                    <div class="legendText">Action</div>
+                                    <div class="legendText">Minor</div>
+                                    <div class="legendText">Moderate</div>
+                                    <div class="legendText">Major</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="buoyMarkerToggle" class="markerToggleRow showing">
+                            <div title="Wave Stations" class="markerToggleButton"><div class="label">Waves</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #4A9AFF"></div>
+                                    <div class="colorBar" style="background-color: #B77AFD"></div>
+                                    <div class="colorBar" style="background-color: #FF00A4"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">Calm</div>
+                                    <div class="legendText">Action</div>
+                                    <div class="legendText">Major Swell</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ifloodMarkerToggle" class="markerToggleRow showing">
+                            <div title="iFLOOD Stations" class="markerToggleButton"><div class="label">iFLOOD</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #326E50"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">GMU IoT Station</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="layerInfo">

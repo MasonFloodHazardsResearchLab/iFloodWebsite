@@ -386,52 +386,83 @@ body {
         flex: 1 0 auto;
     }
     #markerToggleBox {
-        padding: 5px 5px 15px;
+        padding: 5px;
         color: #FFF;
         font-weight: bold;
         text-align: center;
+        user-select: none;
     }
-    #markerToggleContainer {
+    .markerToggleRow {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .markerToggle {
-            flex: 0 0 45px;
-            width: 45px;
-            height: 45px;
-            margin: 0 2px;
-            border-radius: 3px;
-            background-color: rgba(255,255,255,0.25);
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 28px;
-            cursor: pointer;
-            filter: grayscale(100%);
-            opacity: 0.5;
-            &.showing {
-                //border: solid 3px rgba(255,255,255,0.5);
-                box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-                filter: none;
-                opacity: 1;
-            }
-            &:hover {
-                background-color: rgba(255,255,255,0.27);
-            }
-            .label {
-                position: relative;
-                top: 45px;
-                font-weight: normal;
-                font-size: 10px;
+        margin-bottom: 6px;
+        filter: grayscale(100%);
+        opacity: 0.5;
+        &.showing {
+            filter: none;
+            opacity: 1;
+        }
+    }
+    .markerToggleButton {
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        margin: 0 2px 14px;
+        border-radius: 3px;
+        background-color: rgba(255,255,255,0.25);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 28px;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(255,255,255,0.27);
+        }
+        .label {
+            position: relative;
+            top: 40px;
+            font-weight: normal;
+            font-size: 12px;
+        }
+    }
+    .markerToggleRow.showing {
+        .markerToggleButton {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+    }
+    .markerToggleLegend {
+        flex: 1;
+        margin: 15px 5px 0;
+        .legendColors {
+            height: 7px;
+            display: flex;
+            border: solid 1px #FFF;
+            .colorBar {
+                flex: 1;
+                height: 100%;
             }
         }
-        #stationMarkerToggle {
+        .legendLabels {
+            display: flex;
+            color: #FFF;
+            font-size: 10px;
+            font-weight: normal;
+            .legendText {
+                flex: 1;
+            }
+        }
+    }
+    #stationMarkerToggle {
+        .markerToggleButton {
             background-image: url("/map/sprites/markers/station/action.svg");
             background-position-y: 3px;
         }
-        #buoyMarkerToggle {
+    }
+    #buoyMarkerToggle {
+        .markerToggleButton {
             background-image: url("/map/sprites/markers/wave/calm.svg");
         }
-        #ifloodMarkerToggle {
+    }
+    #ifloodMarkerToggle {
+        .markerToggleButton {
             background-image: url("/map/sprites/markers/iflood/iflood.svg");
             background-position-y: 2px;
         }
