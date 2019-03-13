@@ -490,3 +490,57 @@ footer {
         }
     }
 }
+
+//Stats Bar
+.statInsert {
+    border-top: solid 1px #AAA;
+    border-bottom: solid 1px #AAA;
+    padding: 5px;
+    h2 {
+        margin: 0;
+    }
+    .statRow {
+        margin: 5px 40px;
+        display: flex;
+        flex-wrap: wrap;
+        .statBox {
+            margin: 10px 0;
+            flex: 1 0 150px;
+            text-align: center;
+            line-height: 1;
+            .label {
+                font-size: 28px;
+            }
+            .number {
+                font-size: 48px;
+                font-weight: bold;
+                &.good {
+                    color: #39ab5f;
+                }
+                &.moderate {
+                    color: #c2ba4e;
+                }
+                &.bad {
+                    color: #A73030;
+                }
+            }
+        }
+    }
+    .exploreLink {
+        text-align: right;
+        &:hover {
+            filter: brightness(115%);
+        }
+        a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #A9A9A9;
+            font-size: 22px
+        }
+        img {
+            height: 20px;
+            position: relative;
+            top: 4px;
+        }
+    }
+}

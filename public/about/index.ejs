@@ -26,6 +26,37 @@
     </div>
 </div>
 
+<div class="statInsert">
+    <h2>Forecast Skill</h2>
+    <div class="statRow">
+        <div class="statBox" data-system="iFLOOD">
+            <div class="label">iFLOOD</div>
+            <div class="number">-</div>
+        </div>
+        <div class="statBox" data-system="ETSS">
+            <div class="label">ETSS</div>
+            <div class="number">-</div>
+        </div>
+        <div class="statBox" data-system="CBOFS">
+            <div class="label">CBOFS</div>
+            <div class="number">-</div>
+        </div>
+        <div class="statBox" data-system="ESTOFS">
+            <div class="label">ESTOFS</div>
+            <div class="number">-</div>
+        </div>
+<!--        <div class="statBox" data-system="AHPS">
+            <div class="label">AHPS</div>
+            <div class="number">-</div>
+        </div>-->
+    </div>
+    <div class="exploreLink">
+        <a href="/map">Explore</a>
+        <img src="/chevron.svg">
+    </div>
+</div>
+<script src="/statInsert.js"></script>
+
 <h2>Current operational systems:</h2>
 <div class="sideFigureContainer">
     <div class="sideFigureMain">
@@ -181,7 +212,6 @@
 <p>GMU iFLOOD uses icons by <a href="https://thenounproject.com/web11/">JEREMIE SOMMET</a> from <a href="https://thenounproject.com/">The Noun Project</a>.</p>
 <p>Some map data uses color schemes from <a href="https://arxiv.org/abs/1509.03700">Peter Kovesi. Good Colour Maps: How to Design Them.</a></p>
 
-<script src="/jquery-3.3.1.min.js"></script>
 <script>
     function size() {
         let idealWidth = Math.floor(($('#content')[0].clientWidth-20) / 215 - 1) * 215 + 214;
