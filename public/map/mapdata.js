@@ -679,28 +679,28 @@ let layers = {
     //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc.",
     //     "visible":false
     // },
-    "precip": {
-        "group":1,
-        "type":"arcGIS",
-        "displayName":"24 Hour Precipitation",
-        "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer",
-        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
-        "gisLayer":"19",
-        "img":"/map/layerIcons/temp.png",
-        "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
-        "visible":false
-    },
-    // "precipForecast": {
+    // "precip": {
     //     "group":1,
     //     "type":"arcGIS",
     //     "displayName":"24 Hour Precipitation",
-    //     "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer",
-    //     "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
-    //     "gisLayer":"23",
+    //     "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer",
+    //     "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
+    //     "gisLayer":"19",
     //     "img":"/map/layerIcons/temp.png",
     //     "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
     //     "visible":false
     // },
+    "precipForecast": {
+        "group":1,
+        "type":"arcGIS",
+        "displayName":"12-hr Probability of Precipitation",
+        "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer",
+        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
+        "gisLayer":"23",
+        "img":"/map/layerIcons/precip.png",
+        "description":"The Probability of Precipitation for the next 12 hours (from NOAA). The values are expressed in percentages.",
+        "visible":false
+    },
     "stormPath": {
         "group":1,
         "type":"stormPath",
