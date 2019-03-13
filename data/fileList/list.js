@@ -118,7 +118,7 @@ function getS3Data(marker, html) {
   var s3_rest_url = createS3QueryUrl(marker);
   // set loading notice
   $('#listing')
-      .html('<img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" />');
+      .html('<img src="/tail-spin.svg" />');
   $.get(s3_rest_url)
       .done(function(data) {
         // clear loading notice

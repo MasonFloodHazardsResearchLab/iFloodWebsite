@@ -670,6 +670,7 @@ let layers = {
         "description":"Peak Wave Period is the frequency of the waves in the model domain predicted for next 84 hours. Period is in seconds.",
         "visible":false
     },
+    // this is just an example of how the WMS loading works
     // "precip": {
     //     "type":"wmsTile",
     //     "displayName":"CERA Precip",
