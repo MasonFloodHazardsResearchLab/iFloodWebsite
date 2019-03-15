@@ -1,6 +1,5 @@
 $.get("https://data.iflood.vse.gmu.edu/Forecast/ChesapeakeBay_ADCIRCSWAN/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
-    $.get("https://data.iflood.vse.gmu.edu/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun+"/meta.json", function(data) {
-        console.log(data);
+    $.get("https://data.iflood.vse.gmu.edu/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun+"/meta/meta.json", function(data) {
         $('.statInsert .statBox').each(function() {
             let level = data[this.dataset.system]['SKILL'];
             let number = $(this).find('.number');
