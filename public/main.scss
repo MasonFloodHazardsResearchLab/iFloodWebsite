@@ -386,8 +386,7 @@ footer {
     display: block;
     position: relative;
     height: 250px;
-    background-size: cover;
-    background-position: center;
+    background-color: #2B2B2B;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     text-decoration: none;
     filter: grayscale(10%) brightness(95%);
@@ -395,6 +394,14 @@ footer {
     &:hover {
         filter: grayscale(0%) brightness(100%);
         box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    }
+    .modelIcon {
+        position: absolute;
+        max-width: 70%;
+        max-height: 60%;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
     .cardText {
         position: absolute;
@@ -404,7 +411,7 @@ footer {
         text-align: center;
         font-size: 20px;
         padding: 5px 0;
-        background-color: transparentize(#232323,0.05);
+        background-color: #383838;
     }
 }
 

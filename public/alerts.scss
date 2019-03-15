@@ -334,13 +334,13 @@
     flex: 40px 0 0;
     padding: 6px 18px 4px;
     border: solid 1px #146735;
-    background-color: transparentize(#146735,0.9);
+    background-color: transparentize(#146735,0.7);
     border-radius: 3px;
     color: #FFF;
     font-size: 18px;
     cursor: pointer;
     &:hover, &:focus {
-        background-color: transparentize(#146735,0.8);
+        background-color: transparentize(#146735,0.65);
     }
     &.loading {
         color: transparent;
