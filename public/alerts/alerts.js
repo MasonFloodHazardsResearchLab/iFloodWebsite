@@ -192,7 +192,7 @@ function addWaterAlert(stationStr, level) {
     let select = dom.find(".stationSelect");
     select.append($("<option />").val("*ALL*").text("[ All Stations ]"));
     Object.values(markers).forEach(marker => {
-        if (marker["hasWater"])
+        if (marker["hasWater"] && marker["floodLevels"])
             select.append($("<option />").val(marker["stationStr"]).text(marker["title"]));
     });
     if (alerts[uid]["station"] !== "*ALL*") {
