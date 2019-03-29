@@ -2483,7 +2483,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
                 for (let i = 0; i < ifloodDates.length; i++) {
                     //search for the closest date from the iot data
                     for (let j = 0; j < iotDates.length; j++) {
-                        if (iotDates[j] > ifloodDates[i]) { //dates can be compared as strings
+                        if (iotDates[j] >= ifloodDates[i]) { //dates can be compared as strings
                             comparisonDates.push(iotDates[j]);
                             comparisonValues.push(ifloodValues[i]-iotValues[j]);
                             break;
@@ -2542,7 +2542,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
                     for (let i = 0; i < sourceDates.length; i++) {
                         //search for the closest date from the noaa data
                         for (let j = 0; j < noaaDates.length; j++) {
-                            if (sourceDates[i] !== "" && noaaDates[j] > sourceDates[i]) { //dates can be compared as strings
+                            if (sourceDates[i] !== "" && noaaDates[j] >= sourceDates[i]) { //dates can be compared as strings
                                 comparisonDates.push(noaaDates[j]);
                                 comparisonValues.push(sourceValues[i]-noaaValues[j]);
                                 break;
