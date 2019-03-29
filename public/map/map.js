@@ -201,10 +201,27 @@ function init() {
             if (typeof marker["notice"] === 'undefined') {
                 $(templatePopupTabs.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
-                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
+                    makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
                 }
-                if (marker["hasValidation"]) {
-                    makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
+                if (marker["hasValidationFile"] || marker["hasRealtimeValidation"]) {
+                    if (marker["hasValidationFile"])
+                        makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
+                    if (marker["hasRealtimeValidation"])
+                        makePlotStationRealtimeValidation(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentRealtimeValidation")[0], marker["title"] + ": Water Realtime Validation", marker);
+                    if (marker["hasValidationFile"] && marker["hasRealtimeValidation"]) {
+                        domPlot.find("#popupValidationSwitcher .realtimeButton").click(function() {
+                            domPlot.find("#mapPopupContentRealtimeValidation").css({"display": "block"});
+                            domPlot.find("#mapPopupContentValidation").css({"display": "none"});
+                            $(this).addClass("selected");
+                            domPlot.find("#popupValidationSwitcher .dailyButton").removeClass("selected");
+                        });
+                        domPlot.find("#popupValidationSwitcher .dailyButton").click(function() {
+                            domPlot.find("#mapPopupContentRealtimeValidation").css({"display": "none"});
+                            domPlot.find("#mapPopupContentValidation").css({"display": "block"});
+                            $(this).addClass("selected");
+                            domPlot.find("#popupValidationSwitcher .realtimeButton").removeClass("selected");
+                        });
+                    }
                 }
                 if (marker["hasWind"]) {
                     domPlot.find("#mapPopupContentWind").append($('<img>',{
@@ -244,54 +261,58 @@ function init() {
                 }
                 domPlot.find(".mapPopupContent").first().css({"display": "block"});
                 domPlot.find(".tab").first().addClass("current");
-
-                domPlot.find("#mapPopupTabWater").click(function() {
+                function hideAll() {
                     domPlot.find(".mapPopupContent").css({"display": "none"});
-                    domPlot.find("#mapPopupContentWater").css({"display": "block"});
                     domPlot.find(".tab").removeClass("current");
+                    domPlot.find("#popupValidationSwitcher").css({"display": "none"});
+                    domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("selected");
+                    domPlot.find("#popupValidationSwitcher .dailyButton").removeClass("selected");
+                }
+                domPlot.find("#mapPopupTabWater").click(function() {
+                    hideAll();
+                    domPlot.find("#mapPopupContentWater").css({"display": "block"});
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize')); //plotly doesn't always realize it needs to resize
                 });
                 domPlot.find("#mapPopupTabWind").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    hideAll();
                     domPlot.find("#mapPopupContentWind").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
                 domPlot.find("#mapPopupTabWaves").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    hideAll();
                     domPlot.find("#mapPopupContentWaves").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
                 domPlot.find("#mapPopupTabValidation").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
-                    domPlot.find("#mapPopupContentValidation").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
+                    hideAll();
+                    if (domPlot.find("#mapPopupContentRealtimeValidation").length)
+                        domPlot.find("#mapPopupContentRealtimeValidation").css({"display": "block"});
+                    else
+                        domPlot.find("#mapPopupContentValidation").css({"display": "block"});
+                    if (marker["hasValidationFile"] && marker["hasRealtimeValidation"])
+                        domPlot.find("#popupValidationSwitcher").css({"display": "flex"});
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
                 domPlot.find("#mapPopupTabWavesValidation").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    hideAll();
                     domPlot.find("#mapPopupContentWavesValidation").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
                 domPlot.find("#mapPopupTabXbeachVideo").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    hideAll();
                     domPlot.find("#mapPopupContentXbeachVideo").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
                     domPlot.find("#mapPopupContentXbeachVideo video")[0].play();
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
                 domPlot.find("#mapPopupTabCamera").click(function() {
-                    domPlot.find(".mapPopupContent").css({"display": "none"});
+                    hideAll();
                     domPlot.find("#mapPopupContentCamera").css({"display": "block"});
-                    domPlot.find(".tab").removeClass("current");
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
@@ -408,62 +429,6 @@ function init() {
             drawTimeSlide();
         }
     });
-
-    // Alternate method for changing the scale bars on hover. Works with multiple stacked layers but is much slower than google's own hover events.
-    //
-    // let mouseMoveTimeout = null;
-    // function hoverCheck() {
-    //     Object.keys(layers).forEach(layerIndex => {
-    //         let layer = layers[layerIndex];
-    //         if (layer["visible"] === true) {
-    //             let data;
-    //             if (layer["temporal"]) {
-    //                 data = layer["data"][layer["showing"][0]][layer["showing"][1]];
-    //             }
-    //             else {
-    //                 data = layer["data"][layer["showing"]];
-    //             }
-    //             let height = null;
-    //             data.forEach(feature => {
-    //                 setTimeout(function() {
-    //                     let geo = feature.getGeometry();
-    //                     if (geo === null)
-    //                         return;
-    //                     if (geo.getType() === "MultiPolygon") {
-    //                         geo.getArray().forEach(singleGeo => {
-    //                             let poly = new google.maps.Polygon({
-    //                                 paths: singleGeo.getAt(0).getArray()
-    //                             });
-    //                             if (google.maps.geometry.poly.containsLocation(lastHoverPos, poly))
-    //                                 height = feature.getProperty(layer["colorProperty"]);
-    //                         });
-    //                     }
-    //                     else if (geo.getType() === "Polygon") {
-    //                         let poly = new google.maps.Polygon({
-    //                             paths: geo.getAt(0).getArray()
-    //                         });
-    //                         if (google.maps.geometry.poly.containsLocation(lastHoverPos, poly))
-    //                             height = feature.getProperty(layer["colorProperty"]);
-    //                     }
-    //                 },0);
-    //             });
-    //             setTimeout(function() {
-    //                 if (height !== null)
-    //                     drawScaleBar(layer, height);
-    //             });
-    //         }
-    //     });
-    // }
-    // map.addListener('mousemove', function(event) {
-    //     lastHoverPos = event.latLng;
-    //     if (mouseMoveTimeout === null) {
-    //         setTimeout(hoverCheck, 0);
-    //         mouseMoveTimeout = setTimeout(function () {
-    //             setTimeout(hoverCheck, 0);
-    //             mouseMoveTimeout = null;
-    //         }, 200);
-    //     }
-    // });
 
     map.addListener('bounds_changed',function() {
         overCtx.clearRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
@@ -1679,108 +1644,38 @@ function makePlotStationWater(url, domNode, title, marker) {
                 return row[key];
             });
         }
-        console.log(rows);
+        let datasets = {
+            //label:[time column, data column, color, markers]
+            "iFLOOD":["iflood_date","iflood","#008000", true],
+            "ETSS":["Time_etss","etss","rgb(204, 0, 204)", false],
+            "AHPS":["Time_ahps","ahps","red", true],
+            "ESTOFS":["iflood_date","estofs","#00bc7d", false],
+            "CBOFS":["iflood_date","cbofs","brown", false],
+            "Ensemble":["Time_ensemble","ensemble","orange", false],
+        };
         let data = [];
-        if (rows[0].hasOwnProperty("iflood")) { //only add the data if it's actually present
+        Object.keys(datasets).forEach(label => {
+            if (!rows[0].hasOwnProperty(datasets[label][1]))
+                return;
             data.push({
                 type: "scatter",
-                mode: 'lines+markers',
-                name: 'iFLOOD',
+                mode: datasets[label][3] ? 'lines+markers' : 'lines',
+                name: label,
                 hoverinfo: "y",
-                x: unpack(rows, 'iflood_date'),
-                y: unpack(rows, 'iflood'),
+                x: unpack(rows, datasets[label][0]),
+                y: unpack(rows, datasets[label][1]),
                 line: {
-                    color: '#008000',
+                    color: datasets[label][2],
                     width: 1
                 },
                 marker: {
-                    color: '#008000',
+                    color: datasets[label][2],
                     width: 0.25
                 },
                 xaxis: 'x1',
                 yaxis: 'y1'
             });
-        }
-        if (rows[0].hasOwnProperty("etss")) {
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: 'ETSS',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_etss'),
-                y: unpack(rows, 'etss'),
-                line: {
-                    color: 'rgb(204, 0, 204)',
-                    width: 1
-                },
-                marker: {
-                    color: 'rgb(204, 0, 204)',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            })
-        }
-        if (rows[0].hasOwnProperty("ahps")) {
-            data.push({
-                type: "scatter",
-                mode: "lines+markers",
-                name: 'AHPS',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_ahps'),
-                y: unpack(rows, 'ahps'),
-                line: {
-                    color: 'red',
-                    width: 1
-                },
-                marker: {
-                    color: 'red',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
-        if (rows[0].hasOwnProperty("estofs")) {
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: 'ESTOFS',
-                hoverinfo: "y",
-                x: unpack(rows, 'iflood_date'),
-                y: unpack(rows, 'estofs'),
-                line: {
-                    color: 'rgb(0, 0, 255)',
-                    width: 1
-                },
-                marker: {
-                    color: 'rgb(0, 0, 255)',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
-        if (rows[0].hasOwnProperty("cbofs")) {
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: 'CBOFS',
-                hoverinfo: "y",
-                x: unpack(rows, 'iflood_date'),
-                y: unpack(rows, 'cbofs'),
-                line: {
-                    color: 'brown',
-                    width: 1
-                },
-                marker: {
-                    color: 'brown',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
+        });
         if (rows[0].hasOwnProperty("observed") && marker["agency"] !== "NOAA") { // only show observed from csv if we don't have something fresher to pull)
             data.push({
                 type: "scatter",
@@ -1791,26 +1686,6 @@ function makePlotStationWater(url, domNode, title, marker) {
                 y: unpack(rows, 'observed'),
                 line: {
                     color: 'blue',
-                    width: 1
-                },
-                marker: {
-                    color: 'blue',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
-        if (rows[0].hasOwnProperty("ensemble")) {
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: 'Ensemble ',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_ensemble'),
-                y: unpack(rows, 'ensemble'),
-                line: {
-                    color: 'orange',
                     width: 1
                 },
                 marker: {
@@ -2513,6 +2388,189 @@ function makePlotStationValidation(url, domNode, title) {
             }
         };
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+    });
+}
+
+function makePlotStationRealtimeValidation(url, domNode, title, marker) {
+    let levels = marker["floodLevels"];
+    let iot = marker["iotId"];
+    let noaaId = marker["noaaId"];
+    let navdOffset = marker["navdOffset"];
+    Plotly.d3.tsv(url, function (err, rows) {
+        function unpack(rows, key) {
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+        let data = [];
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            "showcrossline": "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+                font: {
+                    size: 10
+                }
+            },
+            //"xanchor": "center"},
+            margin: {
+                l: 60,
+                r: 0,
+                t: 40,
+                b: 0
+            },
+            // width: 500,
+            // height: 350,
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    x: .87,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }],
+
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                autorange: true,
+
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Bias (meters)',
+                range: [-2, 2],
+            }
+        };
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+        //if this station has an IOT sensor we'll load the recent data and add it to the chart
+        if (typeof iot !== 'undefined') {
+            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, iotRows) {
+                let ifloodDates = unpack(rows, 'iflood_date');
+                let ifloodValues = unpack(rows, 'iflood');
+                let iotDates = unpack(iotRows, 'date');
+                let iotValues = unpack(iotRows, 'water_level_2');
+                let comparisonDates = [];
+                let comparisonValues = [];
+                for (let i = 0; i < ifloodDates.length; i++) {
+                    //search for the closest date from the iot data
+                    for (let j = 0; j < iotDates.length; j++) {
+                        if (iotDates[j] > ifloodDates[i]) { //dates can be compared as strings
+                            comparisonDates.push(iotDates[j]);
+                            comparisonValues.push(ifloodValues[i]-iotValues[j]);
+                            break;
+                        }
+                    }
+                }
+                let ifloodComparison = {
+                    type: "scatter",
+                    mode: 'lines+markers',
+                    name: 'iFLOOD',
+                    hoverinfo: "y",
+                    x: comparisonDates,
+                    y: comparisonValues,
+                    line: {
+                        color: '#008000',
+                        width: 1
+                    },
+                    marker: {
+                        color: '#008000',
+                        width: 0.25
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, ifloodComparison);
+            });
+        }
+        else if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
+            function noaaWaterUnpack(rows, key) {
+                return rows.map(function (row) {
+                    return parseFloat(row[key]) + navdOffset;
+                });
+            }
+            let noaaStart = moment().subtract(1,'days').format('YYYYMMDD');
+            let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
+            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            Plotly.d3.csv(noaaUrl, function (err, noaaRows) {
+                let datasets = {
+                    //label:[time column, data column, color, markers]
+                    "iFLOOD":["iflood_date","iflood","#008000", true],
+                    "ETSS":["Time_etss","etss","rgb(204, 0, 204)", false],
+                    "AHPS":["Time_ahps","ahps","red", true],
+                    "ESTOFS":["iflood_date","estofs","#00bc7d", false],
+                    "CBOFS":["iflood_date","cbofs","brown", false],
+                    "Ensemble":["Time_ensemble","ensemble","orange", false],
+                };
+                Object.keys(datasets).forEach(label => {
+                    if (!rows[0].hasOwnProperty(datasets[label][1]))
+                        return;
+                    let sourceDates = unpack(rows, datasets[label][0]);
+                    let sourceValues = unpack(rows, datasets[label][1]);
+                    let noaaDates = unpack(noaaRows, 'Date Time');
+                    let noaaValues = noaaWaterUnpack(noaaRows, ' Water Level');
+                    let comparisonDates = [];
+                    let comparisonValues = [];
+                    for (let i = 0; i < sourceDates.length; i++) {
+                        //search for the closest date from the noaa data
+                        for (let j = 0; j < noaaDates.length; j++) {
+                            if (sourceDates[i] !== "" && noaaDates[j] > sourceDates[i]) { //dates can be compared as strings
+                                comparisonDates.push(noaaDates[j]);
+                                comparisonValues.push(sourceValues[i]-noaaValues[j]);
+                                break;
+                            }
+                        }
+                    }
+                    let noaaComparison = {
+                        type: "scatter",
+                        mode: datasets[label][3] ? 'lines+markers' : 'lines',
+                        name: label,
+                        hoverinfo: "y",
+                        x: comparisonDates,
+                        y: comparisonValues,
+                        line: {
+                            color: datasets[label][2],
+                            width: 1
+                        },
+                        marker: {
+                            color: datasets[label][2],
+                            width: 0.25
+                        },
+                        xaxis: 'x1',
+                        yaxis: 'y1'
+                    };
+                    Plotly.addTraces(domNode, noaaComparison);
+                });
+            });
+        }
     });
 }
 

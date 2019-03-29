@@ -263,6 +263,29 @@ body {
     overflow: hidden;
     cursor: pointer;
 }
+#popupValidationSwitcher {
+    display: none;
+    width: 200px;
+    margin: 8px auto auto;
+    .realtimeButton, .dailyButton {
+        flex: 1;
+        display: block;
+        border: solid 1px #CCC;
+        font-size: 16px;
+        padding: 3px;
+        background-color: #EEE;
+        cursor: pointer;
+        &.selected {
+            background-color: #FFF;
+        }
+    }
+    .realtimeButton {
+        border-radius: 3px 0 0 3px;
+    }
+    .dailyButton {
+        border-radius: 0 3px 3px 0;
+    }
+}
 
 #timeSlideContainer {
     position: absolute;
