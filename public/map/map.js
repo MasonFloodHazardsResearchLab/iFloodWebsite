@@ -1748,7 +1748,7 @@ function makePlotStationWater(url, domNode, title, marker) {
             //"xanchor": "center"},
             margin: {
                 l: 60,
-                r: 0,
+                r: 5,
                 t: 40,
                 b: 0
             },
@@ -1759,7 +1759,9 @@ function makePlotStationWater(url, domNode, title, marker) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -2245,7 +2247,7 @@ function makePlotStationValidation(url, domNode, title) {
             },
             margin: {
                 l: 60,
-                r: 0,
+                r: 5,
                 t: 40,
                 b: 0
             },
@@ -2257,7 +2259,9 @@ function makePlotStationValidation(url, domNode, title) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -2417,7 +2421,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
             //"xanchor": "center"},
             margin: {
                 l: 60,
-                r: 0,
+                r: 5,
                 t: 40,
                 b: 0
             },
@@ -2428,7 +2432,9 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -2573,11 +2579,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
 
 function makePlotStationWind(url, domNode, title) {
     Plotly.d3.tsv(url, function (err, rows) {
-        let date_start_plot;
-        let date_stop_plot;
         function unpack(rows, key) {
-            date_start_plot = rows[0]["Datetime(UTC)"];
-            date_stop_plot = rows[rows.length - 1]["Datetime(UTC)"];
             return rows.map(function (row) {
                 return row[key];
             });
@@ -2613,6 +2615,40 @@ function makePlotStationWind(url, domNode, title) {
             }
         ];
 
+        //add observed if we have it
+        if (rows[0].hasOwnProperty("observed_direction")) { // only show observed from csv if we don't have something fresher to pull)
+            data.push(
+                {
+                    type: "scatter",
+                    mode: 'lines',
+                    name: 'Observed Wind Speed',
+                    //hoverinfo: "y",
+                    x: unpack(rows, 'observed_time'),
+                    y: unpack(rows, 'observed_magnitude'),
+                    line: {
+                        color: '#a66b25',
+                        width: 2
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                },
+                {
+                    type: "scatter",
+                    mode: 'lines',
+                    name: 'Observed Wind Direction',
+                    //hoverinfo: "y",
+                    x: unpack(rows, 'observed_time'),
+                    y: unpack(rows, 'observed_direction'),
+                    line: {
+                        color: '#5560a1',
+                        width: 2
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y2'
+                }
+            );
+        }
+
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -2629,7 +2665,7 @@ function makePlotStationWind(url, domNode, title) {
             },
             margin: {
                 l: 60,
-                r: 0,
+                r: 60,
                 t: 40,
                 b: 0
             },
@@ -2638,7 +2674,9 @@ function makePlotStationWind(url, domNode, title) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -2687,6 +2725,7 @@ function makePlotStationWind(url, domNode, title) {
                 linewidth: 1,
                 tick0: 0,
                 tickfont: {"color": "#ff7f0e"},
+                titlefont: {"color": "#ff7f0e"},
                 domain: [0, 1],
                 tickwidth: 1,
                 nticks: 8,
@@ -2874,7 +2913,7 @@ function makePlotStationWaves(url, domNode, title) {
             //"xanchor": "center"},
             margin: {
                 l: 60,
-                r: 0,
+                r: 5,
                 t: 40,
                 b: 0
             },
@@ -2885,7 +2924,9 @@ function makePlotStationWaves(url, domNode, title) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
@@ -3149,7 +3190,7 @@ function makePlotStationWavesValidation(url, domNode, title) {
             },
             margin: {
                 l: 60,
-                r: 0,
+                r: 5,
                 t: 40,
                 b: 0
             },
@@ -3161,7 +3202,9 @@ function makePlotStationWavesValidation(url, domNode, title) {
                     source: "/MasonM.png",
                     xref: "paper",
                     yref: "paper",
-                    x: .87,
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
                     y: .985,
                     sizex: 0.25,
                     sizey: 0.25,
