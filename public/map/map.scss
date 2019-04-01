@@ -275,6 +275,10 @@ body {
         padding: 3px;
         background-color: #EEE;
         cursor: pointer;
+        &.disabled {
+            cursor: not-allowed;
+            color: #CCC;
+        }
         &.selected {
             background-color: #FFF;
         }

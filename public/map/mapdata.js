@@ -1019,7 +1019,7 @@ let markers = {
 		"stationStr": "SGVA",
 		"hasWater": true,
 		"hasWind": true,
-		"hasValidationFile": true,
+		"hasValidationFile": false,
 		"hasWaves": false,
 		"floodLevels": [0.491, 0.644, 0.796, 1.253],
 		"agency": "AHPS",

@@ -151,12 +151,10 @@
         {{if hasRealtimeValidation}}
             <div class="mapPopupContent" id="mapPopupContentRealtimeValidation"></div>
         {{/if}}
-        {{if hasValidationFile && hasRealtimeValidation}}
-            <div id="popupValidationSwitcher">
-                <button class="realtimeButton selected">Real Time</button>
-                <button class="dailyButton">24 Hour</button>
-            </div>
-        {{/if}}
+        <div id="popupValidationSwitcher">
+            <button class="realtimeButton">Real Time</button>
+            <button class="dailyButton">24 Hour</button>
+        </div>
     {{/if}}
     {{if hasWind}}
         <div class="mapPopupContent" id="mapPopupContentWind"></div>

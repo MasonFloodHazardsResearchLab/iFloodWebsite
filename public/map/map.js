@@ -209,6 +209,7 @@ function init() {
                     if (marker["hasRealtimeValidation"])
                         makePlotStationRealtimeValidation(replaceModelPaths(stationWaterUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentRealtimeValidation")[0], marker["title"] + ": Water Realtime Validation", marker);
                     if (marker["hasValidationFile"] && marker["hasRealtimeValidation"]) {
+                        domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("selected");
                         domPlot.find("#popupValidationSwitcher .realtimeButton").click(function() {
                             domPlot.find("#mapPopupContentRealtimeValidation").css({"display": "block"});
                             domPlot.find("#mapPopupContentValidation").css({"display": "none"});
@@ -221,6 +222,14 @@ function init() {
                             $(this).addClass("selected");
                             domPlot.find("#popupValidationSwitcher .realtimeButton").removeClass("selected");
                         });
+                    }
+                    else if (marker["hasValidationFile"]) {
+                        domPlot.find("#popupValidationSwitcher .dailyButton").addClass("selected");
+                        domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("disabled");
+                    }
+                    else if (marker["hasRealtimeValidation"]) {
+                        domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("selected");
+                        domPlot.find("#popupValidationSwitcher .dailyButton").addClass("disabled");
                     }
                 }
                 if (marker["hasWind"]) {
@@ -262,8 +271,10 @@ function init() {
                     domPlot.find(".mapPopupContent").css({"display": "none"});
                     domPlot.find(".tab").removeClass("current");
                     domPlot.find("#popupValidationSwitcher").css({"display": "none"});
-                    domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("selected");
-                    domPlot.find("#popupValidationSwitcher .dailyButton").removeClass("selected");
+                    if (marker["hasValidationFile"] && marker["hasRealtimeValidation"]) {
+                        domPlot.find("#popupValidationSwitcher .realtimeButton").addClass("selected");
+                        domPlot.find("#popupValidationSwitcher .dailyButton").removeClass("selected");
+                    }
                 }
                 domPlot.find("#mapPopupTabWater").click(function() {
                     hideAll();
@@ -289,8 +300,7 @@ function init() {
                         domPlot.find("#mapPopupContentRealtimeValidation").css({"display": "block"});
                     else
                         domPlot.find("#mapPopupContentValidation").css({"display": "block"});
-                    if (marker["hasValidationFile"] && marker["hasRealtimeValidation"])
-                        domPlot.find("#popupValidationSwitcher").css({"display": "flex"});
+                    domPlot.find("#popupValidationSwitcher").css({"display": "flex"});
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
