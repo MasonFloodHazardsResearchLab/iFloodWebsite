@@ -224,10 +224,7 @@ function init() {
                     }
                 }
                 if (marker["hasWind"]) {
-                    domPlot.find("#mapPopupContentWind").append($('<img>',{
-                        "class":"plotImg",
-                        "src":models["ChesapeakeBay_ADCIRCSWAN"]["currentDirectory"]+"/TimeSeries/Wind/"+marker["stationStr"]+".png",
-                    }));
+                    makePlotStationWind(replaceModelPaths(stationWindUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWind")[0], marker["title"] + ": Wind");
                 }
                 if (marker["hasWaves"]) {
                     makePlotStationWaves(replaceModelPaths(stationWavesUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWaves")[0], marker["title"] + ": Significant Wave Height");
@@ -1211,7 +1208,7 @@ function updateView() {
 function updateTime() {
     //update plotly if needed
     if (currentInfoWindow) {
-        $('#mapPopupContentWater, #mapPopupContentWaves').each(function() {
+        $('#mapPopupContentWater, #mapPopupContentWaves, #mapPopupContentWind').each(function() {
             Plotly.relayout(this, {
                 'shapes[0]': null
             });
@@ -1226,7 +1223,7 @@ function updateTime() {
                     yref: "paper",
                     opacity: 0.5,
                     line: {
-                        color: 'rgb(32,81,124)',
+                        color: 'rgba(32,81,124,0.7)',
                         width: 2
                     }
                 }
@@ -1799,7 +1796,7 @@ function makePlotStationWater(url, domNode, title, marker) {
                     yref: "paper",
                     opacity: 0.5,
                     line: {
-                        color: 'rgb(32,81,124)',
+                        color: 'rgba(32,81,124,0.7)',
                         width: 2
                     }
                 },
@@ -2574,6 +2571,145 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
     });
 }
 
+function makePlotStationWind(url, domNode, title) {
+    Plotly.d3.tsv(url, function (err, rows) {
+        let date_start_plot;
+        let date_stop_plot;
+        function unpack(rows, key) {
+            date_start_plot = rows[0]["Datetime(UTC)"];
+            date_stop_plot = rows[rows.length - 1]["Datetime(UTC)"];
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+        let data = [
+            {
+                type: "scatter",
+                mode: 'lines',
+                name: 'Wind Speed',
+                //hoverinfo: "y",
+                x: unpack(rows, 'Datetime(UTC)'),
+                y: unpack(rows, 'mag'),
+                line: {
+                    color: '#ff7f0e',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            },
+            {
+                type: "scatter",
+                mode: 'lines',
+                name: 'Wind Direction',
+                //hoverinfo: "y",
+                x: unpack(rows, 'Datetime(UTC)'),
+                y: unpack(rows, 'dir'),
+                line: {
+                    color: '#2039b3',
+                    width: 1
+                },
+                xaxis: 'x1',
+                yaxis: 'y2'
+            }
+        ];
+
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            "showcrossline": "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+                font: {
+                    size: 10
+                }
+            },
+            margin: {
+                l: 60,
+                r: 0,
+                t: 40,
+                b: 0
+            },
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    x: .87,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }
+            ],
+
+            shapes: [
+                {
+                    type: 'line',
+                    layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgba(32,81,124,0.7)',
+                        width: 2
+                    }
+                }
+            ],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                autorange: true
+
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                tickfont: {"color": "#ff7f0e"},
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Wind Magnitude (m/s)',
+                autorange: true,
+            },
+            yaxis2: {
+                anchor: "free",
+                overlaying: "y",
+                position: 1,
+                rangemode: "tozero",
+                side: "right",
+                tickfont: {"color": "#2039b3"},
+                title: "Wind Direction (0°N)",
+                titlefont: {"color": "#2039b3"},
+                type: "linear"
+            }
+        };
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+    });
+}
+
 function makePlotStationWaves(url, domNode, title) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_start_plot;
@@ -2787,7 +2923,7 @@ function makePlotStationWaves(url, domNode, title) {
                     yref: "paper",
                     opacity: 0.5,
                     line: {
-                        color: 'rgb(32,81,124)',
+                        color: 'rgba(32,81,124,0.7)',
                         width: 2
                     }
                 },

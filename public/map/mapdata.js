@@ -722,6 +722,7 @@ let layers = {
 
 let stationWaterUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/{_s_}.tsv";
 let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/water/{_s_}.tsv";
+let stationWindUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Wind/{_s_}.tsv";
 let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
 let stationWavesValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/waves/{_s_}.tsv";
 let markers = {
