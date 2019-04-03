@@ -71,5 +71,6 @@ def lambda_handler(event, context):
         Body=fileBody,
         Bucket="gmu-iflood-data",
         Key="SocialMedia/twitterLocations.json",
-        ContentType="text/json"
+        ContentType="text/json",
+        CacheControl="max-age=1800"
     )
