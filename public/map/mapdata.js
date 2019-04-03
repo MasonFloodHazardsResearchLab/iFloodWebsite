@@ -490,8 +490,7 @@ let layers = {
         "reverseBar":true,
         "z":1,
         "img":"/map/layerIcons/waterLevel.png",
-        "description":"Predicted water levels from the iFLOOD forecast system forced by the North American Mesoscale (NAM) model and Astronomical Tides. Water level is in meters above the NAVD88 vertical datum.",
-        "visible":false
+        "description":"Predicted water levels from the iFLOOD forecast system forced by the North American Mesoscale (NAM) model and Astronomical Tides. Water level is in meters above the NAVD88 vertical datum."
     },
     "inundation": {
         "group":0,
@@ -510,8 +509,7 @@ let layers = {
         "reverseBar":true,
         "z":2,
         "img":"/map/layerIcons/inundation.png",
-        "description":"Predicted maximum inundation depth above ground for the next 84 hours. Inundation is in meters above NAVD88 datum.\n",
-        "visible":false
+        "description":"Predicted maximum inundation depth above ground for the next 84 hours. Inundation is in meters above NAVD88 datum.\n"
     },
     "minPressure": {
         "group":0,
@@ -531,8 +529,7 @@ let layers = {
         "reverseBar":true,
         "z":8,
         "img":"/map/layerIcons/pressure.png",
-        "description":"Atmospheric pressure at sea level in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Atmospheric pressure is given in Kilopascals.",
-        "visible":false
+        "description":"Atmospheric pressure at sea level in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Atmospheric pressure is given in Kilopascals."
     },
     "windMag": {
         "group":0,
@@ -558,8 +555,7 @@ let layers = {
         "particleColor":"rgba(255,255,255,1)",
         "z":10,
         "img":"/map/layerIcons/wind.png",
-        "description":"Wind speeds at the surface in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Winds speeds are given in meters per second.",
-        "visible":false
+        "description":"Wind speeds at the surface in the model domain derived from the the North American Mesoscale (NAM) model for next 84 hour forecasts. Winds speeds are given in meters per second."
     },
     "boundary": {
         "group":0,
@@ -571,8 +567,7 @@ let layers = {
         "color":"#e13835",
         "z":100,
         "img":"/map/layerIcons/boundary.png",
-        "description":"Numerical model domain for iFlood forecast System.",
-        "visible":false
+        "description":"Numerical model domain for iFlood forecast System."
     },
     "bathy": {
         "group":0,
@@ -591,8 +586,7 @@ let layers = {
         "reverseBar":false,
         "z":0,
         "img":"/map/layerIcons/bathy.png",
-        "description":"Depth of water in the model domain is derived from National Geophysical Data Center's Coastal Relief Model (CRM) and NOAA digital nautical charts. Bathymetry is given in meters.",
-        "visible":false
+        "description":"Depth of water in the model domain is derived from National Geophysical Data Center's Coastal Relief Model (CRM) and NOAA digital nautical charts. Bathymetry is given in meters."
     },
     "currents": {
         "group":0,
@@ -618,8 +612,7 @@ let layers = {
         "particleColor":"rgba(200,200,255,1)",
         "z":4,
         "img":"/map/layerIcons/currents.png",
-        "description":"Predicted currents velocity and magnitude from the iFLOOD forecast system for next 84 hours. Currents are in meters per second.",
-        "visible":false
+        "description":"Predicted currents velocity and magnitude from the iFLOOD forecast system for next 84 hours. Currents are in meters per second."
     },
     "waveHeight": {
         "group":0,
@@ -645,8 +638,7 @@ let layers = {
         "particleColor":"#FFFFFF",
         "z":5,
         "img":"/map/layerIcons/waveHeight.png",
-        "description":"Significant Wave Height is the average of the highest one-third (33%) of waves (measured from trough to crest) in the model domain derived from the parallel computation of ADCIRC and SWAN. Wave Height is in meters.",
-        "visible":false
+        "description":"Significant Wave Height is the average of the highest one-third (33%) of waves (measured from trough to crest) in the model domain derived from the parallel computation of ADCIRC and SWAN. Wave Height is in meters."
     },
     "wavePeriod": {
         "group":0,
@@ -667,8 +659,7 @@ let layers = {
         "hasParticles":false,
         "z":6,
         "img":"/map/layerIcons/wavePeriod.png",
-        "description":"Peak Wave Period is the frequency of the waves in the model domain predicted for next 84 hours. Period is in seconds.",
-        "visible":false
+        "description":"Peak Wave Period is the frequency of the waves in the model domain predicted for next 84 hours. Period is in seconds."
     },
     // this is just an example of how the WMS loading works
     // "precip": {
@@ -676,8 +667,7 @@ let layers = {
     //     "displayName":"CERA Precip",
     //     "url":"https://tc2.nccera-5.renci.org/cerarisk/ceracgi/cera_wms_tiled?day=20180914&time=1200&com=9267&griddomain=HSOFS&tz=utc&unit=ft&legend=nc&ceraversion=8&query=elev&timestep_precimg=prechc24",
     //     "img":"/map/layerIcons/ceraPrecip.png",
-    //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc.",
-    //     "visible":false
+    //     "description":"Here there could be some text that explains something about the data, where it came from, how to interpret it, etc."
     // },
     // "precip": {
     //     "group":1,
@@ -687,8 +677,7 @@ let layers = {
     //     "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/19",
     //     "gisLayer":"19",
     //     "img":"/map/layerIcons/temp.png",
-    //     "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA).",
-    //     "visible":false
+    //     "description":"Quantitative Precipitation Accumulation for the previous 24 hours (from NOAA)."
     // },
     "precipForecast": {
         "group":1,
@@ -698,8 +687,7 @@ let layers = {
         "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
         "gisLayer":"23",
         "img":"/map/layerIcons/precip.png",
-        "description":"The Probability of Precipitation for the next 12 hours (from NOAA). The values are expressed in percentages.",
-        "visible":false
+        "description":"The Probability of Precipitation for the next 12 hours (from NOAA). The values are expressed in percentages."
     },
     "stormPath": {
         "group":1,
@@ -715,8 +703,19 @@ let layers = {
         "downloadUrl":"https://www.nhc.noaa.gov/",
         "z":8,
         "img":"/map/layerIcons/stormPath.png",
-        "description":"Predicted path of storms from NHC.<br><img src='/map/sprites/hurricane.svg' width='28'>Hurricane<br><img src='/map/sprites/storm.svg' width='28'>Storm<br><img src='/map/sprites/depression.svg' width='28'>Depression",
-        "visible":false
+        "description":"Predicted path of storms from NHC.<br><img src='/map/sprites/hurricane.svg' width='28'>Hurricane<br><img src='/map/sprites/storm.svg' width='28'>Storm<br><img src='/map/sprites/depression.svg' width='28'>Depression"
+    },
+    "twitter": {
+        "group":1,
+        "type":"heatmap",
+        "displayName":"Twitter Activity",
+        "url":"https://data.iflood.vse.gmu.edu/SocialMedia/twitterLocations.json",
+        "downloadUrl":"https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets",
+        "colorRange":colorRanges["plasma"],
+        "radius": 20,
+        "maxIntensity": 40,
+        "img":"/map/layerIcons/twitterHeat.png",
+        "description":"Heatmap of recent tweets that mention #flood or #flooding. Tweets are matched to locations using data from <a href='https://simplemaps.com/data/us-cities' target='_blank' rel='noopener noreferrer'>SimpleMaps</a>."
     }
 };
 

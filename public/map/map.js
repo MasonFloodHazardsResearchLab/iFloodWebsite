@@ -80,6 +80,7 @@ function init() {
             display: "none"
         }).appendTo(domLayerInfo);
         newItem.find(".dataButton").attr("href",replaceModelPaths(layer["downloadUrl"]));
+        layer["visible"] = false; //all layers start hidden
         if (layer["type"] === "geoJSON") {
             //add data array
             layer["data"] = [];
@@ -966,6 +967,7 @@ function showLayer(layer, oncomplete) {
         oncomplete(true);
     }
     else if (layer["type"] === "arcGIS") {
+        //this uses the gmaps arcgislink library
         if (typeof layer["arcMap"] === 'undefined') {
             let ms = new gmaps.ags.MapService(layer["url"]);
             let tl = new gmaps.ags.TileLayer(ms);
@@ -996,6 +998,34 @@ function showLayer(layer, oncomplete) {
             });
         }
         map.overlayMapTypes.push(layer["tileMap"]);
+        oncomplete(true);
+    }
+    else if (layer["type"] === "heatmap") {
+        if (typeof layer["gHeatmap"] === 'undefined') {
+            $.get(layer["url"]+"?v="+Math.round(Math.random()*100000000).toString(), function (heatData) {
+                let gPoints = [];
+                heatData.forEach(function(pair) {
+                    gPoints.push(new google.maps.LatLng(pair[0], pair[1]));
+                });
+                let grad = layer["colorRange"].map(x => x[1]);
+                grad.unshift("rgba(0,0,0,0)");
+                layer["gHeatmap"] = new google.maps.visualization.HeatmapLayer({
+                    data: gPoints,
+                    radius: layer["radius"],
+                    maxIntensity: layer["maxIntensity"],
+                    gradient: grad,
+                    map: map
+                });
+            }).fail(function() {
+                layer["visible"] = false;
+                if (oncomplete) {
+                    oncomplete(false);
+                }
+            });
+        }
+        else {
+            layer["gHeatmap"].setMap(map);
+        }
         oncomplete(true);
     }
 }
@@ -1155,6 +1185,9 @@ function hideLayer(layer) {
     }
     else if (layer["type"] === "cachedTile") {
         map.overlayMapTypes.pop(layer["tileMap"]);
+    }
+    else if (layer["type"] === "heatmap") {
+        layer["gHeatmap"].setMap(null);
     }
 }
 
