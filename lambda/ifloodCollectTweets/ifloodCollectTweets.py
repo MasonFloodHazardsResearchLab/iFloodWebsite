@@ -91,6 +91,6 @@ def lambda_handler(event, context):
     s3.put_object(
         Body=fileBody,
         Bucket="gmu-iflood-data",
-        Key="SocialMedia/twitterFlood/" + timestamp + "/tweets.json",
+        Key="SocialMedia/twitterFlood/"+timestamp+"/tweets.json",
         ContentType="text/json"
     )

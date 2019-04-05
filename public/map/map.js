@@ -1016,6 +1016,9 @@ function showLayer(layer, oncomplete) {
                     gradient: grad,
                     map: map
                 });
+                if (oncomplete) {
+                    oncomplete(true);
+                }
             }).fail(function() {
                 layer["visible"] = false;
                 if (oncomplete) {
@@ -1025,8 +1028,10 @@ function showLayer(layer, oncomplete) {
         }
         else {
             layer["gHeatmap"].setMap(map);
+            if (oncomplete) {
+                oncomplete(true);
+            }
         }
-        oncomplete(true);
     }
 }
 
