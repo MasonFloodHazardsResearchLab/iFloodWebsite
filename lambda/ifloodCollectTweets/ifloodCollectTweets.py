@@ -27,6 +27,18 @@ auth_data = {
 auth_resp = requests.post("https://api.twitter.com/oauth2/token", headers=auth_headers, data=auth_data)
 access_token = auth_resp.json()['access_token']
 
+# load in state abbreviations
+with open('states.json') as statesFile:
+    stateRaw = json.load(statesFile)
+    stateLookup = {x.lower():stateRaw[x].lower() for x in stateRaw}
+
+# time to (make the donuts) read in the cities
+with open('uscities.csv', 'r', encoding='utf8') as citiesFile:
+    cityReader = csv.DictReader(citiesFile)
+    cities = [row for row in cityReader]
+cityDict = dict()
+for city in cities:
+    cityDict[city['city'].lower() + ", " + city['state_id'].lower()] = (float(city['lat']),float(city['lng']))
 
 def lambda_handler(event, context):
     search_headers = {
@@ -44,20 +56,15 @@ def lambda_handler(event, context):
         else:
             break
 
-    # time to (make the donuts) read in the cities
-    with open('uscities.csv', 'r', encoding='utf8') as citiesFile:
-        cityReader = csv.DictReader(citiesFile)
-        cities = [row for row in cityReader]
-    cityDict = dict()
-    for city in cities:
-        cityDict[city['city'].lower() + ", " + city['state_id'].lower()] = (float(city['lat']),float(city['lng']))
-
     points = []
     locationCounts = dict()
-
     for tweet in tweets:
-        if tweet['user']['location'] and ", " in tweet['user']['location']:
-            parts = tweet['user']['location'].split(", ")
+        if tweet['user']['location']:
+            parts = tweet['user']['location'].replace(", ",",").split(",")
+            if len(parts) < 2:
+                continue
+            if parts[1].lower() in stateLookup: #replace state name with abbreviation
+                parts[1] = stateLookup[parts[1].lower()]
             name = parts[0].lower() + ", " + parts[1].lower()
             if name in cityDict:
                 points.append(cityDict[name])
