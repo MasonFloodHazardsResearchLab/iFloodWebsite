@@ -1008,7 +1008,7 @@ function showLayer(layer, oncomplete) {
                     gPoints.push(new google.maps.LatLng(pair[0], pair[1]));
                 });
                 let grad = layer["colorRange"].map(x => x[1]);
-                grad.unshift("rgba(0,0,0,0)");
+                grad.unshift($.colors(grad[0]).set('Alpha',0).toString('rgba'));
                 layer["gHeatmap"] = new google.maps.visualization.HeatmapLayer({
                     data: gPoints,
                     radius: layer["radius"],
