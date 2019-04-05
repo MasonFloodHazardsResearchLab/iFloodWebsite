@@ -562,8 +562,8 @@ let layers = {
         "type":"outline",
         "displayName":"Model Boundary",
         "temporal":true,
-        "url":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/boundary/ModelBoundary.json",
-        "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/boundary/ModelBoundary.json",
+        "url":dataDomain+"/Model/boundary/ModelBoundary.json",
+        "downloadUrl":dataDomain+"/Model/boundary/ModelBoundary.json",
         "color":"#e13835",
         "z":100,
         "img":"/map/layerIcons/boundary.png",
@@ -574,8 +574,8 @@ let layers = {
         "type":"geoJSON",
         "displayName":"Bathymetry",
         "urls":[
-            [0,"https://data.iflood.vse.gmu.edu/Model/CBbathy/BathyV0_simple.json"],
-            [1,"https://data.iflood.vse.gmu.edu/Model/CBbathy/BathyV0_crop.json"]
+            [0,dataDomain+"/Model/CBbathy/BathyV0_simple.json"],
+            [1,dataDomain+"/Model/CBbathy/BathyV0_crop.json"]
         ],
         "downloadUrl":"https://d2dyvyp1m8y8xp.cloudfront.net/Model/CBbathy/BathyV0.json",
         "colorRange":colorRanges["bathymetry"],
@@ -709,7 +709,7 @@ let layers = {
         "group":1,
         "type":"heatmap",
         "displayName":"Twitter Activity",
-        "url":"https://data.iflood.vse.gmu.edu/SocialMedia/twitterLocations.json",
+        "url":dataDomain+"/SocialMedia/twitterFlood/points.json",
         "downloadUrl":"https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets",
         "colorRange":colorRanges["plasma"],
         "radius": 20,

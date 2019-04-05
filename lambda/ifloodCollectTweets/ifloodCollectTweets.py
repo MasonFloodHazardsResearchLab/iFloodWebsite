@@ -4,6 +4,7 @@ import json, csv
 import base64
 import requests
 import os
+import datetime
 
 #s3 setup
 s3 = boto3.client("s3")
@@ -32,8 +33,8 @@ def lambda_handler(event, context):
         'Authorization': 'Bearer {}'.format(access_token)
     }
     tweets = []
-    nextQuery = "?q=%23flooding%20OR%20%23flood&geocode=38.033,-76.335,500mi&result_type=recent&count=100"
-    for x in range(100):
+    nextQuery = "?q=%23flooding%20OR%20%23flood&39.8,-95.583,2500km&result_type=recent&count=100"
+    for x in range(250):
         print("query {}".format(x))
         print(nextQuery)
         response = requests.get("https://api.twitter.com/1.1/search/tweets.json" + nextQuery, headers=search_headers).json()
@@ -47,30 +48,49 @@ def lambda_handler(event, context):
     with open('uscities.csv', 'r', encoding='utf8') as citiesFile:
         cityReader = csv.DictReader(citiesFile)
         cities = [row for row in cityReader]
+    cityDict = dict()
+    for city in cities:
+        cityDict[city['city'].lower() + ", " + city['state_id'].lower()] = (float(city['lat']),float(city['lng']))
 
-    locations = []
-    locationNames = set()
+    points = []
+    locationCounts = dict()
 
     for tweet in tweets:
         if tweet['user']['location'] and ", " in tweet['user']['location']:
             parts = tweet['user']['location'].split(", ")
-            for city in cities:
-                if city['city'].lower() == parts[0].lower() and city['state_id'].lower() == parts[1].lower():
-                    locations.append((
-                        float(city['lat']),
-                        float(city['lng'])
-                    ))
-                    locationNames.add(parts[0].lower() + ", " + parts[1].lower())
-                    break
+            name = parts[0].lower() + ", " + parts[1].lower()
+            if name in cityDict:
+                points.append(cityDict[name])
+                if name in locationCounts:
+                    locationCounts[name] += 1
+                else:
+                    locationCounts[name] = 1
     print()
-    print("{} locations found out of {} total tweets".format(len(locations), len(tweets)))
+    print("{} locations found out of {} total tweets".format(len(points), len(tweets)))
 
-    fileBody = json.dumps(locations)
+    timestamp = datetime.datetime.today().strftime('%Y%m%d%H')
 
+    fileBody = json.dumps(points)
     s3.put_object(
         Body=fileBody,
         Bucket="gmu-iflood-data",
-        Key="SocialMedia/twitterLocations.json",
+        Key="SocialMedia/twitterFlood/points.json",
         ContentType="text/json",
         CacheControl="max-age=1800"
+    )
+
+    fileBody = json.dumps(locationCounts, ensure_ascii=False, indent=4)
+    s3.put_object(
+        Body=fileBody,
+        Bucket="gmu-iflood-data",
+        Key="SocialMedia/twitterFlood/"+timestamp+"/locations.json",
+        ContentType="text/json"
+    )
+
+    fileBody = json.dumps(tweets, ensure_ascii=False, indent=4)
+    s3.put_object(
+        Body=fileBody,
+        Bucket="gmu-iflood-data",
+        Key="SocialMedia/twitterFlood/" + timestamp + "/tweets.json",
+        ContentType="text/json"
     )
