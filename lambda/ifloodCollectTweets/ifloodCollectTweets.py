@@ -58,10 +58,12 @@ def lambda_handler(event, context):
 
     points = []
     locationCounts = dict()
+    missedLocations = []
     for tweet in tweets:
         if tweet['user']['location']:
             parts = tweet['user']['location'].replace(", ",",").split(",")
             if len(parts) < 2:
+                missedLocations.append(tweet['user']['location'])
                 continue
             if parts[1].lower() in stateLookup: #replace state name with abbreviation
                 parts[1] = stateLookup[parts[1].lower()]
@@ -72,6 +74,8 @@ def lambda_handler(event, context):
                     locationCounts[name] += 1
                 else:
                     locationCounts[name] = 1
+            else:
+                missedLocations.append(tweet['user']['location'])
     print()
     print("{} locations found out of {} total tweets".format(len(points), len(tweets)))
 
@@ -94,10 +98,18 @@ def lambda_handler(event, context):
         ContentType="text/json"
     )
 
-    fileBody = json.dumps(tweets, ensure_ascii=False, indent=4)
+    fileBody = json.dumps(missedLocations, ensure_ascii=False, indent=4)
     s3.put_object(
         Body=fileBody,
         Bucket="gmu-iflood-data",
-        Key="SocialMedia/twitterFlood/"+timestamp+"/tweets.json",
+        Key="SocialMedia/twitterFlood/" + timestamp + "/missedLocations.json",
         ContentType="text/json"
     )
+
+    # fileBody = json.dumps(tweets, ensure_ascii=False, indent=4)
+    # s3.put_object(
+    #     Body=fileBody,
+    #     Bucket="gmu-iflood-data",
+    #     Key="SocialMedia/twitterFlood/"+timestamp+"/tweets.json",
+    #     ContentType="text/json"
+    # )
