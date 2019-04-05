@@ -6,6 +6,11 @@ import requests
 import os
 import datetime
 
+twitterQueryStrings = [
+    "q=%23flood%20OR%20%23flooding", # #flood or #flooding
+    "q=street%20flooded%20OR%20house%20flooded%20OR%20basement%20flooded" # street flooded OR house flooded OR basement flooded
+]
+
 #s3 setup
 s3 = boto3.client("s3")
 
@@ -44,22 +49,27 @@ def lambda_handler(event, context):
     search_headers = {
         'Authorization': 'Bearer {}'.format(access_token)
     }
-    tweets = []
-    nextQuery = "?q=%23flooding%20OR%20%23flood&39.8,-95.583,2500km&result_type=recent&count=100"
+    tweets = dict()
+    currentQueryString = 0
+    nextQuery = "?{}&geocode=39.8,-95.583,2500km&result_type=recent&count=100".format(twitterQueryStrings[0])
     for x in range(250):
         print("query {}".format(x))
         print(nextQuery)
         response = requests.get("https://api.twitter.com/1.1/search/tweets.json" + nextQuery, headers=search_headers).json()
-        tweets += response['statuses']
+        for status in response['statuses']:
+            tweets[status['id_str']] = status
         if 'next_results' in response['search_metadata']:
             nextQuery = response['search_metadata']['next_results']
+        elif currentQueryString < len(twitterQueryStrings)-1:
+            currentQueryString += 1
+            nextQuery = "?{}&geocode=39.8,-95.583,2500km&result_type=recent&count=100".format(twitterQueryStrings[currentQueryString])
         else:
             break
 
     points = []
     locationCounts = dict()
     missedLocations = []
-    for tweet in tweets:
+    for idStr,tweet in tweets.items():
         if tweet['user']['location']:
             parts = tweet['user']['location'].replace(", ",",").split(",")
             if len(parts) < 2:
