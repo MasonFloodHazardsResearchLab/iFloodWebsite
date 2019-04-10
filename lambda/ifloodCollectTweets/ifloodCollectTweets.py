@@ -8,7 +8,9 @@ import datetime
 
 twitterQueryStrings = [
     "q=%23flood%20OR%20%23flooding", # #flood or #flooding
-    "q=street%20flooded%20OR%20house%20flooded%20OR%20basement%20flooded" # street flooded OR house flooded OR basement flooded
+    "q=street%20flooded%20OR%20house%20flooded%20OR%20basement%20flooded", # street flooded OR house flooded OR basement flooded
+    "q=flash%20flood", # flash flood
+    "q=land%20flooded" # land flooded
 ]
 
 #s3 setup
@@ -52,7 +54,7 @@ def lambda_handler(event, context):
     tweets = dict()
     currentQueryString = 0
     nextQuery = "?{}&geocode=39.8,-95.583,2500km&result_type=recent&count=100".format(twitterQueryStrings[0])
-    for x in range(250):
+    for x in range(350):
         print("query {}".format(x))
         print(nextQuery)
         response = requests.get("https://api.twitter.com/1.1/search/tweets.json" + nextQuery, headers=search_headers).json()
