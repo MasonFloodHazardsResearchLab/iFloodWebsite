@@ -1,6 +1,7 @@
 import json
 import datetime
 import boto3
+import re
 
 s3 = boto3.client("s3")
 
@@ -39,7 +40,8 @@ def lambda_handler(event, context):
             Bucket="gmu-iflood-data",
             Key="IOT/" + sensorId + "/" + id + ".csv",
         )
-        runningData = "\n".join(objResponse['Body'].read().decode('utf-8').split("\n")[1:]) + runningData  # prepend all the lines except the header
+        dataLines = objResponse['Body'].read().decode('utf-8').split("\n")[1:] # all the lines except the header
+        runningData = "\n".join([x for x in dataLines if not re.match(r".*,-9999",x)]) + runningData
     runningBody = "date,water_level\n" + runningData
     s3.put_object(
         Body=runningBody,
