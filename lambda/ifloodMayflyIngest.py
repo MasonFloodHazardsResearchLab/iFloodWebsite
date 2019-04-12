@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             Key="IOT/" + sensorId + "/" + id + ".csv",
         )
         dataLines = objResponse['Body'].read().decode('utf-8').split("\n")[1:] # all the lines except the header
-        runningData = "\n".join([x for x in dataLines if not re.match(r".*,-9999",x)]) + runningData
+        runningData = "\n".join([x for x in dataLines if not re.match(r".*,-9999",x)]) + runningData # remove -9999 data points (it reports that when it can't get a good reading)
     runningBody = "date,water_level\n" + runningData
     s3.put_object(
         Body=runningBody,
