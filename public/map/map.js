@@ -2049,7 +2049,7 @@ function makePlotStationWater(url, domNode, title, marker) {
                     name: 'IoT Sensor',
                     hoverinfo: "y",
                     x: unpack(rows, 'date'),
-                    y: unpack(rows, 'water_level_2'), //sensor 2 is the good one
+                    y: unpack(rows, 'water_level'),
                     line: {
                         color: '#44cbcb',
                         width: 1
@@ -2063,27 +2063,6 @@ function makePlotStationWater(url, domNode, title, marker) {
                 };
                 Plotly.addTraces(domNode, sensorObservation);
             });
-            // Plotly.d3.csv(dataDomain + "/IOT/hobo1/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
-            //     let sensorObservation = {
-            //         type: "scatter",
-            //         mode: 'lines+markers',
-            //         name: 'HOBO Sensor',
-            //         hoverinfo: "y",
-            //         x: unpack(rows, 'date'),
-            //         y: unpack(rows, 'water_level'), //sensor 2 is the good one
-            //         line: {
-            //             color: '#44cb00',
-            //             width: 1
-            //         },
-            //         marker: {
-            //             color: '#44cb00',
-            //             width: 0.25
-            //         },
-            //         xaxis: 'x1',
-            //         yaxis: 'y1'
-            //     };
-            //     Plotly.addTraces(domNode, sensorObservation);
-            // });
         }
         //if this station has NOAA observation data we'll load that too
         if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
@@ -2528,7 +2507,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
                 let ifloodDates = unpack(rows, 'iflood_date');
                 let ifloodValues = unpack(rows, 'iflood');
                 let iotDates = unpack(iotRows, 'date');
-                let iotValues = unpack(iotRows, 'water_level_2');
+                let iotValues = unpack(iotRows, 'water_level');
                 let comparisonDates = [];
                 let comparisonValues = [];
                 for (let i = 0; i < ifloodDates.length; i++) {

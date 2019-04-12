@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     sensorId = event["body"].split("\n")[0]
     timestamp = datetime.datetime.today().strftime('%Y%m%d%H')
     data = "\n".join(event["body"].split("\n")[1:])
-    fileBody = "date,water_level_1,water_level_2\n" + data
+    fileBody = "date,water_level\n" + data
     s3.put_object(
         Body=fileBody,
         Bucket="gmu-iflood-data",
@@ -40,7 +40,7 @@ def lambda_handler(event, context):
             Key="IOT/" + sensorId + "/" + id + ".csv",
         )
         runningData = "\n".join(objResponse['Body'].read().decode('utf-8').split("\n")[1:]) + runningData  # prepend all the lines except the header
-    runningBody = "date,water_level_1,water_level_2\n" + runningData
+    runningBody = "date,water_level\n" + runningData
     s3.put_object(
         Body=runningBody,
         Bucket="gmu-iflood-data",
