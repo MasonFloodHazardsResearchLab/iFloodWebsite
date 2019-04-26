@@ -496,7 +496,7 @@ let layers = {
         "group":0,
         "type":"geoJSON",
         "displayName":"Inundation",
-        "temporal":false, //TODO: Should this be temporal?
+        "temporal":false,
         "urls":[
             [0,"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/maxinundation.json"]
         ],

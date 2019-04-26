@@ -148,7 +148,7 @@ def lambda_handler(event, context):
                 alertTripped = True
                 alertMessage += "\nPredicted Wave Heights:\n"
                 for station, status in wavesFlooded.items():
-                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m)\n"
+                    alertMessage += (status["Full Name"] if "Full Name" in status else station) + ": " + status["Flood Level"] + " (" + str(status["Flood Stage"]) + "m) at " + status["Flood Time"] + "\n"
             if locationsFlooded:
                 alertTripped = True
                 alertMessage += "\nPredicted Flooding:\n"
