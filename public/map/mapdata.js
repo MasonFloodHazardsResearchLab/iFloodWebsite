@@ -463,7 +463,7 @@ let viewLevels = [
 ];
 
 let layerGroups = [
-    "GMU iFlood Data", //0
+    "GMU iFLOOD Data", //0
     "Third Party Data" //1
 ];
 
@@ -567,7 +567,7 @@ let layers = {
         "color":"#e13835",
         "z":100,
         "img":"/map/layerIcons/boundary.png",
-        "description":"Numerical model domain for iFlood forecast System."
+        "description":"Numerical model domain for iFLOOD forecast System."
     },
     "bathy": {
         "group":0,
