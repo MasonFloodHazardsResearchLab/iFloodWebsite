@@ -709,11 +709,11 @@ let layers = {
         "group":1,
         "type":"heatmap",
         "displayName":"Twitter Activity",
-        "url":dataDomain+"/SocialMedia/twitterFlood/points.json",
+        "url":dataDomain+"/SocialMedia/twitterFlood/displayCounts.json",
         "downloadUrl":"https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets",
         "colorRange":colorRanges["plasma"],
         "radius": 20,
-        "maxIntensity": 40,
+        "maxIntensity": 60,
         "img":"/map/layerIcons/twitterHeat.png",
         "description":"Heatmap of recent tweets that mention #flood or #flooding. Tweets are matched to locations using data from <a href='https://simplemaps.com/data/us-cities' target='_blank' rel='noopener noreferrer'>SimpleMaps</a>."
     }

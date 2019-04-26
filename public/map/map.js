@@ -1004,8 +1004,11 @@ function showLayer(layer, oncomplete) {
         if (typeof layer["gHeatmap"] === 'undefined') {
             $.get(layer["url"]+"?v="+Math.round(Math.random()*100000000).toString(), function (heatData) {
                 let gPoints = [];
-                heatData.forEach(function(pair) {
-                    gPoints.push(new google.maps.LatLng(pair[0], pair[1]));
+                Object.keys(heatData).forEach(function(key) {
+                    gPoints.push({
+                        location: new google.maps.LatLng(heatData[key]['location'][0], heatData[key]['location'][1]),
+                        weight: heatData[key]['count']
+                    });
                 });
                 let grad = layer["colorRange"].map(x => x[1]);
                 grad.unshift($.colors(grad[0]).set('Alpha',0).toString('rgba'));

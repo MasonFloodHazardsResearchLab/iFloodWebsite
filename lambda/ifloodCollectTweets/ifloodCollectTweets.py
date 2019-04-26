@@ -93,11 +93,29 @@ def lambda_handler(event, context):
 
     timestamp = datetime.datetime.today().strftime('%Y%m%d%H')
 
-    fileBody = json.dumps(points)
+    #get city average tweet numbers
+    objResponse = s3.get_object(
+        Bucket="gmu-iflood-data",
+        Key="SocialMedia/twitterFlood/cityAverage.json",
+    )
+    averageCounts = json.loads(objResponse['Body'].read().decode('utf-8'))
+    displayCounts = dict()
+    for city in locationCounts:
+        if city not in averageCounts or averageCounts[city] < 1: #if the number is tiny it's all basically the same
+            count = locationCounts[city]
+        else:
+            count = locationCounts[city]/averageCounts[city]
+        displayCounts[city] = {
+            "location": cityDict[city],
+            "count": count
+        }
+
+
+    fileBody = json.dumps(displayCounts)
     s3.put_object(
         Body=fileBody,
         Bucket="gmu-iflood-data",
-        Key="SocialMedia/twitterFlood/points.json",
+        Key="SocialMedia/twitterFlood/displayCounts.json",
         ContentType="text/json",
         CacheControl="max-age=1800"
     )
@@ -117,11 +135,3 @@ def lambda_handler(event, context):
         Key="SocialMedia/twitterFlood/" + timestamp + "/missedLocations.json",
         ContentType="text/json"
     )
-
-    # fileBody = json.dumps(tweets, ensure_ascii=False, indent=4)
-    # s3.put_object(
-    #     Body=fileBody,
-    #     Bucket="gmu-iflood-data",
-    #     Key="SocialMedia/twitterFlood/"+timestamp+"/tweets.json",
-    #     ContentType="text/json"
-    # )
