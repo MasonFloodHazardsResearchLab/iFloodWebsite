@@ -779,6 +779,89 @@ function updateHash() {
     history.replaceState(undefined, undefined, "#"+hashStr.slice(0,-1)); //cut off extra comma
 }
 
+function debugDrawHeat(data) {
+    let gPoints = [];
+    Object.keys(data).forEach(function(key) {
+        gPoints.push({
+            location: new google.maps.LatLng(data[key]['lat'], data[key]['lon'])
+        });
+    });
+    let grad = colorRanges["blueRed"].map(x => x[1]);
+    grad.unshift($.colors(grad[0]).set('Alpha',0).toString('rgba'));
+    new google.maps.visualization.HeatmapLayer({
+        data: gPoints,
+        radius: 2,
+        gradient: grad,
+        map: map
+    });
+}
+
+function pointPlot(layer, point) {
+    let filesToGet = [];
+    let latInt = Math.floor(point.lat);
+    let lonInt = Math.floor(point.lng);
+    filesToGet.push(latInt.toString()+"_"+lonInt.toString());
+    //we want to get the 4 squares around the click location to make sure we don't miss anything
+    let offsets = [0,0];
+    if (point.lat-latInt < 0.5)
+        offsets[0] = -1;
+    else
+        offsets[0] = 1;
+    if (point.lng-lonInt < 0.5)
+        offsets[1] = -1;
+    else
+        offsets[1] = 1;
+    filesToGet.push((latInt+offsets[0]).toString()+"_"+(lonInt).toString());
+    filesToGet.push((latInt).toString()+"_"+(lonInt+offsets[1]).toString());
+    filesToGet.push((latInt+offsets[0]).toString()+"_"+(lonInt+offsets[1]).toString());
+    let requests = [];
+    for (let i = 0; i < 4; i++) {
+        requests.push(
+            $.get({
+                url: layer["pointPlotUrl"].replace("{_l_}",filesToGet[i]),
+                dataType: "json"
+            })
+        );
+    }
+    $.when.apply($, requests).done(function(a, b, c, d) {
+        console.log({a,b,c,d});
+        let allPoints = a[0].concat(b[0],c[0],d[0]);
+        //console.log(allPoints)
+        //debugDrawHeat(allPoints);
+        let closestIndex = null;
+        let closestDistance = null;
+        for (let i = 0; i < allPoints.length; i++) {
+            let dis = Math.pow(allPoints[i]["lat"]-point.lat,2)+Math.pow(allPoints[i]["lon"]-point.lng,2);
+            if (closestDistance === null || dis < closestDistance) {
+                closestIndex = i;
+                closestDistance = dis;
+            }
+        }
+        let closestPoint = allPoints[closestIndex];
+        if (currentInfoWindow) {
+            currentInfoWindow.close();
+            Plotly.purge(currentInfoWindow.content);
+        }
+        let domPlot = $('<div>', {
+            class: "mapPopupContainer"
+        });
+        let infoWindow = new google.maps.InfoWindow({
+            content: domPlot[0],
+            position: {lat: closestPoint["lat"], lng: closestPoint["lon"]}
+        });
+        currentInfoWindow = infoWindow;
+        infoWindow.addListener('closeclick', function () {
+            currentInfoWindow = null;
+            Plotly.purge(domPlot[0]);
+            $(timeSlideContainer).removeClass("mobileHide");
+            drawTimeSlide();
+        });
+        infoWindow.open(map);
+        $(timeSlideContainer).addClass("mobileHide");
+        makePlotPointLevel(domPlot[0], closestPoint["water"], layer["displayName"]);
+    });
+}
+
 //show a layer
 function showLayer(layer, oncomplete) {
     layer["visible"] = true;
@@ -1115,6 +1198,18 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
             });
             google.maps.event.addListener(theDataLayer, 'mouseover', function(event) {
                 drawScaleBar(layer,event.feature.getProperty(layer["colorProperty"]));
+            });
+            google.maps.event.addListener(theDataLayer, 'click', function (event) {
+                if (currentInfoWindow) {
+                    currentInfoWindow.close();
+                    Plotly.purge(currentInfoWindow.content);
+                    currentInfoWindow = null;
+                    $(timeSlideContainer).removeClass("mobileHide");
+                    drawTimeSlide();
+                }
+                else if (layer["pointPlotUrl"]) {
+                    pointPlot(layer, event.latLng.toJSON());
+                }
             });
             //show this data only if it's still the correct one
             if (JSON.stringify(planningToShow) === JSON.stringify(layer["showing"]) && layer["visible"]) {
@@ -3363,4 +3458,115 @@ function makePlotStationWavesValidation(url, domNode, title) {
         };
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
     });
+}
+
+function makePlotPointLevel(domNode, levels, title) {
+    let times = [];
+    for (let i = 0; i < 84; i++) {
+        times.push(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(i, 'hours').format("ddd HH:mm [UTC]"));
+    }
+    console.log(levels);
+    let data = [{
+        type: "scatter",
+        mode: 'lines+markers',
+        name: 'iflood',
+        hoverinfo: "y",
+        x: times,
+        y: levels,
+        line: {
+            color: '#008000',
+            width: 1
+        },
+        marker: {
+            color: '#008000',
+            width: 0.25
+        },
+        xaxis: 'x1',
+        yaxis: 'y1'
+    }];
+    let layout = {
+        showlegend: true,
+        hovermode: "x",
+        "spikedistance": "data",
+        showcrossline: "true",
+        title: title,
+        legend: {
+            orientation: "h",
+            yanchor: "bottom",
+            y: -0.5,
+            font: {
+                size: 10
+            }
+        },
+        margin: {
+            l: 60,
+            r: 5,
+            t: 40,
+            b: 0
+        },
+        // width: 500,
+        // height: 350,
+        //"xanchor": "center"},
+        images: [
+            {
+                source: "/MasonM.png",
+                xref: "paper",
+                yref: "paper",
+                xanchor: "right",
+                yanchor: "top",
+                x: .99,
+                y: .985,
+                sizex: 0.25,
+                sizey: 0.25,
+                opacity: 0.25,
+                layer: "above"
+            }],
+
+        shapes: [
+            {
+                type: 'line',
+                layer: 'above',
+                x0: 1,
+                y0: 0,
+                x1: 6,
+                y1: 0,
+                fillcolor: 'rgb(0,0,0)',
+                opacity: 1.0,
+                line: {
+                    width: 1
+                }
+            }
+        ],
+        xaxis: {
+            showgrid: true,
+            showspikes: true,
+            spikemode: "across",
+            gridcolor: 'rgba(255,255,255,0.3)',
+            gridwidth: .25,
+            linecolor: 'rgb(153, 153, 153)',
+            linewidth: 1,
+            anchor: 'y1',
+            nticks: 24,
+            tickcolor: '#bfbfbf',
+            tickwidth: 4,
+            mirror: true,
+            title: 'Time',
+            range: "auto",
+        },
+        yaxis: {
+            showgrid: true,
+            gridcolor: 'rgba(255,255,255,0.3)',
+            gridwidth: .25,
+            linecolor: 'rgb(153, 153, 153)',
+            linewidth: 1,
+            tick0: 0,
+            domain: [0, 1],
+            tickwidth: 1,
+            nticks: 4,
+            mirror: true,
+            title: 'BIAS (meters)',
+            range: [-2, 2],
+        }
+    };
+    Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
 }

@@ -3,7 +3,7 @@ The file `mapdata.js` contains information about the various data layers availab
 
 ## Layers
 #### group
-An integer, corresponding to the index of the layer group to place this layer under.
+An integer, corresponding to the index of the layer group to place this layer under. For example, layers that show under "GMU iFLOOD Data" have group index 0.
 #### type
 The type of data this layer displays. Possible values are:
 - `"geoJSON"` - most common
@@ -11,6 +11,7 @@ The type of data this layer displays. Possible values are:
 - `"wmsTile"` - loads image tiles from a [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) server
 - `"arcGIS"` - loads image tiles from an ArcGIS server
 - `"stormPath"` - shows paths of storms (you probably won't be modifying these)
+- `"heatmap"` - shows a collection of weighted points as a heatmap (used for Twitter data)
 #### displayName
 A string representing the name of the layer as displayed to the user
 #### temporal
@@ -27,7 +28,7 @@ For `geoJSON` layers, multiple URLs can be specified for different view levels. 
 ```
 ^ This temporal layer has special data for view level 2. The entries should always be in order, with 0 first. The `{_h_}` will be replaced with the integer of the current hour being viewed.
 #### maxUrl
-For temporal `geoJSON` layers, this is the URL of the maximum file.
+For temporal `geoJSON` layers, this is the URL of the file that shows the maximum values over the entire time range.
 #### downloadUrl
 This is the URL that users will be sent to when they click the `Raw Data` button. For iFLOOD data these usually start with `{_some_model_DOWNLOAD_}/` where "some_model" is replaced by the name of the model the layer comes from.
 #### colorRange

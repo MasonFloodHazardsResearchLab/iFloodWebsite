@@ -482,6 +482,7 @@ let layers = {
             [2,"https://data.iflood.vse.gmu.edu/Forecast/PotomacRiver_ADCIRC/DCmodel/Water/MaxWater/PRmaxele.json"]
         ],
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
+        "pointPlotUrl":"https://s3.amazonaws.com/gmu-iflood-data/test/{_l_}.json",
         "colorRange":colorRanges["jet"],
         "colorBounds":[0,2],
         "colorProperty":"eleavg",
