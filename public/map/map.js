@@ -30,7 +30,7 @@ $.views.helpers("uniqueID", function() { return templateIDCounter++; });
 
 const templateLayerInfo = $.templates("#templateLayerInfo");
 const templateLayerTile = $.templates("#templateLayerTile");
-const templatePopupTabs = $.templates("#templatePopupTabs");
+const templatePopup = $.templates("#templatePopup");
 const templatePlaceButton = $.templates("#templatePlaceButton");
 const templateHurricaneInfo = $.templates("#templateHurricaneInfo");
 
@@ -200,7 +200,7 @@ function init() {
             infoWindow.open(map, marker["gMarker"]);
             $(timeSlideContainer).addClass("mobileHide");
             if (typeof marker["notice"] === 'undefined') {
-                $(templatePopupTabs.render(marker)).appendTo(domPlot);
+                $(templatePopup.render(marker)).appendTo(domPlot);
                 if (marker["hasWater"]) {
                     makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
                 }
@@ -845,6 +845,12 @@ function pointPlot(layer, point) {
         let domPlot = $('<div>', {
             class: "mapPopupContainer"
         });
+        let plotContent = $('<div>',{
+            class: "mapPopupContent",
+            css: {
+                display: "block"
+            }
+        }).appendTo(domPlot);
         let infoWindow = new google.maps.InfoWindow({
             content: domPlot[0],
             position: {lat: closestPoint["lat"], lng: closestPoint["lon"]}
@@ -858,7 +864,8 @@ function pointPlot(layer, point) {
         });
         infoWindow.open(map);
         $(timeSlideContainer).addClass("mobileHide");
-        makePlotPointLevel(domPlot[0], closestPoint["water"], layer["displayName"]);
+        makePlotPointLevel(plotContent[0], closestPoint["water"], layer["displayName"]);
+        setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 50); //force resize
     });
 }
 
@@ -3493,7 +3500,7 @@ function makePlotPointLevel(domNode, levels, title) {
         legend: {
             orientation: "h",
             yanchor: "bottom",
-            y: -0.5,
+            y: -0.3,
             font: {
                 size: 10
             }
@@ -3546,9 +3553,9 @@ function makePlotPointLevel(domNode, levels, title) {
             linecolor: 'rgb(153, 153, 153)',
             linewidth: 1,
             anchor: 'y1',
-            nticks: 24,
             tickcolor: '#bfbfbf',
             tickwidth: 4,
+            nticks: 5,
             mirror: true,
             title: 'Time',
             range: "auto",
@@ -3565,7 +3572,7 @@ function makePlotPointLevel(domNode, levels, title) {
             nticks: 4,
             mirror: true,
             title: 'BIAS (meters)',
-            range: [-2, 2],
+            range: "auto",
         }
     };
     Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
