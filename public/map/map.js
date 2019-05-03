@@ -1793,7 +1793,11 @@ function drawOverlay(currentTime) {
         let bPoint = new google.maps.LatLng(pointBurstLocation.lat, pointBurstLocation.lng);
         let bWorldPoint = map.getProjection().fromLatLngToPoint(bPoint);
         let bPixel = new google.maps.Point((bWorldPoint.x - bottomLeft.x) * scale, (bWorldPoint.y - topRight.y) * scale);
-        let grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/80*Math.pow(1.5, map.getZoom()),0));
+        let grad;
+        if (pointBurstPoints.length < 100) //if there aren't many points we'll use a larger radius so they're still visible
+            grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/90*Math.pow(2, map.getZoom()),0));
+        else
+            grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/80*Math.pow(1.8, map.getZoom()),0));
         grad.addColorStop(0, 'rgba(255,255,255,'+alpha.toString()+')');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         overCtx.fillStyle = grad;
