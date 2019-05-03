@@ -1801,10 +1801,10 @@ function drawOverlay(currentTime) {
             let point = new google.maps.LatLng(rawPoint["lat"], rawPoint["lon"]);
             let worldPoint = map.getProjection().fromLatLngToPoint(point);
             let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-            if (map.getZoom() > 7)
-                overCtx.fillRect(pixel.x-1, pixel.y-1, 2, 2);
-            else
+            if (map.getZoom() > 8)
                 overCtx.fillRect(pixel.x-2, pixel.y-2, 4, 4);
+            else
+                overCtx.fillRect(pixel.x-1, pixel.y-1, 2, 2);
         });
         drewAnything = true;
     }
