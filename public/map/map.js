@@ -1788,12 +1788,12 @@ function drawOverlay(currentTime) {
     if (!drewAnything /* don't draw if particles are happening */ && pointBurstTime && pointBurstPoints && currentTime - pointBurstTime < 500) {
         overCtx.globalAlpha = 1;
         overCtx.clearRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
-        let alpha = Math.min(Math.max(1 - (currentTime - pointBurstTime)/500,0),1);
+        let alpha = Math.min(Math.max(Math.pow(1 - (currentTime - pointBurstTime)/500,2),0),1);
         //find point of burst center
         let bPoint = new google.maps.LatLng(pointBurstLocation.lat, pointBurstLocation.lng);
         let bWorldPoint = map.getProjection().fromLatLngToPoint(bPoint);
         let bPixel = new google.maps.Point((bWorldPoint.x - bottomLeft.x) * scale, (bWorldPoint.y - topRight.y) * scale);
-        let grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/500*Math.pow(2, map.getZoom()),0));
+        let grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/80*Math.pow(1.5, map.getZoom()),0));
         grad.addColorStop(0, 'rgba(255,255,255,'+alpha.toString()+')');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         overCtx.fillStyle = grad;
@@ -1801,7 +1801,10 @@ function drawOverlay(currentTime) {
             let point = new google.maps.LatLng(rawPoint["lat"], rawPoint["lon"]);
             let worldPoint = map.getProjection().fromLatLngToPoint(point);
             let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-            overCtx.fillRect(pixel.x-1, pixel.y-1, 3, 3);
+            if (map.getZoom() > 7)
+                overCtx.fillRect(pixel.x-1, pixel.y-1, 2, 2);
+            else
+                overCtx.fillRect(pixel.x-2, pixel.y-2, 4, 4);
         });
         drewAnything = true;
     }
@@ -3195,8 +3198,7 @@ function makePlotStationWaves(url, domNode, title) {
                 nticks: 8,
                 mirror: true,
                 title: 'Significant Wave Height (meters)',
-                autorange: true,
-                //range: [-1, 8],
+                range: [0, 8]
             }
         };
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
