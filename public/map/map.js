@@ -3609,7 +3609,6 @@ function makePlotPointLevel(domNode, levels, title, layer) {
             tick0: 0,
             domain: [0, 1],
             tickwidth: 1,
-            nticks: 4,
             mirror: true,
             title: layer["displayName"]+" ("+layer["unit"]+")",
             range: layer["colorBounds"],
