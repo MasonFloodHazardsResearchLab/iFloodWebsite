@@ -1,0 +1,1 @@
+The JS libraries for the map were starting to pile up so I decided to combine them all into one file. If you want to add/update a library you can put it in here and run `concat.bat`, then replace `public/map/mapbundle.js` with the new one. If someone wants to set up webpack or something instead they're welcome to.

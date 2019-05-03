@@ -482,7 +482,7 @@ let layers = {
             [2,"https://data.iflood.vse.gmu.edu/Forecast/PotomacRiver_ADCIRC/DCmodel/Water/MaxWater/PRmaxele.json"]
         ],
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
-        "pointPlotUrl":"https://s3.amazonaws.com/gmu-iflood-data/test/{_l_}.json",
+        "pointPlotUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/Points/{_l_}.json",
         "colorRange":colorRanges["jet"],
         "colorBounds":[0,2],
         "colorProperty":"eleavg",
@@ -522,6 +522,7 @@ let layers = {
         ],
         "maxUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/GeoJson/minpressure.json",
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Pressure/",
+        "pointPlotUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Pressure/Points/{_l_}.json",
         "colorRange":colorRanges["plasma"],
         "colorBounds":[9,11],
         "colorProperty":"eleavg",

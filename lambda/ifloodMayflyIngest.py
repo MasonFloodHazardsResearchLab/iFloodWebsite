@@ -34,7 +34,7 @@ def lambda_handler(event, context):
         CacheControl="max-age=3600"
     )
     # generate running file
-    runningData = "\n".join(event["body"].split("\n")[1:])
+    runningData = "\n".join([x for x in event["body"].split("\n")[1:] if not re.match(r".*,-9999",x)]) # remove -9999 data points (it reports that when it can't get a good reading)
     for id in newRecents[1:]:
         objResponse = s3.get_object(
             Bucket="gmu-iflood-data",

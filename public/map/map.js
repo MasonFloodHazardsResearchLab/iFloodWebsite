@@ -818,16 +818,27 @@ function pointPlot(layer, point) {
     for (let i = 0; i < 4; i++) {
         requests.push(
             $.get({
-                url: layer["pointPlotUrl"].replace("{_l_}",filesToGet[i]),
+                url: replaceModelPaths(layer["pointPlotUrl"]).replace("{_l_}",filesToGet[i]),
                 dataType: "json"
             })
         );
     }
-    $.when.apply($, requests).done(function(a, b, c, d) {
-        console.log({a,b,c,d});
-        let allPoints = a[0].concat(b[0],c[0],d[0]);
-        //console.log(allPoints)
-        //debugDrawHeat(allPoints);
+    //whenAll isn't a normal jQuery thing, it's an extension from https://stackoverflow.com/a/7881733 included in mapbundle.js
+    $.whenAll.apply($, requests).always(function(a, b, c, d) {
+        //console.log({a,b,c,d});
+        let allPoints = [];
+        if (a[1] === "success") allPoints = allPoints.concat(a[0]);
+        if (b[1] === "success") allPoints = allPoints.concat(b[0]);
+        if (c[1] === "success") allPoints = allPoints.concat(c[0]);
+        if (d[1] === "success") allPoints = allPoints.concat(d[0]);
+        if (allPoints.length === 0)
+            return; //if there are no points nearby there's not much we can do
+
+        //create point burst
+        pointBurstPoints = allPoints;
+        pointBurstLocation = point;
+        pointBurstTime = performance.now();
+
         let closestIndex = null;
         let closestDistance = null;
         for (let i = 0; i < allPoints.length; i++) {
@@ -847,13 +858,15 @@ function pointPlot(layer, point) {
         });
         let plotContent = $('<div>',{
             class: "mapPopupContent",
+            id: "pointPlotContent",
             css: {
                 display: "block"
             }
         }).appendTo(domPlot);
         let infoWindow = new google.maps.InfoWindow({
             content: domPlot[0],
-            position: {lat: closestPoint["lat"], lng: closestPoint["lon"]}
+            position: {lat: closestPoint["lat"], lng: closestPoint["lon"]},
+            disableAutoPan : true
         });
         currentInfoWindow = infoWindow;
         infoWindow.addListener('closeclick', function () {
@@ -1361,7 +1374,7 @@ function updateView() {
 function updateTime() {
     //update plotly if needed
     if (currentInfoWindow) {
-        $('#mapPopupContentWater, #mapPopupContentWaves, #mapPopupContentWind').each(function() {
+        $('#mapPopupContentWater, #mapPopupContentWaves, #mapPopupContentWind, #pointPlotContent').each(function() {
             Plotly.relayout(this, {
                 'shapes[0]': null
             });
@@ -1638,6 +1651,9 @@ function hideParticles(layer) {
 }
 
 let lastFrameTime;
+let pointBurstPoints;
+let pointBurstLocation;
+let pointBurstTime;
 function drawOverlay(currentTime) {
     let frameLength;
     if (lastFrameTime)
@@ -1767,6 +1783,28 @@ function drawOverlay(currentTime) {
                 }
             }
         }
+    }
+    //draw point burst (effect around click when opening a point plot)
+    if (pointBurstTime && pointBurstPoints && currentTime - pointBurstTime < 500) {
+        overCtx.globalAlpha = 1;
+        overCtx.clearRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
+        let alpha = Math.min(Math.max(1 - (currentTime - pointBurstTime)/500,0),1);
+        //find point of burst center
+        let bPoint = new google.maps.LatLng(pointBurstLocation.lat, pointBurstLocation.lng);
+        let bWorldPoint = map.getProjection().fromLatLngToPoint(bPoint);
+        let bPixel = new google.maps.Point((bWorldPoint.x - bottomLeft.x) * scale, (bWorldPoint.y - topRight.y) * scale);
+        let grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/500*Math.pow(2, map.getZoom()),0));
+        grad.addColorStop(0, 'rgba(255,255,255,0)');
+        grad.addColorStop(0.5, 'rgba(255,255,255,'+alpha.toString()+')');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        overCtx.fillStyle = grad;
+        pointBurstPoints.forEach(function(rawPoint) {
+            let point = new google.maps.LatLng(rawPoint["lat"], rawPoint["lon"]);
+            let worldPoint = map.getProjection().fromLatLngToPoint(point);
+            let pixel = new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+            overCtx.fillRect(pixel.x-1, pixel.y-1, 3, 3);
+        });
+        drewAnything = true;
     }
 
     if (!drewAnything && mapOverlayCanvas.style.display === "block") {
@@ -3470,9 +3508,8 @@ function makePlotStationWavesValidation(url, domNode, title) {
 function makePlotPointLevel(domNode, levels, title) {
     let times = [];
     for (let i = 0; i < 84; i++) {
-        times.push(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(i, 'hours').format("ddd HH:mm [UTC]"));
+        times.push(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(i, 'hours').format("YYYY-MM-DD HH:MM:SS"));
     }
-    console.log(levels);
     let data = [{
         type: "scatter",
         mode: 'lines+markers',
@@ -3533,14 +3570,15 @@ function makePlotPointLevel(domNode, levels, title) {
             {
                 type: 'line',
                 layer: 'above',
-                x0: 1,
+                x0: getRealSelectedTimeString(),
                 y0: 0,
-                x1: 6,
-                y1: 0,
-                fillcolor: 'rgb(0,0,0)',
-                opacity: 1.0,
+                x1: getRealSelectedTimeString(),
+                y1: 1,
+                yref: "paper",
+                opacity: 0.5,
                 line: {
-                    width: 1
+                    color: 'rgba(32,81,124,0.7)',
+                    width: 2
                 }
             }
         ],
