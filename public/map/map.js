@@ -1785,7 +1785,7 @@ function drawOverlay(currentTime) {
         }
     }
     //draw point burst (effect around click when opening a point plot)
-    if (pointBurstTime && pointBurstPoints && currentTime - pointBurstTime < 500) {
+    if (!drewAnything /* don't draw if particles are happening */ && pointBurstTime && pointBurstPoints && currentTime - pointBurstTime < 500) {
         overCtx.globalAlpha = 1;
         overCtx.clearRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
         let alpha = Math.min(Math.max(1 - (currentTime - pointBurstTime)/500,0),1);
@@ -1794,8 +1794,7 @@ function drawOverlay(currentTime) {
         let bWorldPoint = map.getProjection().fromLatLngToPoint(bPoint);
         let bPixel = new google.maps.Point((bWorldPoint.x - bottomLeft.x) * scale, (bWorldPoint.y - topRight.y) * scale);
         let grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/500*Math.pow(2, map.getZoom()),0));
-        grad.addColorStop(0, 'rgba(255,255,255,0)');
-        grad.addColorStop(0.5, 'rgba(255,255,255,'+alpha.toString()+')');
+        grad.addColorStop(0, 'rgba(255,255,255,'+alpha.toString()+')');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         overCtx.fillStyle = grad;
         pointBurstPoints.forEach(function(rawPoint) {
@@ -3509,6 +3508,9 @@ function makePlotPointLevel(domNode, levels, title) {
     let times = [];
     for (let i = 0; i < 84; i++) {
         times.push(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(i, 'hours').format("YYYY-MM-DD HH:MM:SS"));
+        if (levels[i] <= -9999) { //dry areas of water levels come through as -99999 so fix those while we're at it
+            levels[i] = null;
+        }
     }
     let data = [{
         type: "scatter",
