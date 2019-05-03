@@ -877,7 +877,7 @@ function pointPlot(layer, point) {
         });
         infoWindow.open(map);
         $(timeSlideContainer).addClass("mobileHide");
-        makePlotPointLevel(plotContent[0], closestPoint["water"], layer["displayName"]);
+        makePlotPointLevel(plotContent[0], closestPoint["water"], layer["displayName"], layer);
         setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 50); //force resize
     });
 }
@@ -3504,7 +3504,7 @@ function makePlotStationWavesValidation(url, domNode, title) {
     });
 }
 
-function makePlotPointLevel(domNode, levels, title) {
+function makePlotPointLevel(domNode, levels, title, layer) {
     let times = [];
     for (let i = 0; i < 84; i++) {
         times.push(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].clone().add(i, 'hours').format("YYYY-MM-DD HH:MM:SS"));
@@ -3611,8 +3611,8 @@ function makePlotPointLevel(domNode, levels, title) {
             tickwidth: 1,
             nticks: 4,
             mirror: true,
-            title: 'BIAS (meters)',
-            range: "auto",
+            title: layer["displayName"]+" ("+layer["unit"]+")",
+            range: layer["colorBounds"],
         }
     };
     Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
