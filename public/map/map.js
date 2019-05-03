@@ -1797,7 +1797,7 @@ function drawOverlay(currentTime) {
         if (pointBurstPoints.length < 100) //if there aren't many points we'll use a larger radius so they're still visible
             grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/90*Math.pow(2, map.getZoom()),0));
         else
-            grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/80*Math.pow(1.8, map.getZoom()),0));
+            grad = overCtx.createRadialGradient(bPixel.x, bPixel.y, 0, bPixel.x, bPixel.y, Math.max((currentTime - pointBurstTime)/120*Math.pow(1.8, map.getZoom()),0));
         grad.addColorStop(0, 'rgba(255,255,255,'+alpha.toString()+')');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         overCtx.fillStyle = grad;
