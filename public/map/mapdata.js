@@ -484,7 +484,7 @@ let layers = {
         "downloadUrl":"{_ChesapeakeBay_ADCIRCSWAN_DOWNLOAD_}/Downloadable_layers/Water/",
         "pointPlotUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Water/Points/{_l_}.json",
         "colorRange":colorRanges["jet"],
-        "colorBounds":[-0.5,2],
+        "colorBounds":[-0.5,3],
         "colorProperty":"eleavg",
         "unit":"m",
         "opacity":0.75,
