@@ -718,10 +718,10 @@ let layers = {
         "url":dataDomain+"/SocialMedia/twitterFlood/displayCounts.json",
         "downloadUrl":"https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets",
         "colorRange":colorRanges["plasma"],
-        "radius": 20,
-        "maxIntensity": 60,
+        "radius": 25,
+        "maxIntensity": 120,
         "img":"/map/layerIcons/twitterHeat.png",
-        "description":"Heatmap of recent tweets that mention #flood or #flooding. Tweets are matched to locations using data from <a href='https://simplemaps.com/data/us-cities' target='_blank' rel='noopener noreferrer'>SimpleMaps</a>."
+        "description":"Heatmap of recent tweets that mention flooding and flood-related topics. Tweets are matched to locations using data from <a href='https://simplemaps.com/data/us-cities' target='_blank' rel='noopener noreferrer'>SimpleMaps</a>."
     }
 };
 
