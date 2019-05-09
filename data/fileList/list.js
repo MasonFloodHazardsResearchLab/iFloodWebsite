@@ -1,3 +1,4 @@
+// https://gist.github.com/gkiar/a0e79ba5362528739dadb5d92bde86d9
 if (typeof AUTO_TITLE != 'undefined' && AUTO_TITLE == true) {
   document.title = location.hostname;
 }
