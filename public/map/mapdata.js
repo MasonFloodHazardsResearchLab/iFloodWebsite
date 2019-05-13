@@ -1232,6 +1232,8 @@ let markers = {
 		"hasValidationFile": false,
 		"hasWaves": true,
         "hasWavesValidation": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/CHVA.mp4",
 		"agency": "SCRIPPS"
 	},
 	"WIVA": {
@@ -1247,6 +1249,8 @@ let markers = {
 		"hasValidationFile": false,
 		"hasWaves": true,
         "hasWavesValidation": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/WIVA.mp4",
 		"agency": "USACE"
 	},
 	"DBDE": {
@@ -1276,6 +1280,8 @@ let markers = {
 		"hasValidationFile": false,
 		"hasWaves": true,
         "hasWavesValidation": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/VBVA.mp4",
 		"agency": "NDBC"
 	},
 	"DFNC": {
@@ -1291,6 +1297,8 @@ let markers = {
 		"hasValidationFile": false,
 		"hasWaves": true,
         "hasWavesValidation": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/DFNC.mp4",
 		"agency": "SCRIPPS"
 	},
 	"FLVA": {
@@ -1305,6 +1313,8 @@ let markers = {
 		"hasWind": false,
 		"hasValidationFile": false,
 		"hasWaves": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/FLVA.mp4",
 		"agency": "CBIBS"
 	},
 	"TSVA": {
@@ -1320,6 +1330,8 @@ let markers = {
 		"hasValidationFile": false,
 		"hasWaves": true,
         "hasWavesValidation": true,
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/TSVA.mp4",
 		"agency": "USNavy"
 	},
 	"YSVA": {
@@ -1334,7 +1346,9 @@ let markers = {
 		"hasWind": false,
 		"hasValidationFile": false,
 		"hasWaves": true,
-		"agency": "CBIBS"
+        "hasWaveSpectrum": true,
+        "waveSpectrumVideoUrl": "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/WaveSpectrum/YSVA.mp4",
+        "agency": "CBIBS"
 	},
 	"SPVA": {
 		"type": "buoy",

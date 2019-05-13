@@ -1,0 +1,21 @@
+@import '../colors.scss';
+
+.mapGrid {
+    max-width: 700px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.mapContainer {
+    flex: 1 0 300px;
+    margin-bottom: 30px;
+    .mapLabel {
+        font-size: 32px;
+        text-align: center;
+    }
+}
+.map {
+    width: 300px;
+    height: 300px;
+    margin: auto;
+}

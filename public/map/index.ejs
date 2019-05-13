@@ -137,6 +137,9 @@
         {{if hasXbeachVideo}}
             <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
         {{/if}}
+        {{if hasWaveSpectrum}}
+            <div class="tab" id="mapPopupTabWaveSpectrum" role="button" tabindex="0">Wave Spectrum</div>
+        {{/if}}
         {{if hasCamera}}
             <div class="tab" id="mapPopupTabCamera" role="button" tabindex="0">Webcam</div>
         {{/if}}
@@ -167,6 +170,9 @@
     {{/if}}
     {{if hasXbeachVideo}}
         <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>
+    {{/if}}
+    {{if hasWaveSpectrum}}
+        <div class="mapPopupContent" id="mapPopupContentWaveSpectrum"></div>
     {{/if}}
     {{if hasCamera}}
         <div class="mapPopupContent" id="mapPopupContentCamera"></div>

@@ -255,6 +255,19 @@ function init() {
                         }))
                     );
                 }
+                if (marker["hasWaveSpectrum"]) {
+                    domPlot.find("#mapPopupContentWaveSpectrum").append(
+                        $('<video>', {
+                            'class':'popupVideo',
+                            'autoplay':'',
+                            'loop':'',
+                            'muted':''
+                        }).append($('<source>', {
+                            'type':'video/mp4',
+                            'src':replaceModelPaths(marker["waveSpectrumVideoUrl"])
+                        }))
+                    );
+                }
                 if (marker["hasCamera"]) {
                     domPlot.find("#mapPopupContentCamera").append(
                         $('<iframe>', {
@@ -315,6 +328,13 @@ function init() {
                     hideAll();
                     domPlot.find("#mapPopupContentXbeachVideo").css({"display": "block"});
                     domPlot.find("#mapPopupContentXbeachVideo video")[0].play();
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabWaveSpectrum").click(function() {
+                    hideAll();
+                    domPlot.find("#mapPopupContentWaveSpectrum").css({"display": "block"});
+                    domPlot.find("#mapPopupContentWaveSpectrum video")[0].play();
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });

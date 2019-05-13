@@ -1,6 +1,7 @@
 {
   "index": {
     "page_title": "Alerts - GMU iFlood",
-    "tab": "alerts"
+    "tab": "alerts",
+    "specific_stylesheet": "alerts.css"
   }
 }

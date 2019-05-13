@@ -4,4 +4,7 @@
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link href="https://fonts.googleapis.com/css?family=Mukta:400,500,600,700" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/main.css">
+<% if (locals.specific_stylesheet) { %>
+    <link rel="stylesheet" type="text/css" href="<%= specific_stylesheet %>">
+<% } %>
 <script src="/jquery-3.3.1.min.js"></script>
