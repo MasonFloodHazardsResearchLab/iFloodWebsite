@@ -690,8 +690,8 @@ let layers = {
         "type":"arcGIS",
         "displayName":"12-hr Probability of Precipitation",
         "url":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer",
-        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
         "gisLayer":"23",
+        "downloadUrl":"https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/23",
         "img":"/map/layerIcons/precip.png",
         "description":"The Probability of Precipitation for the next 12 hours (from NOAA). The values are expressed in percentages."
     },

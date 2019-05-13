@@ -6,6 +6,9 @@ import requests
 import os
 import datetime
 
+# This is where Twitter search terms go. You can basically just copy/paste the URL after searching on the Twitter website, but for more information look here:
+# https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators
+# https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html
 twitterQueryStrings = [
     "q=%23flood%20OR%20%23flooding", # #flood or #flooding
     "q=street%20flooded%20OR%20house%20flooded%20OR%20basement%20flooded", # street flooded OR house flooded OR basement flooded
