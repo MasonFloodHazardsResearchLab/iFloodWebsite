@@ -3617,7 +3617,7 @@ function makePlotPointLevel(domNode, levels, title, layer) {
             tickwidth: 1,
             mirror: true,
             title: layer["displayName"]+" ("+layer["unit"]+")",
-            range: layer["colorBounds"],
+            range: layer["colorBounds"].slice(),
         }
     };
     Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
