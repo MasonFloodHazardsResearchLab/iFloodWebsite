@@ -159,6 +159,15 @@ function showStat(stat) {
     );
 }
 
+window.addEventListener('resize', function() {
+    let statObj = statistics[currentStat];
+    drawScale(
+        statObj["range"][0],
+        statObj["range"][1],
+        statObj["displayName"] + " (" + statObj["unit"] + ")"
+    );
+});
+
 function drawScale(min,max,text) {
     scaleCanvas.width = scaleCanvas.clientWidth*window.devicePixelRatio;
     scaleCanvas.height = scaleCanvas.clientHeight*window.devicePixelRatio;
