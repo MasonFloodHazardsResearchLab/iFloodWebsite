@@ -69,7 +69,8 @@ statistics.forEach((stat, i) => {
     $('#statTabContainer').append(tab);
 });
 $('#statTabContainer .tab').first().addClass('current');
-loadData();
+
+loadData('Week');
 
 for (let i = 0; i < 4; i++) {
     maps[i] = new google.maps.Map(document.getElementById('map'+i.toString()), {
@@ -100,7 +101,7 @@ for (let i = 0; i < 4; i++) {
 }
 
 function loadData(scale) {
-    $.get('https://s3.amazonaws.com/gmu-iflood-data/test/stats_meta.json', function(data) {
+    $.get('https://s3.amazonaws.com/gmu-iflood-data/test/'+scale.toLowerCase()+'.json', function(data) {
         currentData = data;
         currentScale = scale;
         showStat(currentStat);
