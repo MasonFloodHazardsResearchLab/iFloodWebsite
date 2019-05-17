@@ -1,5 +1,9 @@
 @import '../colors.scss';
 
+* {
+    box-sizing: border-box;
+}
+
 #statScaleContainer {
     display: flex;
     margin-top: 20px;
@@ -128,7 +132,8 @@
     }
 }
 .map {
-    width: 100%;
+    width: 300px;
+    max-width: 90vw;
     height: 300px;
     margin: auto;
     color: #000; /* applies to info windows */
@@ -137,16 +142,5 @@
     .mapContainer {
         flex: 1 0 300px;
         margin: 0 10px 30px;
-        .mapLabel {
-            font-size: 32px;
-            text-align: center;
-        }
-    }
-    .map {
-        width: 300px;
-        max-width: 80%;
-        height: 300px;
-        margin: auto;
-        color: #000; /* applies to info windows */
     }
 }
