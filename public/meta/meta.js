@@ -18,6 +18,14 @@ const statistics = [
         "range": [0,1]
     }
 ];
+const scales = [
+    "Lifetime",
+    "Year",
+    "Month",
+    "Week",
+    "Day"
+];
+
 let scaleCanvas = $('#scaleCanvas')[0];
 let scaleCtx = scaleCanvas.getContext('2d');
 
@@ -30,6 +38,23 @@ let currentScale = "week";
 let currentData;
 let currentStat = 0;
 
+//time tabs
+scales.forEach((scale, i) => {
+    let tab = $('<div>',{
+        'class':'tab',
+        'id':'tab'+scale,
+        'text':scale
+    });
+    tab.click(function() {
+        loadData(scale);
+        $('#statScaleContainer .tab').removeClass('current');
+        $(this).addClass('current');
+    });
+    $('#statScaleContainer').append(tab);
+});
+$('#statScaleContainer #tabWeek').addClass('current');
+
+//stat tabs
 statistics.forEach((stat, i) => {
     let tab = $('<div>',{
         'class':'tab',
@@ -95,8 +120,15 @@ function showStat(stat) {
         for (let j = 0; j < systemData["Stations"].length; j++) {
             let marker = markers[systemData["Stations"][j]];
             let value = systemData[statObj["id"]][j];
-            let rangePoint = value / statObj["range"][1];
-            let color = getColorPoint(colorRanges['jet'], rangePoint);
+            let color;
+            if (typeof value === "undefined" || value <= -9999 || value === null) {
+                color = "#666666";
+                value = "[no data]"
+            }
+            else {
+                let rangePoint = value / statObj["range"][1];
+                color = getColorPoint(colorRanges['jet'], rangePoint);
+            }
             let circle = new google.maps.Circle({
                 strokeColor: "#000000",
                 strokeWeight: 0.5,

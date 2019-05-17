@@ -1,5 +1,37 @@
 @import '../colors.scss';
 
+#statScaleContainer {
+    display: flex;
+    justify-content: center;
+    height: 32px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    .tab {
+        flex: 0 0 150px;
+        font-size: 22px;
+        text-align: center;
+        padding: 1px 0;
+        height: 31px;
+        border: solid 1px $mason_green;
+        cursor: pointer;
+        &:hover {
+            background-color: transparentize($mason_green, 0.9);
+        }
+        &:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+        &:not(:first-child) {
+            margin-left: -1px;
+        }
+        &:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+        &.current {
+            background-color: $mason_green;
+        }
+    }
+}
+
 #statTabContainer {
     display: flex;
     border-bottom: solid 1px #AAA;
@@ -10,7 +42,7 @@
         flex: 0 0 170px;
         font-size: 22px;
         text-align: center;
-        padding: 2px 0;
+        padding: 1px 0;
         background-color: lighten($bg_dark,8%);
         height: 31px;
         border: solid 1px #AAA;
@@ -18,6 +50,9 @@
         border-radius: 5px 5px 0 0;
         box-shadow: inset 0 -12px 10px -8px rgba(0,0,0,0.2);
         cursor: pointer;
+        &:hover {
+            background-color: lighten($bg_dark,6%)
+        }
         &:not(:first-child) {
             margin-left: -1px;
         }
@@ -70,5 +105,5 @@
     width: 300px;
     height: 300px;
     margin: auto;
-    color: #FFF; /* applies to info windows */
+    color: #000; /* applies to info windows */
 }
