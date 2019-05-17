@@ -22,6 +22,7 @@ let scaleCanvas = $('#scaleCanvas')[0];
 let scaleCtx = scaleCanvas.getContext('2d');
 
 let maps = [];
+let infoWindow = new google.maps.InfoWindow({disableAutoPan: true});
 let activeMap = 0;
 let circles = [];
 
@@ -92,10 +93,11 @@ function showStat(stat) {
     for (let i = 0; i < 4; i++) {
         let systemData = currentData[systemOrder[i]];
         for (let j = 0; j < systemData["Stations"].length; j++) {
-            let marker = markers[currentData[systemOrder[i]]["Stations"][j]];
-            let rangePoint = systemData[statObj["id"]][j] / statObj["range"][1];
+            let marker = markers[systemData["Stations"][j]];
+            let value = systemData[statObj["id"]][j];
+            let rangePoint = value / statObj["range"][1];
             let color = getColorPoint(colorRanges['jet'], rangePoint);
-            circles.push(new google.maps.Circle({
+            let circle = new google.maps.Circle({
                 strokeColor: "#000000",
                 strokeWeight: 0.5,
                 strokeOpacity: 0.5,
@@ -104,7 +106,16 @@ function showStat(stat) {
                 map: maps[i],
                 center: marker["pos"],
                 radius: 1500000 / Math.pow(2, maps[i].getZoom())
-            }));
+            });
+            google.maps.event.addListener(circle, 'mouseover',function() {
+                infoWindow.setContent(value.toString());
+                infoWindow.setPosition(marker["pos"]);
+                infoWindow.open(maps[i]);
+            });
+            google.maps.event.addListener(circle, 'mouseout',function() {
+                infoWindow.close();
+            });
+            circles.push(circle);
         }
     }
 
