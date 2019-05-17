@@ -8,13 +8,13 @@ const statistics = [
     {
         "displayName": "RMS Error",
         "id": "RMSE",
-        "unit": "m",
+        "unit": "(m)",
         "range": [0,0.04]
     },
     {
         "displayName": "Forecast Skill",
         "id": "SKILL",
-        "unit": "m",
+        "unit": "",
         "range": [0,1]
     }
 ];
@@ -157,7 +157,7 @@ function showStat(stat) {
     drawScale(
         statObj["range"][0],
         statObj["range"][1],
-        statObj["displayName"] + " (" + statObj["unit"] + ")"
+        statObj["displayName"] + " " + statObj["unit"]
     );
 }
 
@@ -166,7 +166,7 @@ window.addEventListener('resize', function() {
     drawScale(
         statObj["range"][0],
         statObj["range"][1],
-        statObj["displayName"] + " (" + statObj["unit"] + ")"
+        statObj["displayName"] + " " + statObj["unit"]
     );
 });
 
