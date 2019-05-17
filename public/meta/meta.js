@@ -20,10 +20,10 @@ const statistics = [
 ];
 const scales = [
     "Lifetime",
-    "Year",
-    "Month",
-    "Week",
-    "Day"
+    "Yearly",
+    "Monthly",
+    "Weekly",
+    "Daily"
 ];
 
 let scaleCanvas = $('#scaleCanvas')[0];
@@ -52,7 +52,7 @@ scales.forEach((scale, i) => {
     });
     $('#statScaleContainer').append(tab);
 });
-$('#statScaleContainer #tabWeek').addClass('current');
+$('#statScaleContainer #tabWeekly').addClass('current');
 
 //stat tabs
 statistics.forEach((stat, i) => {
@@ -70,7 +70,7 @@ statistics.forEach((stat, i) => {
 });
 $('#statTabContainer .tab').first().addClass('current');
 
-loadData('Week');
+loadData('Weekly');
 
 for (let i = 0; i < 4; i++) {
     maps[i] = new google.maps.Map(document.getElementById('map'+i.toString()), {
@@ -101,10 +101,12 @@ for (let i = 0; i < 4; i++) {
 }
 
 function loadData(scale) {
-    $.get('https://s3.amazonaws.com/gmu-iflood-data/test/'+scale.toLowerCase()+'.json', function(data) {
-        currentData = data;
-        currentScale = scale;
-        showStat(currentStat);
+    $.get("https://data.iflood.vse.gmu.edu/Forecast/ChesapeakeBay_ADCIRCSWAN/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
+        $.get("https://data.iflood.vse.gmu.edu/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun+"/meta/"+scale.toLowerCase()+".json", function(data) {
+            currentData = data;
+            currentScale = scale;
+            showStat(currentStat);
+        });
     });
 }
 function showStat(stat) {
