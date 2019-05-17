@@ -8,18 +8,42 @@ const statistics = [
     {
         "displayName": "RMS Error",
         "id": "RMSE",
+        "unit": "m",
         "range": [0,0.04]
     },
     {
         "displayName": "Forecast Skill",
         "id": "SKILL",
+        "unit": "m",
         "range": [0,1]
     }
 ];
+let scaleCanvas = $('#scaleCanvas')[0];
+let scaleCtx = scaleCanvas.getContext('2d');
 
 let maps = [];
 let activeMap = 0;
 let circles = [];
+
+let currentScale = "week";
+let currentData;
+let currentStat = 0;
+
+statistics.forEach((stat, i) => {
+    let tab = $('<div>',{
+        'class':'tab',
+        'id':'tab'+stat["id"],
+        'text':stat["displayName"]
+    });
+    tab.click(function() {
+        showStat(i);
+        $('#statTabContainer .tab').removeClass('current');
+        $(this).addClass('current');
+    });
+    $('#statTabContainer').append(tab);
+});
+$('#statTabContainer .tab').first().addClass('current');
+loadData();
 
 for (let i = 0; i < 4; i++) {
     maps[i] = new google.maps.Map(document.getElementById('map'+i.toString()), {
@@ -49,11 +73,28 @@ for (let i = 0; i < 4; i++) {
     });
 }
 
-$.get('https://s3.amazonaws.com/gmu-iflood-data/test/stats_meta.json', function(data) {
+function loadData(scale) {
+    $.get('https://s3.amazonaws.com/gmu-iflood-data/test/stats_meta.json', function(data) {
+        currentData = data;
+        currentScale = scale;
+        showStat(currentStat);
+    });
+}
+function showStat(stat) {
+    currentStat = stat;
+    circles.forEach(circle => {
+        circle.setMap(null);
+    });
+    circles = [];
+
+    let statObj = statistics[stat];
+
     for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < data[systemOrder[i]]["Stations"].length; j++) {
-            let marker = markers[data[systemOrder[i]]["Stations"][j]];
-            let color = getColorPoint(colorRanges['jet'], data[systemOrder[i]]["RMSE"][j]/0.04);
+        let systemData = currentData[systemOrder[i]];
+        for (let j = 0; j < systemData["Stations"].length; j++) {
+            let marker = markers[currentData[systemOrder[i]]["Stations"][j]];
+            let rangePoint = systemData[statObj["id"]][j] / statObj["range"][1];
+            let color = getColorPoint(colorRanges['jet'], rangePoint);
             circles.push(new google.maps.Circle({
                 strokeColor: "#000000",
                 strokeWeight: 0.5,
@@ -66,7 +107,40 @@ $.get('https://s3.amazonaws.com/gmu-iflood-data/test/stats_meta.json', function(
             }));
         }
     }
-});
+
+    drawScale(
+        statObj["range"][0],
+        statObj["range"][1],
+        statObj["displayName"] + " (" + statObj["unit"] + ")"
+    );
+}
+
+function drawScale(min,max,text) {
+    scaleCanvas.width = scaleCanvas.clientWidth*window.devicePixelRatio;
+    scaleCanvas.height = scaleCanvas.clientHeight*window.devicePixelRatio;
+    scaleCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+
+    let width = scaleCanvas.clientWidth;
+    let height = scaleCanvas.clientHeight;
+
+    scaleCtx.clearRect(0,0,width,height);
+    for (let i = 0; i < width; i++) {
+        scaleCtx.fillStyle = getColorPoint(colorRanges['jet'],i/width);
+        scaleCtx.fillRect(i,0,2,15);
+    }
+    scaleCtx.fillStyle = "#FFFFFF";
+    scaleCtx.font = "18px Mukta";
+    scaleCtx.textAlign = "left";
+    scaleCtx.save();
+    //numbers
+    scaleCtx.rotate(Math.PI/2);
+    scaleCtx.fillText(Number((min).toFixed(2)).toString(),18,-2);
+    scaleCtx.fillText(Number((max).toFixed(2)).toString(),18,(-width)+15);
+    scaleCtx.restore();
+    scaleCtx.font = "22px Mukta";
+    scaleCtx.textAlign = "center";
+    scaleCtx.fillText(text,width/2,70);
+}
 
 function moveAll(center, exclude) {
     for (let i = 0; i < 4; i++) {
