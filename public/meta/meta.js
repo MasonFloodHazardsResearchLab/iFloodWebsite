@@ -75,7 +75,7 @@ loadData('Week');
 for (let i = 0; i < 4; i++) {
     maps[i] = new google.maps.Map(document.getElementById('map'+i.toString()), {
         zoom: 7,
-        gestureHandling: 'greedy',
+        gestureHandling: window.matchMedia('(min-width: 600px)').matches ? 'greedy' : 'cooperative',
         mapTypeId: 'roadmap',
         center: {lat: 38.2, lng: -76.325},
         streetViewControl: false,

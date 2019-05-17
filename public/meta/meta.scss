@@ -50,10 +50,9 @@
 
 #statTabContainer {
     display: flex;
-    height: 32px;
     margin-bottom: 20px;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
     .tab {
         flex: 0 0 170px;
         font-size: 22px;
