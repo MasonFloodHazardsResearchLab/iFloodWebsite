@@ -2,6 +2,7 @@ import json
 import datetime
 import boto3
 import re
+from botocore.exceptions import ClientError
 
 s3 = boto3.client("s3")
 
@@ -19,11 +20,14 @@ def lambda_handler(event, context):
         ContentType="text/csv"
     )
 
-    objResponse = s3.get_object(
-        Bucket="gmu-iflood-data",
-        Key="IOT/" + sensorId + "/" + "recent.txt",
-    )
-    oldRecents = objResponse['Body'].read().decode('utf-8').split(',')
+    try:
+        objResponse = s3.get_object(
+            Bucket="gmu-iflood-data",
+            Key="IOT/" + sensorId + "/" + "recent.txt",
+        )
+        oldRecents = objResponse['Body'].read().decode('utf-8').split(',')
+    except ClientError:
+        oldRecents = []
     newRecents = [timestamp] + oldRecents[:3]
     recentString = ",".join(newRecents)
     s3.put_object(
