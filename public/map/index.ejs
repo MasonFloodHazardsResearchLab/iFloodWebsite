@@ -134,6 +134,9 @@
         {{if hasWavesValidation}}
             <div class="tab" id="mapPopupTabWavesValidation" role="button" tabindex="0">Validation</div>
         {{/if}}
+        {{if hasLongtermWater}}
+            <div class="tab" id="mapPopupTabLongtermWater" role="button" tabindex="0">Long Term Forecast</div>
+        {{/if}}
         {{if hasXbeachVideo}}
             <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
         {{/if}}
@@ -167,6 +170,9 @@
     {{/if}}
     {{if hasWavesValidation}}
         <div class="mapPopupContent" id="mapPopupContentWavesValidation"></div>
+    {{/if}}
+    {{if hasLongtermWater}}
+        <div class="mapPopupContent" id="mapPopupContentLongtermWater"></div>
     {{/if}}
     {{if hasXbeachVideo}}
         <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>

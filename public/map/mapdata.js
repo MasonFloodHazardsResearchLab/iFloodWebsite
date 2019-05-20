@@ -451,9 +451,11 @@ let colorRanges = {
     ]
 };
 
+//these are in a dict in case model-specific properties need to be added later, but for now there aren't any
 let models = {
     "ChesapeakeBay_ADCIRCSWAN":{},
-    "ChesapeakeBay_XBEACH":{}
+    "ChesapeakeBay_XBEACH":{},
+    "ChesapeakeBay_SUBX":{}
 };
 
 let viewLevels = [
@@ -903,6 +905,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.644, 0.797, 0.949, 1.101],
 		"agency": "NOAA",
         "noaaId": "8632200",

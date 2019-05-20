@@ -181,8 +181,7 @@ function init() {
         }
         marker["gMarker"].addListener('click', function () {
             if (currentInfoWindow) {
-                currentInfoWindow.close();
-                Plotly.purge(currentInfoWindow.content);
+                closePopupWindow();
             }
             let domPlot = $('<div>', {
                 class: "mapPopupContainer"
@@ -192,8 +191,7 @@ function init() {
             });
             currentInfoWindow = infoWindow;
             infoWindow.addListener('closeclick', function () {
-                currentInfoWindow = null;
-                Plotly.purge(domPlot[0]);
+                closePopupWindow()
                 $(timeSlideContainer).removeClass("mobileHide");
                 drawTimeSlide();
             });
@@ -451,8 +449,7 @@ function init() {
 
     map.addListener('click', function() {
         if (currentInfoWindow) {
-            currentInfoWindow.close();
-            Plotly.purge(currentInfoWindow.content);
+            closePopupWindow();
             $(timeSlideContainer).removeClass("mobileHide");
             drawTimeSlide();
         }
@@ -728,6 +725,13 @@ $('.messageBox .dismissButton').click(function() {
     $('#messageBoxFade').removeClass('show');
 });
 
+//infowindow
+function closePopupWindow() {
+    $(currentInfoWindow.content).find('.mapPopupContent').each(function() {Plotly.purge(this)}); //remove all plotly plots
+    currentInfoWindow.close();
+    currentInfoWindow = null;
+}
+
 //map data/helpers
 $.colors.defaultModel = "RGB";
 //get color of a specific point in a color range
@@ -870,8 +874,7 @@ function pointPlot(layer, point) {
         }
         let closestPoint = allPoints[closestIndex];
         if (currentInfoWindow) {
-            currentInfoWindow.close();
-            Plotly.purge(currentInfoWindow.content);
+            closePopupWindow();
         }
         let domPlot = $('<div>', {
             class: "mapPopupContainer"
@@ -890,8 +893,7 @@ function pointPlot(layer, point) {
         });
         currentInfoWindow = infoWindow;
         infoWindow.addListener('closeclick', function () {
-            currentInfoWindow = null;
-            Plotly.purge(domPlot[0]);
+            closePopupWindow();
             $(timeSlideContainer).removeClass("mobileHide");
             drawTimeSlide();
         });
@@ -1241,9 +1243,7 @@ function showData(layer, dataIndex, timeIndex, oncomplete) {
             });
             google.maps.event.addListener(theDataLayer, 'click', function (event) {
                 if (currentInfoWindow) {
-                    currentInfoWindow.close();
-                    Plotly.purge(currentInfoWindow.content);
-                    currentInfoWindow = null;
+                    closePopupWindow();
                     $(timeSlideContainer).removeClass("mobileHide");
                     drawTimeSlide();
                 }
@@ -1843,8 +1843,7 @@ function drawOverlay(currentTime) {
     window.requestAnimationFrame(drawOverlay);
 }
 
-
-//plotly
+//--- plotly ---
 function makePlotStationWater(url, domNode, title, marker) {
     let levels = marker["floodLevels"];
     let iot = marker["iotId"];
@@ -3530,6 +3529,430 @@ function makePlotStationWavesValidation(url, domNode, title) {
     });
 }
 
+function makePlotStationLongtermWater(url, domNode, title, marker) {
+    let levels = marker["floodLevels"];
+    let iot = marker["iotId"];
+    let noaaId = marker["noaaId"];
+    let navdOffset = marker["navdOffset"];
+    Plotly.d3.tsv(url, function (err, rows) {
+        let date_now_plot;
+        function unpack(rows, key) {
+            date_now_plot = rows[0]["iflood_date"];
+            return rows.map(function (row) {
+                return row[key];
+            });
+        }
+        let datasets = {
+            //label:[time column, data column, color, markers]
+            "iFLOOD":["iflood_date","iflood","#008000", true],
+            "ETSS":["Time_etss","etss","rgb(204, 0, 204)", false],
+            "AHPS":["Time_ahps","ahps","red", true],
+            "ESTOFS":["iflood_date","estofs","#00bc7d", false],
+            "CBOFS":["iflood_date","cbofs","brown", false],
+            "Ensemble":["Time_ensemble","ensemble","orange", false],
+        };
+        let data = [];
+        Object.keys(datasets).forEach(label => {
+            if (!rows[0].hasOwnProperty(datasets[label][1]))
+                return;
+            data.push({
+                type: "scatter",
+                mode: datasets[label][3] ? 'lines+markers' : 'lines',
+                name: label,
+                hoverinfo: "y",
+                x: unpack(rows, datasets[label][0]),
+                y: unpack(rows, datasets[label][1]),
+                line: {
+                    color: datasets[label][2],
+                    width: 1
+                },
+                marker: {
+                    color: datasets[label][2],
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        });
+        if (rows[0].hasOwnProperty("observed") && marker["agency"] !== "NOAA") { // only show observed from csv if we don't have something fresher to pull)
+            data.push({
+                type: "scatter",
+                mode: "lines+markers",
+                name: 'Observed ',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_observed'),
+                y: unpack(rows, 'observed'),
+                line: {
+                    color: 'blue',
+                    width: 1
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        if (rows[0].hasOwnProperty("ensemble_upper")) {
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_95%'),
+                y: unpack(rows, 'ensemble_upper'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+            data.push({
+                type: "scatter",
+                mode: "lines",
+                name: '95% CI',
+                hoverinfo: "y",
+                x: unpack(rows, 'Time_95%'),
+                y: unpack(rows, 'ensemble_lower'),
+                line: {
+                    color: 'gray',
+                    width: 0.75
+                },
+                marker: {
+                    color: 'blue',
+                    width: 0.25
+                },
+                xaxis: 'x1',
+                yaxis: 'y1'
+            });
+        }
+        let layout = {
+            showlegend: true,
+            hovermode: "x",
+            "spikedistance": "data",
+            "showcrossline": "true",
+            title: title,
+            legend: {
+                orientation: "h",
+                yanchor: "bottom",
+                y: -0.35,
+                font: {
+                    size: 10
+                }
+            },
+            //"xanchor": "center"},
+            margin: {
+                l: 60,
+                r: 5,
+                t: 40,
+                b: 0
+            },
+            // width: 500,
+            // height: 350,
+            images: [
+                {
+                    source: "/MasonM.png",
+                    xref: "paper",
+                    yref: "paper",
+                    xanchor: "right",
+                    yanchor: "top",
+                    x: .99,
+                    y: .985,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.25,
+                    layer: "above"
+                }],
+            annotations: [
+                {
+                    x: date_now_plot,
+                    xshift: 7,
+                    y: 0.2,
+                    yref: "paper",
+                    opacity: 0.95,
+                    textangle: -90,
+                    layer: "above",
+                    text: 'Forecast Start',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+            ],
+
+            shapes: [
+                {
+                    type: 'line',
+                    layer: 'above',
+                    x0: getRealSelectedTimeString(),
+                    y0: 0,
+                    x1: getRealSelectedTimeString(),
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 0.5,
+                    line: {
+                        color: 'rgba(32,81,124,0.7)',
+                        width: 2
+                    }
+                },
+                {
+                    type: 'line',
+                    layer: 'above',
+                    x0: date_now_plot,
+                    y0: 0,
+                    x1: date_now_plot,
+                    y1: 1,
+                    yref: "paper",
+                    opacity: 1.0,
+                    line: {
+                        color: 'rgb(0,0,0)',
+                        width: 1
+                    }
+                }
+            ],
+            xaxis: {
+                showgrid: true,
+                showspikes: true,
+                spikemode: "across",
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                anchor: 'y1',
+                nticks: 8,
+                tickcolor: '#bfbfbf',
+                tickwidth: 4,
+                mirror: true,
+                autorange: true,
+
+            },
+            yaxis: {
+                showgrid: true,
+                gridcolor: 'rgba(153,153,153,0.5)',
+                gridwidth: .25,
+                linecolor: 'rgb(153, 153, 153)',
+                linewidth: 1,
+                tick0: 0,
+                domain: [0, 1],
+                tickwidth: 1,
+                nticks: 8,
+                mirror: true,
+                title: 'Stage (meters relative to NAVD88)',
+                autorange: true,
+                //range: [-1, 8],
+            }
+        };
+        if (typeof levels !== "undefined") {
+            Array.prototype.push.apply(layout["shapes"],[
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: levels[0],
+                    x1: 1,
+                    y1: levels[1],
+                    fillcolor: '#f9f900',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                },
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: levels[1],
+                    x1: 1,
+                    y1: levels[2],
+                    fillcolor: '#ffa600',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                },
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: levels[2],
+                    x1: 1,
+                    y1: levels[3],
+                    fillcolor: '#FF0000',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                },
+                {
+                    type: 'rect',
+                    layer: 'below',
+                    xref: "paper",
+                    yref: "y",
+                    x0: 0,
+                    y0: levels[3],
+                    x1: 1,
+                    y1: levels[3]+0.5,
+                    fillcolor: '#d90093',
+                    opacity: 0.5,
+                    line: {
+                        width: 0
+                    }
+                }
+            ]);
+            Array.prototype.push.apply(layout["annotations"],[
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[0],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Action: '+levels[0]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[1],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Minor: '+levels[1]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[2],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Moderate: '+levels[2]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                },
+                {
+                    xref: "paper",
+                    yref: "y",
+                    x: 0.01,
+                    y: levels[3],
+                    yshift: 8,
+                    sizex: 0.25,
+                    sizey: 0.25,
+                    opacity: 0.95,
+                    layer: "above",
+                    "xanchor": "left",
+                    text: 'Major: '+levels[3]+' m',
+                    font: {
+                        color: "black"
+                    },
+                    arrowhead: 0,
+                    ax: 0,
+                    ay: 0
+                }
+            ]);
+        }
+        Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
+        //if this station has an IOT sensor we'll load the recent data and add it to the chart
+        if (typeof iot !== 'undefined') {
+            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
+                let sensorObservation = {
+                    type: "scatter",
+                    mode: 'lines+markers',
+                    name: 'IoT Sensor',
+                    hoverinfo: "y",
+                    x: unpack(rows, 'date'),
+                    y: unpack(rows, 'water_level'),
+                    line: {
+                        color: '#44cbcb',
+                        width: 1
+                    },
+                    marker: {
+                        color: '#44cbcb',
+                        width: 0.25
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, sensorObservation);
+            });
+        }
+        //if this station has NOAA observation data we'll load that too
+        if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
+            function noaaWaterUnpack(rows, key) {
+                return rows.map(function (row) {
+                    return parseFloat(row[key]) + navdOffset;
+                });
+            }
+            let noaaStart = moment().subtract(1,'days').format('YYYYMMDD');
+            let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
+            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            Plotly.d3.csv(noaaUrl, function (err, rows) {
+                let noaaObservation = {
+                    type: "scatter",
+                    mode: 'lines+markers',
+                    name: 'Observed',
+                    hoverinfo: "y",
+                    x: unpack(rows, 'Date Time'),
+                    y: noaaWaterUnpack(rows, ' Water Level'),
+                    line: {
+                        color: '#0000FF',
+                        width: 1
+                    },
+                    marker: {
+                        color: '#0000FF',
+                        width: 0.25
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, noaaObservation);
+            });
+        }
+    });
+}
+
+//point plots
 function makePlotPointLevel(domNode, levels, title, layer) {
     let times = [];
     for (let i = 0; i < 84; i++) {
