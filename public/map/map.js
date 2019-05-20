@@ -240,6 +240,9 @@ function init() {
                 if (marker["hasWavesValidation"]) {
                     makePlotStationWavesValidation(replaceModelPaths(stationWavesValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentWavesValidation")[0], marker["title"] + ": Wave Validation");
                 }
+                if (marker["hasLongtermWater"]) {
+                    makePlotStationLongtermWater(replaceModelPaths(stationLongtermWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentLongtermWater")[0], marker["title"] + ": Longterm Forecast", marker);
+                }
                 if (marker["hasXbeachVideo"]) {
                     domPlot.find("#mapPopupContentXbeachVideo").append(
                         $('<video>', {
@@ -319,6 +322,12 @@ function init() {
                 domPlot.find("#mapPopupTabWavesValidation").click(function() {
                     hideAll();
                     domPlot.find("#mapPopupContentWavesValidation").css({"display": "block"});
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });
+                domPlot.find("#mapPopupTabLongtermWater").click(function() {
+                    hideAll();
+                    domPlot.find("#mapPopupContentLongtermWater").css({"display": "block"});
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
@@ -3537,19 +3546,14 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
     Plotly.d3.tsv(url, function (err, rows) {
         let date_now_plot;
         function unpack(rows, key) {
-            date_now_plot = rows[0]["iflood_date"];
+            date_now_plot = rows[0]["Datetime(UTC)"];
             return rows.map(function (row) {
                 return row[key];
             });
         }
         let datasets = {
             //label:[time column, data column, color, markers]
-            "iFLOOD":["iflood_date","iflood","#008000", true],
-            "ETSS":["Time_etss","etss","rgb(204, 0, 204)", false],
-            "AHPS":["Time_ahps","ahps","red", true],
-            "ESTOFS":["iflood_date","estofs","#00bc7d", false],
-            "CBOFS":["iflood_date","cbofs","brown", false],
-            "Ensemble":["Time_ensemble","ensemble","orange", false],
+            "iFLOOD":["Datetime(UTC)","S2S","#008000", true]
         };
         let data = [];
         Object.keys(datasets).forEach(label => {
@@ -3574,64 +3578,6 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                 yaxis: 'y1'
             });
         });
-        if (rows[0].hasOwnProperty("observed") && marker["agency"] !== "NOAA") { // only show observed from csv if we don't have something fresher to pull)
-            data.push({
-                type: "scatter",
-                mode: "lines+markers",
-                name: 'Observed ',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_observed'),
-                y: unpack(rows, 'observed'),
-                line: {
-                    color: 'blue',
-                    width: 1
-                },
-                marker: {
-                    color: 'blue',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
-        if (rows[0].hasOwnProperty("ensemble_upper")) {
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: '95% CI',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_95%'),
-                y: unpack(rows, 'ensemble_upper'),
-                line: {
-                    color: 'gray',
-                    width: 0.75
-                },
-                marker: {
-                    color: 'blue',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-            data.push({
-                type: "scatter",
-                mode: "lines",
-                name: '95% CI',
-                hoverinfo: "y",
-                x: unpack(rows, 'Time_95%'),
-                y: unpack(rows, 'ensemble_lower'),
-                line: {
-                    color: 'gray',
-                    width: 0.75
-                },
-                marker: {
-                    color: 'blue',
-                    width: 0.25
-                },
-                xaxis: 'x1',
-                yaxis: 'y1'
-            });
-        }
         let layout = {
             showlegend: true,
             hovermode: "x",
@@ -3893,31 +3839,6 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
             ]);
         }
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
-        //if this station has an IOT sensor we'll load the recent data and add it to the chart
-        if (typeof iot !== 'undefined') {
-            Plotly.d3.csv(dataDomain + "/IOT/" + iot + "/running.csv?v="+Math.round(Math.random()*100000000).toString(), function (err, rows) {
-                let sensorObservation = {
-                    type: "scatter",
-                    mode: 'lines+markers',
-                    name: 'IoT Sensor',
-                    hoverinfo: "y",
-                    x: unpack(rows, 'date'),
-                    y: unpack(rows, 'water_level'),
-                    line: {
-                        color: '#44cbcb',
-                        width: 1
-                    },
-                    marker: {
-                        color: '#44cbcb',
-                        width: 0.25
-                    },
-                    xaxis: 'x1',
-                    yaxis: 'y1'
-                };
-                Plotly.addTraces(domNode, sensorObservation);
-            });
-        }
-        //if this station has NOAA observation data we'll load that too
         if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
             function noaaWaterUnpack(rows, key) {
                 return rows.map(function (row) {

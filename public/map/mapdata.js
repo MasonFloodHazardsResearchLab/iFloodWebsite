@@ -732,6 +732,7 @@ let stationValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Valida
 let stationWindUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Wind/{_s_}.tsv";
 let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
 let stationWavesValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/waves/{_s_}.tsv";
+let stationLongtermWaterUrl = "{_ChesapeakeBay_SUBX_FILES_}/TimeSeries/LongtermWater/{_s_}.tsv";
 let markers = {
     "LWTV": {
 		"type": "station",
