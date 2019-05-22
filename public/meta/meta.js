@@ -142,16 +142,16 @@ function showStat(stat) {
                 center: marker["pos"],
                 radius: 1500000 / Math.pow(2, maps[i].getZoom())
             });
-            google.maps.event.addListener(circle, 'mouseover',function() {
+            google.maps.event.addListener(circle, 'click',function() {
                 infoWindow.setContent(value.toString());
                 infoWindow.setPosition(marker["pos"]);
                 infoWindow.open(maps[i]);
             });
-            google.maps.event.addListener(circle, 'mouseout',function() {
-                infoWindow.close();
-            });
             circles.push(circle);
         }
+        google.maps.event.addListener(maps[i],'click',function() {
+            infoWindow.close();
+        });
     }
 
     drawScale(
