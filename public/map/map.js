@@ -3553,7 +3553,8 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
         }
         let datasets = {
             //label:[time column, data column, color, markers]
-            "iFLOOD":["Datetime(UTC)","S2S","#008000", false]
+            "iFLOOD":["Datetime(UTC)","mean","#008000", false],
+            "median":["Datetime(UTC)","median","#222222", false]
         };
         let data = [];
         Object.keys(datasets).forEach(label => {
@@ -3577,6 +3578,37 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                 xaxis: 'x1',
                 yaxis: 'y1'
             });
+        });
+        //bounds
+        data.push({
+            type: "scatter",
+            mode: 'lines',
+            name: 'envelope',
+            hoverinfo: "y",
+            x: unpack(rows, 'Datetime(UTC)'),
+            y: unpack(rows, 'upper'),
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
+        });
+        data.push({
+            type: "scatter",
+            mode: 'lines',
+            name: 'envelope',
+            hoverinfo: "y",
+            x: unpack(rows, 'Datetime(UTC)'),
+            y: unpack(rows, 'lower'),
+            fill: 'tonexty',
+            fillcolor: 'rgba(0,0,0,0.05)',
+            line: {
+                color: 'gray',
+                width: 0.75
+            },
+            xaxis: 'x1',
+            yaxis: 'y1'
         });
         let layout = {
             showlegend: true,
