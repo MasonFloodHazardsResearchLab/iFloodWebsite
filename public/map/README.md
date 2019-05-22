@@ -1,6 +1,13 @@
 # Map Data Format
 The file `mapdata.js` contains information about the various data layers available on the interactive map.
 
+## URL Patterns
+URLs for GeoJSON layers, station XBEACH videos, and pretty much anywhere else in `mapdata.js` where a URL is specified can include special patterns that will be replaced at runtime.
+#### Files/Download
+For each forecast model (specified in `models`) there are two paths:
+- `{_MODELNAMEHERE_FILES_}` points to the current forecast folder for the model based on `recent.txt.`
+- `{_MODELNAMEHERE_DOWNLOAD_}` points to the *file browser* for the current forecast folder for the model. This should be used for links that will be directly opened in the user's browser, like the `downloadUrl` of a layer.
+
 ## Layers
 #### group
 An integer, corresponding to the index of the layer group to place this layer under. For example, layers that show under "GMU iFLOOD Data" have group index 0.
@@ -48,6 +55,35 @@ For `geoJSON` layers, the stacking order of the layer. Layers with a higher z ar
 #### gisLayer
 For `arcGIS` layers, this is the number of the layer on the map server to read.
 #### img
-The preview icon for the layer.
+The URL of the preview icon for the layer.
 #### description
 Text explaining where the data comes from, how to interpret it, etc.
+
+## Stations
+#### type
+Indicates which kind of station this is:
+- `"station"` - the generic lolipop-style icon, generally for stations that have observed water data
+- `"buoy""` - wave icon, used for places with observed wave heights
+- `"iflood""` - iflood logo icon, used for iFlood IoT stations and other points we track
+#### pos
+Fairly self-explanatory. This is the location of the station, where the marker appears on the map
+#### title
+The name of the station/location.
+#### stationStr
+This is the codename used to look up .tsv files and such for the station. This should match the object name unless you have some special reason. They're all 4-letter codes currently but they can be longer if needed.
+#### hasWater
+A boolean indicating if this station has a water file located at the global `stationWaterUrl`. If enabled, the plot shows in the relevant tab. For all of these, the key being omitted entirely is the same as explicitly setting it to false.
+#### hasValidationFile
+A boolean indicating if this station has a water validation file located at the global `stationValidationUrl`.
+#### hasWind
+A boolean indicating if this station has a wind file located at the global `stationWindUrl`.
+#### hasWaves
+A boolean indicating if this station has a wave file located at the global `stationWavesUrl`.
+#### hasWavesValidation
+A boolean indicating if this station has a wave validation file located at the global `stationWavesValidationUrl`.
+#### hasLongtermWater
+A boolean indicating if this station has a 30-day water file located at the global `stationLongtermWaterUrl`.
+#### hasXbeachVideo
+A boolean indicating if this station has an XBEACH video file. If this is true, you must also provide `xbeachVideoUrl`.
+#### hasWaveSpectrum
+A boolean indicating if this station has a wave spectrum video file. If this is true, you must also provide `waveSpectrumVideoUrl`.
