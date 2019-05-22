@@ -1944,6 +1944,8 @@ function makePlotStationWater(url, domNode, title, marker) {
                 hoverinfo: "y",
                 x: unpack(rows, 'Time_95%'),
                 y: unpack(rows, 'ensemble_lower'),
+                fill: 'tonexty',
+                fillcolor: 'rgba(0,0,0,0.05)',
                 line: {
                     color: 'gray',
                     width: 0.75
@@ -2427,6 +2429,8 @@ function makePlotStationValidation(url, domNode, title) {
                 hoverinfo: "y",
                 x: Array.from(Array(25).keys()).slice(1),
                 y: unpack(rows, 'ensemble_lower_bias'),
+                fill: 'tonexty',
+                fillcolor: 'rgba(0,0,0,0.05)',
                 line: {
                     color: 'gray',
                     width: 0.75
@@ -3075,6 +3079,8 @@ function makePlotStationWaves(url, domNode, title) {
                 hoverinfo: "y",
                 x: unpack(rows, 'ensemble_index'),
                 y: unpack(rows, 'ensemble_lower'),
+                fill: 'tonexty',
+                fillcolor: 'rgba(0,0,0,0.05)',
                 line: {
                     color: 'gray',
                     width: 0.75
@@ -3368,6 +3374,8 @@ function makePlotStationWavesValidation(url, domNode, title) {
                 hoverinfo: "y",
                 x: Array.from(Array(25).keys()).slice(1),
                 y: unpack(rows, 'ensemble_lower_bias'),
+                fill: 'tonexty',
+                fillcolor: 'rgba(0,0,0,0.05)',
                 line: {
                     color: 'gray',
                     width: 0.75
