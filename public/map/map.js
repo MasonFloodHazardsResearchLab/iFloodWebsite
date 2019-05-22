@@ -3553,7 +3553,7 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
         }
         let datasets = {
             //label:[time column, data column, color, markers]
-            "iFLOOD":["Datetime(UTC)","S2S","#008000", true]
+            "iFLOOD":["Datetime(UTC)","S2S","#008000", false]
         };
         let data = [];
         Object.keys(datasets).forEach(label => {
@@ -3845,13 +3845,13 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                     return parseFloat(row[key]) + navdOffset;
                 });
             }
-            let noaaStart = moment().subtract(1,'days').format('YYYYMMDD');
+            let noaaStart = moment(date_now_plot, 'YYYY-MM-DD HH:mm:ss').subtract(1,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
             let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
             Plotly.d3.csv(noaaUrl, function (err, rows) {
                 let noaaObservation = {
                     type: "scatter",
-                    mode: 'lines+markers',
+                    mode: 'lines',
                     name: 'Observed',
                     hoverinfo: "y",
                     x: unpack(rows, 'Date Time'),
