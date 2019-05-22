@@ -559,6 +559,12 @@ body {
             font-size: 14px;
             padding: 5px 8px;
         }
+        .gisLegend {
+            margin: 5px;
+            img {
+                vertical-align: middle;
+            }
+        }
         .dataButton {
             display: block;
             border: solid 1px $highlight;

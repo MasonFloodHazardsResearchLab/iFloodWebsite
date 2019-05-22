@@ -75,12 +75,12 @@ function init() {
     //create layer groups
     Object.keys(layers).forEach(layerIndex => {
         let layer = layers[layerIndex];
+        layer["visible"] = false; //all layers start hidden
         //create info bar
         let newItem = $(templateLayerInfo.render(layer)).css({
             display: "none"
         }).appendTo(domLayerInfo);
         newItem.find(".dataButton").attr("href",replaceModelPaths(layer["downloadUrl"]));
-        layer["visible"] = false; //all layers start hidden
         if (layer["type"] === "geoJSON") {
             //add data array
             layer["data"] = [];
@@ -98,6 +98,34 @@ function init() {
             layer["scaleCanvas"] = $('<canvas class="scaleCanvas" width="60" height="200">').appendTo(domMapScales)[0];
             layer["scaleCanvasContext"] = layer["scaleCanvas"].getContext('2d');
             drawScaleBar(layer);
+        }
+        if (layer["type"] === "arcGIS") { //arcGIS legends are only available as images, so we just display them with the description
+            $.get(layer["url"]+"/legend?f=pjson", function(data) {
+                let dsc = newItem.find(".description");
+                let domLegend = $('<div>',{class: 'gisLegend'});
+                data["layers"].forEach(legendLayer => {
+                    if (legendLayer["layerId"] === parseInt(layer["gisLayer"])) {
+                        if (legendLayer["legend"].length > 1) {
+                            let increment = 1;
+                            if (legendLayer["legend"].length > 10)
+                                increment = legendLayer["legend"].length/8;
+                            for (let i = 0; i < legendLayer["legend"].length; i+=increment) {
+                                let legendItem = legendLayer["legend"][Math.floor(i)]; //increment might be a float so we need to round
+                                $('<img>',{
+                                    src: 'data:image/png;base64,'+legendItem["imageData"]
+                                }).appendTo(domLegend);
+                                $('<span>',{
+                                    text: legendItem["label"]
+                                }).appendTo(domLegend);
+                                $('<br>').appendTo(domLegend);
+                            }
+                        }
+                    }
+                });
+                domLegend.appendTo(dsc);
+            }).fail(function() {
+                //pass
+            });
         }
         let particleCheckbox = newItem.find(".particleToggle");
         let closeButton = newItem.find(".closeButton");
@@ -812,7 +840,7 @@ function updateHash() {
     history.replaceState(undefined, undefined, "#"+hashStr.slice(0,-1)); //cut off extra comma
 }
 
-function debugDrawHeat(data) {
+/*function debugDrawHeat(data) {
     let gPoints = [];
     Object.keys(data).forEach(function(key) {
         gPoints.push({
@@ -827,7 +855,7 @@ function debugDrawHeat(data) {
         gradient: grad,
         map: map
     });
-}
+}*/
 
 function pointPlot(layer, point) {
     let filesToGet = [];
