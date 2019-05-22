@@ -3561,7 +3561,7 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
         }
         let datasets = {
             //label:[time column, data column, color, markers]
-            "iFLOOD":["Datetime(UTC)","mean","#008000", false],
+            "SubX":["Datetime(UTC)","mean","#008000", false],
             "median":["Datetime(UTC)","median","#222222", false]
         };
         let data = [];
