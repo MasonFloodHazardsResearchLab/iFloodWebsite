@@ -3916,14 +3916,14 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
             let noaaStart = moment(date_now_plot, 'YYYY-MM-DD HH:mm:ss').subtract(1,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
             let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
-            Plotly.d3.csv(noaaUrl, function (err, rows) {
+            Plotly.d3.csv(noaaUrl, function (err, noaaRows) {
                 let noaaObservation = {
                     type: "scatter",
                     mode: 'lines',
                     name: 'Observed',
                     hoverinfo: "y",
-                    x: unpack(rows, 'Date Time'),
-                    y: noaaWaterUnpack(rows, ' Water Level'),
+                    x: unpack(noaaRows, 'Date Time'),
+                    y: noaaWaterUnpack(noaaRows, ' Water Level'),
                     line: {
                         color: '#0000FF',
                         width: 1
@@ -3936,6 +3936,38 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                     yaxis: 'y1'
                 };
                 Plotly.addTraces(domNode, noaaObservation);
+                //validation line
+                let sourceDates = unpack(rows, 'Datetime(UTC)');
+                let sourceValues = unpack(rows, 'mean');
+                let noaaDates = unpack(noaaRows, 'Date Time');
+                let noaaValues = noaaWaterUnpack(noaaRows, ' Water Level');
+                let comparisonDates = [];
+                let comparisonValues = [];
+                for (let i = 0; i < sourceDates.length; i++) {
+                    //search for the closest date from the noaa data
+                    for (let j = 0; j < noaaDates.length; j++) {
+                        if (sourceDates[i] !== "" && noaaDates[j] >= sourceDates[i]) { //dates can be compared as strings
+                            comparisonDates.push(noaaDates[j]);
+                            comparisonValues.push(sourceValues[i]-noaaValues[j]);
+                            break;
+                        }
+                    }
+                }
+                let noaaComparison = {
+                    type: "scatter",
+                    mode: 'lines',
+                    name: 'validation',
+                    hoverinfo: "y",
+                    x: comparisonDates,
+                    y: comparisonValues,
+                    line: {
+                        color: '#AB5F00',
+                        width: 1
+                    },
+                    xaxis: 'x1',
+                    yaxis: 'y1'
+                };
+                Plotly.addTraces(domNode, noaaComparison);
             });
         }
     });
