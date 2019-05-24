@@ -176,6 +176,10 @@ header {
     }
 }
 
+.biggerText {
+    font-size: 120%;
+}
+
 #homeHeroVideoContainer {
     position: absolute;
     top: 0;
@@ -526,6 +530,7 @@ footer {
 
 //Stats Bar
 .statInsert {
+    margin: 25px 0;
     border-top: solid 1px #AAA;
     border-bottom: solid 1px #AAA;
     padding: 5px;
@@ -561,16 +566,17 @@ footer {
     }
     .exploreLink {
         text-align: right;
-        &:hover {
-            filter: brightness(115%);
-        }
         a {
             text-decoration: none;
             font-weight: 500;
             color: #A9A9A9;
-            font-size: 22px
+            font-size: 22px;
+            &:hover {
+                filter: brightness(115%);
+            }
         }
         img {
+            margin-left: 4px;
             height: 20px;
             position: relative;
             top: 4px;
