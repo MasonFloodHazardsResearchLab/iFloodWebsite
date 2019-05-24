@@ -201,7 +201,7 @@ body {
     width: 100%;
     display: flex;
     position: absolute;
-    top: 0;
+    top: 1px;
     left: 6px;
     transform: translate(0,-100%);
     flex-wrap: wrap;
@@ -221,9 +221,12 @@ body {
         }
     }
 }
+
+// This does the sizing for the google maps infowindows.
 .gm-style-iw {
     width: calc(50vw - 200px);
 }
+
 .mapPopupContent {
     display: none;
     position: relative;
