@@ -1926,7 +1926,7 @@ function makePlotStationWater(url, domNode, title, marker) {
                 yaxis: 'y1'
             });
         });
-        if (rows[0].hasOwnProperty("observed") && marker["agency"] !== "NOAA") { // only show observed from csv if we don't have something fresher to pull)
+        if (rows[0].hasOwnProperty("observed") && typeof marker["noaaId"] === "undefined") { // only show observed from csv if we don't have something fresher to pull)
             data.push({
                 type: "scatter",
                 mode: "lines+markers",
@@ -2272,7 +2272,7 @@ function makePlotStationWater(url, domNode, title, marker) {
             });
         }
         //if this station has NOAA observation data we'll load that too
-        if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
+        if (typeof noaaId !== 'undefined') {
             function noaaWaterUnpack(rows, key) {
                 return rows.map(function (row) {
                     return parseFloat(row[key]) + navdOffset;
@@ -2750,7 +2750,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
                 Plotly.addTraces(domNode, ifloodComparison);
             });
         }
-        else if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
+        else if (typeof noaaId !== 'undefined') {
             function noaaWaterUnpack(rows, key) {
                 return rows.map(function (row) {
                     return parseFloat(row[key]) + navdOffset;
@@ -3907,7 +3907,7 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
             ]);
         }
         Plotly.newPlot(domNode, data, layout, {displayModeBar: false, responsive: true});
-        if (marker["agency"] === "NOAA" && typeof noaaId !== 'undefined') {
+        if (typeof noaaId !== 'undefined') {
             function noaaWaterUnpack(rows, key) {
                 return rows.map(function (row) {
                     return parseFloat(row[key]) + navdOffset;

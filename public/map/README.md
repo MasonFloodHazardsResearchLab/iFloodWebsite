@@ -7,6 +7,8 @@ URLs for GeoJSON layers, station XBEACH videos, and pretty much anywhere else in
 For each forecast model (specified in `models`) there are two paths:
 - `{_MODELNAMEHERE_FILES_}` points to the current forecast folder for the model based on `recent.txt.`
 - `{_MODELNAMEHERE_DOWNLOAD_}` points to the *file browser* for the current forecast folder for the model. This should be used for links that will be directly opened in the user's browser, like the `downloadUrl` of a layer.
+- `{_h_}` is an hour, as an integer from 1 to 84. Used for the URLs of temporal GeoJSON layers.
+- `{_s_}` represents a station ID. Used for stuff like the global `stationWaterUrl`.
 
 ## Layers
 #### group
@@ -85,5 +87,21 @@ A boolean indicating if this station has a wave validation file located at the g
 A boolean indicating if this station has a 30-day water file located at the global `stationLongtermWaterUrl`.
 #### hasXbeachVideo
 A boolean indicating if this station has an XBEACH video file. If this is true, you must also provide `xbeachVideoUrl`.
+#### xbeachVideoUrl
+The URL of the XBEACH video for this station.
 #### hasWaveSpectrum
 A boolean indicating if this station has a wave spectrum video file. If this is true, you must also provide `waveSpectrumVideoUrl`.
+#### waveSpectrumVideoUrl
+The URL of the wave spectrum video for this station.
+#### hasCamera
+A boolean indicating if this station has a microseven webcam.
+#### floodLevels
+A 4-item array of floats representing the flood thresholds (action, minor, moderate, major) for the water levels of the station. Used to draw the colored bars on water plots.
+#### agency
+The agency that runs this station. This isn't actually used for anything currently but it might become useful in the future.
+#### noaaId
+The NOAA station ID number, used to load real time water levels. If this is provided, observed data in the water levels .tsv file will be ignored and the real time data will be loaded instead.
+#### navdOffset
+The offset applied to the NOAA realtime data. Required if noaaId is used.
+#### iotId
+The iFLOOD IoT ID of the sensor at this location (if there is one). There should be a folder of the same name [here](https://data.iflood.vse.gmu.edu/?prefix=IOT/) if the sensor is reporting correctly.
