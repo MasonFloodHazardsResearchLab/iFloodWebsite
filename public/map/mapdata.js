@@ -906,7 +906,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
-        "hasLongtermWater": true,
+        "hasLongtermWater": false,
 		"floodLevels": [0.644, 0.797, 0.949, 1.101],
 		"agency": "NOAA",
         "noaaId": "8632200",
