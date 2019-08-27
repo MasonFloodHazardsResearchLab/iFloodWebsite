@@ -747,6 +747,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.512, 0.664, 0.817, 0.969],
 		"agency": "NOAA",
         "noaaId": "8635750",
@@ -765,6 +766,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.633, 0.785, 1.243, 1.852],
 		"agency": "NOAA",
         "noaaId": "8635027",
@@ -782,6 +784,7 @@ let markers = {
 		"hasWind": false,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.741, 0.893, 1.046, 1.198],
 		"agency": "NOAA"
 	},
@@ -798,6 +801,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.532, 0.593, 0.745, 0.897],
 		"agency": "NOAA",
         "noaaId": "8571421",
@@ -816,6 +820,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.508, 0.66, 1.27, 1.575],
 		"agency": "NOAA",
         "noaaId": "8574680",
@@ -834,6 +839,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.379, 0.561, 0.775, 1.598],
 		"agency": "NOAA",
         "noaaId": "8575512",
@@ -852,6 +858,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.5, 0.652, 0.957, 1.262],
 		"agency": "NOAA",
         "noaaId": "8577330",
@@ -870,6 +877,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.703, 0.856, 1.191, 1.709],
 		"agency": "NOAA",
         "noaaId": "8594900",
@@ -888,6 +896,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [1.046, 1.198, 1.503, 1.656],
 		"agency": "NOAA",
         "noaaId": "8631044",
@@ -906,7 +915,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
-        "hasLongtermWater": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.644, 0.797, 0.949, 1.101],
 		"agency": "NOAA",
         "noaaId": "8632200",
@@ -925,6 +934,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.431, 0.583, 0.735, 0.888],
 		"agency": "NOAA",
         "noaaId": "8636580",
@@ -943,6 +953,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.715, 0.867, 1.172, 1.477],
 		"agency": "NOAA",
         "noaaId": "8638610",
@@ -961,6 +972,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": true,
+        "hasLongtermWater": true,
 		"floodLevels": [0.806, 0.959, 1.111, 1.263],
 		"agency": "NOAA",
         "noaaId": "8638901",
@@ -979,6 +991,7 @@ let markers = {
 		"hasValidationFile": true,
         "hasRealtimeValidation": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.637, 0.79, 1.094, 1.399],
 		"agency": "NOAA",
         "noaaId": "8573364",
@@ -996,6 +1009,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.741, 0.893, 1.046, 1.198],
 		"agency": "AHPS",
         "noaaId": "8637689",
@@ -1013,6 +1027,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.357, 0.601, 0.875, 1.607],
 		"agency": "EXTRA",
         "noaaId": "860005",
@@ -1030,6 +1045,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.491, 0.644, 0.796, 1.253],
 		"agency": "AHPS",
         "noaaId": "860009",
@@ -1047,6 +1063,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.578, 0.73, 0.91, 1.035],
 		"agency": "AHPS",
         "noaaId": "860010",
@@ -1064,6 +1081,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.75, 0.902, 1.36, 1.817],
 		"agency": "AHPS",
         "noaaId": "860011",
@@ -1081,6 +1099,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.559, 0.712, 0.864, 1.169],
 		"agency": "AHPS",
         "noaaId": "860012",
@@ -1098,6 +1117,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.598, 0.903, 1.055, 1.36],
 		"agency": "AHPS",
         "noaaId": "860013",
@@ -1115,6 +1135,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.365, 0.518, 0.67, 0.975],
 		"agency": "AHPS",
         "noaaId": "860014",
@@ -1132,6 +1153,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [1.132, 1.284, 1.437, 1.742],
 		"agency": "AHPS",
         "noaaId": "860015",
@@ -1149,6 +1171,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.572, 0.725, 1.03, 1.182],
 		"agency": "AHPS",
         "noaaId": "860016",
@@ -1166,6 +1189,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.702, 0.855, 1.159, 1.464],
 		"agency": "AHPS",
         "noaaId": "860018",
@@ -1183,6 +1207,7 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": false,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.728, 0.88, 1.032, 1.185],
 		"agency": "AHPS",
         "noaaId": "860019",
@@ -1200,10 +1225,11 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.859, 1.012, 1.164, 1.316],
 		"agency": "AHPS",
-        "noaaId": "860020",
-        "navdOffset": -0.665
+        "noaaId": "8651370",
+        "navdOffset": -0.667
 	},
 	"OCIM": {
 		"type": "station",
@@ -1217,11 +1243,972 @@ let markers = {
 		"hasWind": true,
 		"hasValidationFile": true,
 		"hasWaves": false,
+        "hasLongtermWater": true,
 		"floodLevels": [0.557, 0.709, 1.014, 1.319],
 		"agency": "AHPS",
         "noaaId": "860021",
         "navdOffset": -0.51
 	},
+// Additional Stations for SubX
+
+	"OINC": {
+		"type": "station",
+		"pos": {
+			"lat": 35.795,
+			"lng": -75.54833
+		},
+		"title": "Oregon Inlet Marina, NC",
+		"stationStr": "OINC",
+		"hasWater": false,
+		"hasWind": false,
+        "hasLongtermWater": true,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasRealtimeValidation": false,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860023",
+        "navdOffset": -0.215
+	},
+	"HANC": {
+		"type": "station",
+		"pos": {
+			"lat": 35.20833,
+			"lng": -75.70333000000001
+		},
+		"title": "USCG Station Hatteras, NC",
+		"stationStr": "HANC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+        "hasRealtimeValidation": false,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860041",
+        "navdOffset": -0.51
+	},
+	"BEDU": {
+		"type": "station",
+		"pos": {
+			"lat": 34.72,
+			"lng": -76.67
+		},
+		"title": "Beaufort, Duke Marine Lab, NC",
+		"stationStr": "BEDU",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860051",
+        "navdOffset": -0.51
+	},
+	"WBNC": {
+		"type": "station",
+		"pos": {
+			"lat": 34.21333,
+			"lng": -77.78
+		},
+		"title": "Wrightsville Beach, NC",
+		"stationStr": "WBNC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860052",
+        "navdOffset": -0.51
+	},
+	"SPSC": {
+		"type": "station",
+		"pos": {
+			"lat": 33.655,
+			"lng": -78.91833
+		},
+		"title": "Springmaid Pier, SC",
+		"stationStr": "SPSC",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860053",
+        "navdOffset": -0.51
+	},
+	"FPGA": {
+		"type": "station",
+		"pos": {
+			"lat": 32.03667,
+			"lng": -80.90167
+		},
+		"title": "Fort Pulaski, GA",
+		"stationStr": "FPGA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860054",
+        "navdOffset": -0.51
+	},
+	"MAFL": {
+		"type": "station",
+		"pos": {
+			"lat": 30.398329999999998,
+			"lng": -81.42833
+		},
+		"title": "Mayport (Bar Pilots Dock), FL",
+		"stationStr": "MAFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860055",
+        "navdOffset": -0.51
+	},
+	"TPFL": {
+		"type": "station",
+		"pos": {
+			"lat": 28.415,
+			"lng": -80.59333000000001
+		},
+		"title": "Trident Pier, FL",
+		"stationStr": "TPFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860056",
+        "navdOffset": -0.51
+	},
+	"LWFL": {
+		"type": "station",
+		"pos": {
+			"lat": 26.613329999999998,
+			"lng": -80.035
+		},
+		"title": "Lake Worth Pier, Atlantic Ocean, FL",
+		"stationStr": "LWFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PFBE": {
+		"type": "station",
+		"pos": {
+			"lat": 29.113,
+			"lng": -90.19833
+		},
+		"title": "Port Fourchon, LA",
+		"stationStr": "PFBE",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PSLA": {
+		"type": "station",
+		"pos": {
+			"lat": 28.9316667,
+			"lng": -89.40667
+		},
+		"title": "Pilots Station East, LA",
+		"stationStr": "PSLA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"GILA": {
+		"type": "station",
+		"pos": {
+			"lat": 29.26333,
+			"lng": -89.95667
+		},
+		"title": "Grand Isle, LA",
+		"stationStr": "GILA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PTLA": {
+		"type": "station",
+		"pos": {
+			"lat": 29.178333,
+			"lng": -89.2583
+		},
+		"title": "Pilottown, LA",
+		"stationStr": "PTLA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"EGOM": {
+		"type": "station",
+		"pos": {
+			"lat": 29.3666667,
+			"lng": -91.38333
+		},
+		"title": "Eugene Island, LA",
+		"stationStr": "EGOM",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"FCLA": {
+		"type": "station",
+		"pos": {
+			"lat": 29.5516667,
+			"lng": -92.305
+		},
+		"title": "Freshwater Canal Locks, LA",
+		"stationStr": "FCLA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"SBLA": {
+		"type": "station",
+		"pos": {
+			"lat": 29.86833,
+			"lng": -89.673333
+		},
+		"title": "Shell Beach, LA",
+		"stationStr": "SBLA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"RDSJ": {
+		"type": "station",
+		"pos": {
+			"lat": 26.7236,
+			"lng": -97.4341
+		},
+		"title": "Shell Beach, LA",
+		"stationStr": "RDSJ",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"BBTX": {
+		"type": "station",
+		"pos": {
+			"lat": 27.297,
+			"lng": -97.405
+		},
+		"title": "Baffin Bay, TX",
+		"stationStr": "BBTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"AWTX": {
+		"type": "station",
+		"pos": {
+			"lat": 28.2216,
+			"lng": -96.7894
+		},
+		"title": "Aransas Wildlife Refuge (TCOON), TX",
+		"stationStr": "AWTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"SATX": {
+		"type": "station",
+		"pos": {
+			"lat": 28.76575,
+			"lng": -95.61128
+		},
+		"title": "Sargent, TX",
+		"stationStr": "SATX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"FRTX": {
+		"type": "station",
+		"pos": {
+			"lat": 28.94,
+			"lng": -95.30166667
+		},
+		"title": "Freeport, TX",
+		"stationStr": "FRTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"SLTX": {
+		"type": "station",
+		"pos": {
+			"lat": 29.08348,
+			"lng": -95.12927
+		},
+		"title": "San Luis Pass, TX",
+		"stationStr": "SLTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"EPTX": {
+		"type": "station",
+		"pos": {
+			"lat": 29.35811,
+			"lng": -94.72327
+		},
+		"title": "Eagle Point, Galveston Bay, TX",
+		"stationStr": "EPTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"RPTX": {
+		"type": "station",
+		"pos": {
+			"lat": 29.515,
+			"lng": -94.51
+		},
+		"title": "Rollover Pass, TX",
+		"stationStr": "RPTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"TPTX": {
+		"type": "station",
+		"pos": {
+			"lat": 29.68849,
+			"lng": -93.83642
+		},
+		"title": "Texas Point (Sabine Pass), TX",
+		"stationStr": "TPTX",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"VAFL": {
+		"type": "station",
+		"pos": {
+			"lat": 24.6817,
+			"lng": -81.1075
+		},
+		"title": "Vaca Key (Florida Bay), FL",
+		"stationStr": "VAFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"KWFL": {
+		"type": "station",
+		"pos": {
+			"lat": 24.53792,
+			"lng": -81.81235
+		},
+		"title": "Key West, FL",
+		"stationStr": "KWFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"NAFL": {
+		"type": "station",
+		"pos": {
+			"lat": 26.126159,
+			"lng": -81.817154
+		},
+		"title": "Naples (Gulf of Mexico), FL",
+		"stationStr": "NAFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PMFL": {
+		"type": "station",
+		"pos": {
+			"lat": 27.64842,
+			"lng": -82.56723
+		},
+		"title": "Port Manatee, FL",
+		"stationStr": "PMFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"CBFL": {
+		"type": "station",
+		"pos": {
+			"lat": 27.97774,
+			"lng": -82.84025
+		},
+		"title": "Clearwater Beach, FL",
+		"stationStr": "CBFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"VKFL": {
+		"type": "station",
+		"pos": {
+			"lat": 25.72183,
+			"lng": -80.16237
+		},
+		"title": "Virginia Key (Biscayne Bay), FL",
+		"stationStr": "VKFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"CKFL": {
+		"type": "station",
+		"pos": {
+			"lat": 29.13328,
+			"lng": -83.0156
+		},
+		"title": "Cedar Key, FL",
+		"stationStr": "CKFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"SJPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.46,
+			"lng": -66.117
+		},
+		"title": "San Juan, La Puntilla, San Juan Bay, PR",
+		"stationStr": "SJPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"ARPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.48,
+			"lng": -66.702
+		},
+		"title": "Arecibo, PR",
+		"stationStr": "ARPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"MYPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.218,
+			"lng": -67.162
+		},
+		"title": "Mayaguez, PR",
+		"stationStr": "MYPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"YHPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.055,
+			"lng": -65.833
+		},
+		"title": "Yabucoa Harbor, PR",
+		"stationStr": "YHPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"CAVI": {
+		"type": "station",
+		"pos": {
+			"lat": 18.347,
+			"lng": -64.925
+		},
+		"title": "Charlotte Amalie, VI",
+		"stationStr": "CAVI",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"LTVI": {
+		"type": "station",
+		"pos": {
+			"lat": 17.695,
+			"lng": -64.753
+		},
+		"title": "Lime Tree Bay, VI",
+		"stationStr": "LTVI",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"BABA": {
+		"type": "station",
+		"pos": {
+			"lat": 17.592,
+			"lng": -61.82
+		},
+		"title": "Barbuda, Antigua and Barbuda",
+		"stationStr": "BABA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"SHNJ": {
+		"type": "station",
+		"pos": {
+			"lat": 40.467,
+			"lng": -74.01
+		},
+		"title": "Sandy Hook, NJ",
+		"stationStr": "SHNJ",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PCFL": {
+		"type": "station",
+		"pos": {
+			"lat": 30.152,
+			"lng": -85.7
+		},
+		"title": "Panama City, FL",
+		"stationStr": "PCFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"MOPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.09,
+			"lng": -67.938
+		},
+		"title": "Mona Island, PR",
+		"stationStr": "MOPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"MGPR": {
+		"type": "station",
+		"pos": {
+			"lat": 17.97,
+			"lng": -67.047
+		},
+		"title": "Magueyes Island, PR",
+		"stationStr": "MGPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"EVPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.093,
+			"lng": -65.472
+		},
+		"title": "Esperanza, Vieques Island, PR",
+		"stationStr": "EVPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"ISPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.152,
+			"lng": -65.443
+		},
+		"title": "Isabel Segunda, Vieques Island, PR",
+		"stationStr": "ISPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"CUPR": {
+		"type": "station",
+		"pos": {
+			"lat": 18.302,
+			"lng": -65.302
+		},
+		"title": "Culebra, PR",
+		"stationStr": "CUPR",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"LBVI": {
+		"type": "station",
+		"pos": {
+			"lat": 18.318,
+			"lng": -64.725
+		},
+		"title": "Lameshur Bay, St John, VI",
+		"stationStr": "LBVI",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"CHVI": {
+		"type": "station",
+		"pos": {
+			"lat": 17.75,
+			"lng": -64.705
+		},
+		"title": "Christiansted Harbor, St Croix, VI",
+		"stationStr": "CHVI",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"APFL": {
+		"type": "station",
+		"pos": {
+			"lat": 29.725,
+			"lng": -84.98
+		},
+		"title": "Apalachicola, FL",
+		"stationStr": "APFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"FCBL": {
+		"type": "station",
+		"pos": {
+			"lat": 30.213,
+			"lng": -85.878
+		},
+		"title": "Panama City Beach, FL",
+		"stationStr": "FCBL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"PEFL": {
+		"type": "station",
+		"pos": {
+			"lat": 30.403,
+			"lng": -87.212
+		},
+		"title": "Pensacola, FL",
+		"stationStr": "PEFL",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"MONY": {
+		"type": "station",
+		"pos": {
+			"lat": 41.048,
+			"lng": -71.96
+		},
+		"title": "Montauk, NY",
+		"stationStr": "MONY",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+	"NAMA": {
+		"type": "station",
+		"pos": {
+			"lat": 41.285,
+			"lng": -70.097
+		},
+		"title": "Nantucket Island, MA",
+		"stationStr": "NAMA",
+		"hasWater": false,
+		"hasWind": false,
+		"hasValidationFile": false,
+		"hasWaves": false,
+        "hasLongtermWater": true,
+		"floodLevels": [0.557, 0.709, 1.014, 1.319],
+		"agency": "AHPS",
+        "noaaId": "860057",
+        "navdOffset": -0.51
+	},
+
+
     //buoys
     "CHVA": {
 		"type": "buoy",

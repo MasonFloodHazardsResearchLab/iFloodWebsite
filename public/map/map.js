@@ -3590,7 +3590,8 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
         let datasets = {
             //label:[time column, data column, color, markers]
             "SubX":["Datetime(UTC)","mean","#008000", false],
-            "median":["Datetime(UTC)","median","#222222", false]
+            "median":["Datetime(UTC)","median","#222222", false],
+            "Observed Surge":["Datetime(UTC)","observed surge","#0000FF", false]
         };
         let data = [];
         Object.keys(datasets).forEach(label => {
@@ -3759,7 +3760,7 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                 tickwidth: 1,
                 nticks: 8,
                 mirror: true,
-                title: 'Stage (meters relative to NAVD88)',
+                title: 'Surge (meters relative to MSL)',
                 autorange: true,
                 //range: [-1, 8],
             }
@@ -3916,11 +3917,13 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
             let noaaStart = moment(date_now_plot, 'YYYY-MM-DD HH:mm:ss').subtract(1,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
             let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            let noaatideUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+
             Plotly.d3.csv(noaaUrl, function (err, noaaRows) {
                 let noaaObservation = {
                     type: "scatter",
                     mode: 'lines',
-                    name: 'Observed',
+                    name: 'Observed Water Levels',
                     hoverinfo: "y",
                     x: unpack(noaaRows, 'Date Time'),
                     y: noaaWaterUnpack(noaaRows, ' Water Level'),
@@ -3935,14 +3938,44 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
                     xaxis: 'x1',
                     yaxis: 'y1'
                 };
-                Plotly.addTraces(domNode, noaaObservation);
+
+		Plotly.d3.csv(noaatideUrl , function (err, noaatideRows) {
+		    let noaaTide = {
+		        type: "scatter",
+		        mode: 'lines',
+		        name: 'Predicted Tides',
+		        hoverinfo: "y",
+		        x: unpack(noaatideRows, 'Date Time'),
+		        y: noaaWaterUnpack(noaatideRows, ' Prediction'),
+		        line: {
+		            color: '#6600ff',
+		            width: 1
+		        },
+		        marker: {
+		            color: '#6600ff',
+		            width: 0.25
+		        },
+		        xaxis: 'x1',
+		        yaxis: 'y1'
+		    };
+
+		    Plotly.addTraces(domNode, noaaTide);
+
+                Plotly.addTraces(domNode, noaaObservation0);
+
                 //validation line
                 let sourceDates = unpack(rows, 'Datetime(UTC)');
                 let sourceValues = unpack(rows, 'mean');
+
                 let noaaDates = unpack(noaaRows, 'Date Time');
                 let noaaValues = noaaWaterUnpack(noaaRows, ' Water Level');
+
+                let tideDates = unpack(noaatideRows, 'Date Time');
+                let tideValues = noaaWaterUnpack(noaatideRows, ' Prediction');
+
                 let comparisonDates = [];
                 let comparisonValues = [];
+
                 for (let i = 0; i < sourceDates.length; i++) {
                     //search for the closest date from the noaa data
                     for (let j = 0; j < noaaDates.length; j++) {
