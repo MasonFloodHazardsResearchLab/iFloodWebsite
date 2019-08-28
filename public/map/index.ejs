@@ -122,7 +122,7 @@
         {{if hasWater}}
             <div class="tab" id="mapPopupTabWater" role="button" tabindex="0">Water Level</div>
         {{/if}}
-        {{if hasValidationFile || hasRealtimeValidation}}
+        {{if hasWater && (hasValidationFile || hasRealtimeValidation)}}
             <div class="tab" id="mapPopupTabValidation" role="button" tabindex="0">Validation</div>
         {{/if}}
         {{if hasWind}}
@@ -150,7 +150,7 @@
     {{if hasWater}}
         <div class="mapPopupContent" id="mapPopupContentWater"></div>
     {{/if}}
-    {{if hasValidationFile || hasRealtimeValidation}}
+    {{if hasWater && (hasValidationFile || hasRealtimeValidation)}}
         {{if hasValidationFile}}
             <div class="mapPopupContent" id="mapPopupContentValidation"></div>
         {{/if}}

@@ -219,7 +219,7 @@ function init() {
             });
             currentInfoWindow = infoWindow;
             infoWindow.addListener('closeclick', function () {
-                closePopupWindow()
+                closePopupWindow();
                 $(timeSlideContainer).removeClass("mobileHide");
                 drawTimeSlide();
             });
@@ -230,7 +230,7 @@ function init() {
                 if (marker["hasWater"]) {
                     makePlotStationWater(replaceModelPaths(stationWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
                 }
-                if (marker["hasValidationFile"] || marker["hasRealtimeValidation"]) {
+                if (marker["hasWater"] && (marker["hasValidationFile"] || marker["hasRealtimeValidation"])) {
                     if (marker["hasValidationFile"])
                         makePlotStationValidation(replaceModelPaths(stationValidationUrl).replace("{_s_}",marker["stationStr"]), domPlot.find("#mapPopupContentValidation")[0], marker["title"] + ": Water Validation");
                     if (marker["hasRealtimeValidation"])
