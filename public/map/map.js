@@ -49,6 +49,22 @@ let activeDataRequests = {};
 
 let lastHoverPos = null;
 
+//ui vars
+const maxButton = $('#maxButton');
+let currentlyMax = false;
+let originalHourSetting = 0;
+
+//particle vars
+const overCtx = mapOverlayCanvas.getContext('2d');
+let lastFrameTime;
+let pointBurstPoints;
+let pointBurstLocation;
+let pointBurstTime;
+
+const playButton = $('#playPauseButton');
+let animationPlaying = false;
+let animationTimeout = null;
+
 map = new google.maps.Map(document.getElementById('map'), {
     zoom: 8,
     gestureHandling: 'greedy',
@@ -177,7 +193,6 @@ function init() {
             }
         });
     });
-
     Object.keys(markers).forEach(markerIndex => {
         let marker = markers[markerIndex];
         marker["gMarker"] = new google.maps.Marker({
@@ -219,7 +234,7 @@ function init() {
             });
             currentInfoWindow = infoWindow;
             infoWindow.addListener('closeclick', function () {
-                closePopupWindow()
+                closePopupWindow();
                 $(timeSlideContainer).removeClass("mobileHide");
                 drawTimeSlide();
             });
@@ -517,7 +532,7 @@ function init() {
 
     //read hash
     if (window.location.hash) {
-        let hashText = window.location.hash.replace("#","");
+        let hashText = window.location.hash.replace("#","").split(":")[0];
         let hashLayers = hashText.split(",");
         for (let i = 0; i < hashLayers.length; i++) {
             if (layers.hasOwnProperty(hashLayers[i]))
@@ -527,94 +542,94 @@ function init() {
 }
 
 //---- the drop down options for forecasts ---
-
 $.get(dataDomain+"/Forecast/"+"ChesapeakeBay_ADCIRCSWAN"+"/availableforecasts.txt", function(data) {
-   data = data.slice(0,-1)
-   data = data.split(/\r?\n/)
-   data.forEach(function(inputValue) {
-  $('#forecastselector').append('<option value="'+inputValue+'">'+inputValue+'</option>');
-   });
-
-   $('#forecastselector').change(function() {
-    window.location.hash = window.location.hash+":"+ $('#forecastselector').val();
-    window.location.reload();
-});
-
+    data = data.slice(0,-1);
+    data = data.split(/\r?\n/);
+    data.forEach(function(inputValue, i) {
+        if (i === 0)
+            $('#forecastselector').append('<option value="current">Current</option>');
+        else
+            $('#forecastselector').append('<option>'+inputValue+'</option>');
+    });
+    if (window.location.hash.includes(":"))
+        $('#forecastselector').val(window.location.hash.split(":")[1]);
+    $('#forecastselector').change(function() {
+        let firstPart = window.location.hash.split(":")[0]; //if there's no colon this returns the whole thing
+        if ($('#forecastselector').val() === 'current')
+            window.location.hash = firstPart;
+        else
+            window.location.hash = firstPart+":"+$('#forecastselector').val();
+        window.location.reload();
+    });
 });
 
 
 
 
 //---   initial loading of models   ---
-
 $('#mapContainer').removeClass("loading");
 showMessageBox("welcomeMessageBox");
-
-if (window.location.hash.includes(":"))  {
-
-    let recentRun = window.location.hash.split(":")[1];
-
-    for (let modelName in models) {
-        if (!models.hasOwnProperty(modelName))
-            continue;
-        let model = models[modelName];
-         
-        model["lastForecast"] = moment.utc(recentRun, "YYYYMMDDHH");
-        model["currentDirectory"] = dataDomain+"/Forecast/"+modelName+"/"+recentRun;
-        model["currentDownloadDirectory"] = dataDomain+"/?prefix=Forecast/"+modelName+"/"+recentRun; 
-        
-    }
-        drawTimeSlide();
-        init(); 
-}
-
-else {
-
-    let modelLoadingPromises = [];
-    for (let modelName in models) {
-        if (!models.hasOwnProperty(modelName))
-            continue;
-        let model = models[modelName];
-        modelLoadingPromises.push(
-            $.get(dataDomain+"/Forecast/"+modelName+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
-                model["lastForecast"] = moment.utc(recentRun, "YYYYMMDDHH");
-                model["currentDirectory"] = dataDomain+"/Forecast/"+modelName+"/"+recentRun;
-                model["currentDownloadDirectory"] = dataDomain+"/?prefix=Forecast/"+modelName+"/"+recentRun;
-            })
-        );
-    }
-
-    $.when.apply($, modelLoadingPromises).then(function() {
-        thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
-        //check time every minute so timeline updates when the hour ticks over
-        setInterval(function() {
-            thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
-            drawTimeSlide();
-        }, 60000);
-        //also check the model data age every hour and remind user to refresh if they're viewing stale data
-        setInterval(function() {
-            Object.keys(models).forEach(modelName => {
-                let model = models[modelName];
-                modelLoadingPromises.push(
-                    $.get(dataDomain+"/Forecast/"+modelName+"/recent.txt?v="+Math.round(Math.random()*100000000).toString(), function(recentRun) {
-                        if (!model["lastForecast"].isSame(moment.utc(recentRun, "YYYYMMDDHH"))) {
-                            $('#mapContainer').addClass("historical");
-                            $('#modelInfo')
-                                .addClass("historical")
-                                .text("Viewing iFlood data generated "+models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD")+". Refresh to view latest forecast.");
-                        }
-                    })
-                );
-            });
-        }, 60000*60);
-        currentHourSetting = thisHour;
-        //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
-        //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
-        $('#modelInfo').text("iFlood data generated "+models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD")+". Third party data may be older.");
+google.maps.event.addListenerOnce(map, 'idle', function () {
+    loadModels();
+});
+function loadModels() {
+    if (window.location.hash.includes(":")) {
+        let recentRun = window.location.hash.split(":")[1];
+        for (let modelName in models) {
+            if (!models.hasOwnProperty(modelName))
+                continue;
+            let model = models[modelName];
+            model["lastForecast"] = moment.utc(recentRun, "YYYYMMDDHH");
+            model["currentDirectory"] = dataDomain + "/Forecast/" + modelName + "/" + recentRun;
+            model["currentDownloadDirectory"] = dataDomain + "/?prefix=Forecast/" + modelName + "/" + recentRun;
+        }
+        $('#mapContainer').addClass("historical");
+        $('#modelInfo').html("Viewing iFlood data generated " + models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD") + ". <a href='/map/'><b>View latest &rarr;</b></a>");
         drawTimeSlide();
         init();
-    });
-
+    } else {
+        let modelLoadingPromises = [];
+        for (let modelName in models) {
+            if (!models.hasOwnProperty(modelName))
+                continue;
+            let model = models[modelName];
+            modelLoadingPromises.push(
+                $.get(dataDomain + "/Forecast/" + modelName + "/recent.txt?v=" + Math.round(Math.random() * 100000000).toString(), function (recentRun) {
+                    model["lastForecast"] = moment.utc(recentRun, "YYYYMMDDHH");
+                    model["currentDirectory"] = dataDomain + "/Forecast/" + modelName + "/" + recentRun;
+                    model["currentDownloadDirectory"] = dataDomain + "/?prefix=Forecast/" + modelName + "/" + recentRun;
+                })
+            );
+        }
+        $.when.apply($, modelLoadingPromises).then(function () {
+            thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
+            //check time every minute so timeline updates when the hour ticks over
+            setInterval(function () {
+                thisHour = Math.min(moment().diff(models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"], 'H'), 83);
+                drawTimeSlide();
+            }, 60000);
+            //also check the model data age every hour and remind user to refresh if they're viewing stale data
+            setInterval(function () {
+                Object.keys(models).forEach(modelName => {
+                    let model = models[modelName];
+                    modelLoadingPromises.push(
+                        $.get(dataDomain + "/Forecast/" + modelName + "/recent.txt?v=" + Math.round(Math.random() * 100000000).toString(), function (recentRun) {
+                            if (!model["lastForecast"].isSame(moment.utc(recentRun, "YYYYMMDDHH"))) {
+                                $('#mapContainer').addClass("historical");
+                                $('#modelInfo').text("Viewing iFlood data generated " + models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD") + ". Refresh to view latest forecast.");
+                            }
+                        })
+                    );
+                });
+            }, 60000 * 60);
+            currentHourSetting = thisHour;
+            //currentGMUDirectory = dataDomain+"/Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
+            //currentDownloadDirectory = dataDomain+"/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/"+recentRun;
+            $('#modelInfo').text("iFlood data generated " + models["ChesapeakeBay_ADCIRCSWAN"]["lastForecast"].format("HH:mm [UTC,] YYYY-MM-DD") + ". Third party data may be older.");
+            drawTimeSlide();
+            init();
+        });
+    }
 }
 
 
@@ -669,12 +684,10 @@ function sliderShowHidePopup() {
 }
 function sliderDelay() {
     if (sliderTimeout === null) {
-        if (sliderTimeout === null) {
-            sliderTimeout = setTimeout(function () {
-                updateTime();
-                sliderTimeout = null;
-            }, 300);
-        }
+        sliderTimeout = setTimeout(function () {
+            updateTime();
+            sliderTimeout = null;
+        }, 300)
     }
 }
 timeSlider.addEventListener('mouseover',function() {
@@ -734,10 +747,6 @@ window.addEventListener("resize",function() {
 });
 
 //max button
-let maxButton = $('#maxButton');
-let currentlyMax = false;
-let originalHourSetting = 0;
-
 function showMax() {
     if (animationPlaying)
         stopAnim();
@@ -762,9 +771,6 @@ maxButton.click(function() {
 });
 
 //animate time
-let playButton = $('#playPauseButton');
-let animationPlaying = false;
-let animationTimeout = null;
 //TODO: frameskip when internet is slow
 function stepTime() {
     currentHourSetting += 1;
@@ -889,12 +895,15 @@ function hurricaneMapPoints(layer) {
 
 //set the URL hash to include all currently enabled layers
 function updateHash() {
+    let secondPart = "";
+    if (window.location.hash.includes(":"))
+        secondPart = ":"+window.location.hash.split(":")[1];
     let hashStr = "";
     Object.keys(layers).forEach(layerName => {
         if (layers[layerName]["visible"])
             hashStr += layerName + ","
     });
-    history.replaceState(undefined, undefined, "#"+hashStr.slice(0,-1)); //cut off extra comma
+    history.replaceState(undefined, undefined, "#"+hashStr.slice(0,-1)+secondPart); //cut off extra comma
 }
 
 /*function debugDrawHeat(data) {
@@ -1742,7 +1751,6 @@ function setParticleFile(layer) {
 }
 
 //particles
-let overCtx = mapOverlayCanvas.getContext('2d');
 window.addEventListener('resize',function() {
     mapOverlayCanvas.width = mapOverlayCanvas.clientWidth;
     mapOverlayCanvas.height = mapOverlayCanvas.clientHeight;
@@ -1764,10 +1772,6 @@ function hideParticles(layer) {
     overCtx.fillRect(0,0,mapOverlayCanvas.width,mapOverlayCanvas.height);
 }
 
-let lastFrameTime;
-let pointBurstPoints;
-let pointBurstLocation;
-let pointBurstTime;
 function drawOverlay(currentTime) {
     let frameLength;
     if (lastFrameTime)
