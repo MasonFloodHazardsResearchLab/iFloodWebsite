@@ -1,0 +1,218 @@
+<div id="mapContainer" class="loading">
+    <div id="map"></div>
+    <canvas id="mapOverlayCanvas"></canvas>
+    <div id="placeButtons"></div>
+    <div id="mapScales"></div>
+    <div id="timeSlideContainer">
+        <div id="timePopup">09:00 UTC</div>
+        <div id="modelInfo">iFlood data generated 00:00 UTC, 0000-00-00. Third party data may be older.</div>
+        <button id="playPauseButton" class="play"></button>
+        <div id="timeSlider">
+            <canvas id="timeSliderBG"></canvas>
+            <canvas id="timeSliderHandle" width="20" height="20"></canvas>
+        </div>
+        <button id="maxButton">Max</button>
+    </div>
+    <div id="mapLayerBar">
+        <div id="expandButton"></div>
+        <div id="layerScroll">
+            <div id="layerScrollContent">
+                <div id="layerErrorBox">Some data failed to load.</div>
+                <div id="markerToggleBox">
+                    Forecast Stations
+                    <div id="markerToggleContainer">
+                        <div id="stationMarkerToggle" class="markerToggleRow showing">
+                            <div title="Water Stations" class="markerToggleButton"><div class="label">Water</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #25C829"></div>
+                                    <div class="colorBar" style="background-color: #E9D834"></div>
+                                    <div class="colorBar" style="background-color: #FF881C"></div>
+                                    <div class="colorBar" style="background-color: #DD2E2E"></div>
+                                    <div class="colorBar" style="background-color: #DD2EA8"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">Normal</div>
+                                    <div class="legendText">Action</div>
+                                    <div class="legendText">Minor</div>
+                                    <div class="legendText">Moderate</div>
+                                    <div class="legendText">Major</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="buoyMarkerToggle" class="markerToggleRow showing">
+                            <div title="Wave Stations" class="markerToggleButton"><div class="label">Waves</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #4A9AFF"></div>
+                                    <div class="colorBar" style="background-color: #B77AFD"></div>
+                                    <div class="colorBar" style="background-color: #FF00A4"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">Calm</div>
+                                    <div class="legendText">Action</div>
+                                    <div class="legendText">Major Swell</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ifloodMarkerToggle" class="markerToggleRow showing">
+                            <div title="iFLOOD Stations" class="markerToggleButton"><div class="label">iFLOOD</div></div>
+                            <div class="markerToggleLegend">
+                                <div class="legendColors">
+                                    <div class="colorBar" style="background-color: #326E50"></div>
+                                </div>
+                                <div class="legendLabels">
+                                    <div class="legendText">GMU IoT Station</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="forecastSelectorBox">
+                    <label for="forecastselector">View Forecast: </label>
+                    <select id="forecastselector"></select>
+                </div>
+                <div id="layerInfo">
+                </div>
+                <div id="layerTiles">
+                </div>
+            </div>
+            <div id="logoBox">
+                <a href="https://gmu.edu/"><img src="/GMUfourcolor.svg"></a>
+            </div>
+        </div>
+    </div>
+    <div id="messageBoxFade" class="show"></div>
+    <div id="welcomeMessageBox" class="messageBox">
+        <h2>Notice</h2>
+        <p>
+            The products provided here are for educational and scientific research only and should not be used for decision making in their present form.
+        </p>
+        <button class="messageButton dismissButton">Got it!</button>
+    </div>
+</div>
+
+<script id="templateLayerInfo" type="text/x-jsrender">
+    <div class="layerItem">
+        <div class="bgContain">
+            <div class="bg" style="background-image: url('{{:img}}')"></div>
+        </div>
+        <div class="titleBar">
+            <button class="closeButton"></button>
+            <div class="title">{{:displayName}}</div>
+            <canvas class="infoCanvas" width="80" height="20"></canvas>
+        </div>
+        <div class="description">{{:description}}</div>
+        {{if hasParticles}}
+            <div class="checkboxRow checkbox">
+                <input id="particleToggle{{:~uniqueID()}}" type="checkbox" name="particleToggle" class="particleToggle" value="On"> <label for="particleToggle{{:~uniqueID()-1}}">Show Vectors</label>
+            </div>
+        {{/if}}
+        <a class="dataButton" target="_blank">Raw Data</a>
+    </div>
+</script>
+
+<script id="templateLayerTile" type="text/x-jsrender">
+    <button class="layerTile">
+        <div class="tileImg" style="background-image: url('{{:img}}')">
+            <div class="cover"></div>
+        </div>
+        <div class="title">{{:displayName}}</div>
+    </button>
+</script>
+
+<script id="templatePopup" type="text/x-jsrender">
+    <div class="mapPopupTabs">
+        {{if hasWater}}
+            <div class="tab" id="mapPopupTabWater" role="button" tabindex="0">Water Level</div>
+        {{/if}}
+        {{if hasWater && (hasValidationFile || hasRealtimeValidation)}}
+            <div class="tab" id="mapPopupTabValidation" role="button" tabindex="0">Validation</div>
+        {{/if}}
+        {{if hasWind}}
+            <div class="tab" id="mapPopupTabWind" role="button" tabindex="0">Wind</div>
+        {{/if}}
+        {{if hasWaves}}
+            <div class="tab" id="mapPopupTabWaves" role="button" tabindex="0">Waves</div>
+        {{/if}}
+        {{if hasWavesValidation}}
+            <div class="tab" id="mapPopupTabWavesValidation" role="button" tabindex="0">Validation</div>
+        {{/if}}
+        {{if hasLongtermWater}}
+            <div class="tab" id="mapPopupTabLongtermWater" role="button" tabindex="0">Long Term Forecast</div>
+        {{/if}}
+        {{if hasXbeachVideo}}
+            <div class="tab" id="mapPopupTabXbeachVideo" role="button" tabindex="0">XBEACH</div>
+        {{/if}}
+        {{if hasWaveSpectrum}}
+            <div class="tab" id="mapPopupTabWaveSpectrum" role="button" tabindex="0">Wave Spectrum</div>
+        {{/if}}
+        {{if hasCamera}}
+            <div class="tab" id="mapPopupTabCamera" role="button" tabindex="0">Webcam</div>
+        {{/if}}
+    </div>
+    {{if hasWater}}
+        <div class="mapPopupContent" id="mapPopupContentWater"></div>
+    {{/if}}
+    {{if hasWater && (hasValidationFile || hasRealtimeValidation)}}
+        {{if hasValidationFile}}
+            <div class="mapPopupContent" id="mapPopupContentValidation"></div>
+        {{/if}}
+        {{if hasRealtimeValidation}}
+            <div class="mapPopupContent" id="mapPopupContentRealtimeValidation"></div>
+        {{/if}}
+        <div id="popupValidationSwitcher">
+            <button class="realtimeButton">Real Time</button>
+            <button class="dailyButton">24 Hour</button>
+        </div>
+    {{/if}}
+    {{if hasWind}}
+        <div class="mapPopupContent" id="mapPopupContentWind"></div>
+    {{/if}}
+    {{if hasWaves}}
+        <div class="mapPopupContent" id="mapPopupContentWaves"></div>
+    {{/if}}
+    {{if hasWavesValidation}}
+        <div class="mapPopupContent" id="mapPopupContentWavesValidation"></div>
+    {{/if}}
+    {{if hasLongtermWater}}
+        <div class="mapPopupContent" id="mapPopupContentLongtermWater"></div>
+    {{/if}}
+    {{if hasXbeachVideo}}
+        <div class="mapPopupContent" id="mapPopupContentXbeachVideo"></div>
+    {{/if}}
+    {{if hasWaveSpectrum}}
+        <div class="mapPopupContent" id="mapPopupContentWaveSpectrum"></div>
+    {{/if}}
+    {{if hasCamera}}
+        <div class="mapPopupContent" id="mapPopupContentCamera"></div>
+    {{/if}}
+</script>
+
+<script id="templatePlaceButton" type="text/x-jsrender">
+    <div class="placeButton" role="button">
+        <div class="placeImg" style="background-image: url('{{:img}}')"></div>
+        <div class="title">{{:displayName}}</div>
+    </div>
+</script>
+
+<script id="templateHurricaneInfo" type="text/x-jsrender">
+    <div class="hurricaneInfo">
+        <b>{{:name}}</b><br>
+        Max Wind: {{:maxwind}} knots<br>
+        Wind Gusts: {{:gusts}} knots<br>
+        {{if pressure != 9999}}
+            Minimum Pressure: {{:pressure}} mb<br>
+        {{/if}}
+        <br>
+        {{:time.format("ddd HH:mm [UTC]")}}
+    </div>
+</script>
+
+<script defer src="mapstyles.js"></script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiVbvW_iR0XpeBe-ojS7NjxMEDkpf0BOA&libraries=geometry,visualization"></script>
+
+<script defer src="mapbundle.js"></script>
+
+<script defer src="mapdata.js"></script>
+<script defer src="map.js"></script>
