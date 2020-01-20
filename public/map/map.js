@@ -271,6 +271,11 @@ function init() {
                 if (marker["hasLongtermWater"]) {
                     makePlotStationLongtermWater(replaceModelPaths(stationLongtermWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentLongtermWater")[0], marker["title"] + ": Longterm Forecast", marker);
                 }
+                if (marker["hasarcticWater"]) {
+                    makePlotStationWater(replaceModelPaths(stationarcticWaterUrl).replace("{_s_}", marker["stationStr"]), domPlot.find("#mapPopupContentWater")[0], marker["title"] + ": Water Level", marker);
+                }  
+                
+
                 if (marker["hasXbeachVideo"]) {
                     domPlot.find("#mapPopupContentXbeachVideo").append(
                         $('<video>', {
@@ -359,6 +364,12 @@ function init() {
                     $(this).addClass("current");
                     window.dispatchEvent(new Event('resize'));
                 });
+                domPlot.find("#mapPopupTabLongtermWater").click(function() {
+                    hideAll();
+                    domPlot.find("#mapPopupContentLongtermWater").css({"display": "block"});
+                    $(this).addClass("current");
+                    window.dispatchEvent(new Event('resize'));
+                });                
                 domPlot.find("#mapPopupTabXbeachVideo").click(function() {
                     hideAll();
                     domPlot.find("#mapPopupContentXbeachVideo").css({"display": "block"});

@@ -455,7 +455,8 @@ let colorRanges = {
 let models = {
     "ChesapeakeBay_ADCIRCSWAN":{},
     "ChesapeakeBay_XBEACH":{},
-    "ChesapeakeBay_SUBX":{}
+    "ChesapeakeBay_SUBX":{},
+    "Arctic_ADCIRCSWAN":{}
 };
 
 let viewLevels = [
@@ -733,6 +734,8 @@ let stationWindUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Wind/{_s_}.t
 let stationWavesUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Waves/{_s_}.tsv";
 let stationWavesValidationUrl = "{_ChesapeakeBay_ADCIRCSWAN_FILES_}/TimeSeries/Validation/waves/{_s_}.tsv";
 let stationLongtermWaterUrl = "{_ChesapeakeBay_SUBX_FILES_}/TimeSeries/LongtermWater/{_s_}.tsv";
+let stationarcticWaterUrl = "{_Arctic_ADCIRCSWAN_FILES_}/TimeSeries/Water/{_s_}.tsv";
+
 let markers = {
     "LWTV": {
 		"type": "station",
@@ -2208,6 +2211,46 @@ let markers = {
         "navdOffset": -0.51
 	},
 
+    "ANTA2": {
+        "type": "iflood",
+        "pos": {
+            "lat": 61.233889,
+            "lng": -149.883889
+        },
+        "title": "Anchorage, AK",
+        "stationStr": "ANTA2",
+        "hasWater":true,        
+        "hasarcticWater": true,
+        "hasWind": false,
+        "hasValidationFile": false,
+        "hasRealtimeValidation": false,
+        "hasWaves": false,
+        "hasLongtermWater": false,
+        "floodLevels": [8.806, 8.959, 9.111, 9.263],
+        "agency": "NOAA",
+        "noaaId": "9455920",
+        "navdOffset": -1.766
+    },
+    "PRDA2": {
+        "type": "iflood",
+        "pos": {
+            "lat": 70.400000,
+            "lng": -148.526667
+        },
+        "title": "Prudhoe Bay, AK",
+        "stationStr": "PRDA2",
+        "hasWater":true,
+        "hasarcticWater": true,
+        "hasWind": false,
+        "hasValidationFile": false,
+        "hasRealtimeValidation": false,
+        "hasWaves": false,
+        "hasLongtermWater": false,
+        "floodLevels": [1.806, 1.959, 2.111, 2.263],
+        "agency": "NOAA",
+        "noaaId": "9497645",
+        "navdOffset": 0
+    },
 
     //buoys
     "CHVA": {
@@ -2218,7 +2261,8 @@ let markers = {
 		},
 		"title": "Cape Henry,VA",
 		"stationStr": "CHVA",
-		"hasWater": false,
+		"hasWater": true,
+        "hasarcticWater": true,	
 		"hasWind": false,
 		"hasValidationFile": false,
 		"hasWaves": true,
