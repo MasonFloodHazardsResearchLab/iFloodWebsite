@@ -706,13 +706,14 @@ let layers = {
         "pathUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/NHCHurricanes/Hurricane/hurricane_track.json",
         "polygonUrl":"{_ChesapeakeBay_ADCIRCSWAN_FILES_}/NHCHurricanes/Hurricane/hurricane_polygon.json",
         "pathSprites":{
+            "MH":"/map/sprites/majorhurricane.svg",
             "HU":"/map/sprites/hurricane.svg",
             "TS":"/map/sprites/storm.svg"
         },
         "downloadUrl":"https://www.nhc.noaa.gov/",
         "z":8,
         "img":"/map/layerIcons/stormPath.png",
-        "description":"Predicted path of storms from NHC.<br><img src='/map/sprites/hurricane.svg' width='28'>Hurricane<br><img src='/map/sprites/storm.svg' width='28'>Storm<br><img src='/map/sprites/depression.svg' width='28'>Depression"
+        "description":"Predicted path of storms from NHC.<br><img src='/map/sprites/majorhurricane.svg' width='28'>Major Hurricane<br><img src='/map/sprites/hurricane.svg' width='28'>Hurricane<br><img src='/map/sprites/storm.svg' width='28'>Storm<br><img src='/map/sprites/depression.svg' width='28'>Depression"
     },
     "twitter": {
         "group":1,
@@ -2211,7 +2212,8 @@ let markers = {
         "navdOffset": -0.51
 	},
 
-    "ANTA2": {
+// Additional Stations for Arctic
+   "ANTA2": {
         "type": "iflood",
         "pos": {
             "lat": 61.233889,
@@ -2219,7 +2221,7 @@ let markers = {
         },
         "title": "Anchorage, AK",
         "stationStr": "ANTA2",
-        "hasWater":true,        
+        "hasWater": true,       
         "hasarcticWater": true,
         "hasWind": false,
         "hasValidationFile": false,
@@ -2239,7 +2241,7 @@ let markers = {
         },
         "title": "Prudhoe Bay, AK",
         "stationStr": "PRDA2",
-        "hasWater":true,
+        "hasWater": true,       
         "hasarcticWater": true,
         "hasWind": false,
         "hasValidationFile": false,
@@ -2250,7 +2252,8 @@ let markers = {
         "agency": "NOAA",
         "noaaId": "9497645",
         "navdOffset": 0
-    },
+    }, // this last comma is necessary
+
 
     //buoys
     "CHVA": {
@@ -2261,8 +2264,7 @@ let markers = {
 		},
 		"title": "Cape Henry,VA",
 		"stationStr": "CHVA",
-		"hasWater": true,
-        "hasarcticWater": true,	
+		"hasWater": false,
 		"hasWind": false,
 		"hasValidationFile": false,
 		"hasWaves": true,
