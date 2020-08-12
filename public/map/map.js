@@ -2346,7 +2346,7 @@ function makePlotStationWater(url, domNode, title, marker) {
             }
             let noaaStart = moment().subtract(3,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
-            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            let noaaUrl = "https://oue48c39uf.execute-api.us-east-1.amazonaws.com/prod/noaatides?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
             Plotly.d3.csv(noaaUrl, function (err, rows) {
                 let noaaObservation = {
                     type: "scatter",
@@ -2824,7 +2824,7 @@ function makePlotStationRealtimeValidation(url, domNode, title, marker) {
             }
             let noaaStart = moment().subtract(3,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
-            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            let noaaUrl = "https://oue48c39uf.execute-api.us-east-1.amazonaws.com/prod/noaatides?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
             Plotly.d3.csv(noaaUrl, function (err, noaaRows) {
                 let datasets = {
                     //label:[time column, data column, color, markers]
@@ -3982,8 +3982,8 @@ function makePlotStationLongtermWater(url, domNode, title, marker) {
             }
             let noaaStart = moment(date_now_plot, 'YYYY-MM-DD HH:mm:ss').subtract(1,'days').format('YYYYMMDD');
             let noaaEnd = moment().add(1,'days').format('YYYYMMDD');
-            let noaaUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
-            let noaatideUrl = "https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            let noaaUrl = "https://oue48c39uf.execute-api.us-east-1.amazonaws.com/prod/noaatides?product=water_level&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
+            let noaatideUrl = "https://oue48c39uf.execute-api.us-east-1.amazonaws.com/prod/noaatides?product=predictions&application=NOS.COOPS.TAC.WL&begin_date="+noaaStart+"&end_date="+noaaEnd+"&datum=MLLW&station="+noaaId+"&time_zone=GMT&units=metric&format=csv";
 
             Plotly.d3.csv(noaaUrl, function (err, noaaRows) {
                 let noaaObservation = {
