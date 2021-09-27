@@ -57,7 +57,7 @@ def lambda_handler(event, context):
         updateLink = "iflood.vse.gmu.edu/alerts#" + userItem["primaryContact"] + "," + userItem["verifyCode"]
         response = sns.publish(
             PhoneNumber=userItem["primaryContact"],
-            Message="Registration complete. To edit your alert subscription, tap here:\n" + updateLink + "\n\nTo unsubscribe, tap here:\n" + unsubLink,  # period at end of URL should stop iOS from automatically opening link to generate a preview
+            Message="Registration complete. To edit your alert subscription, tap here:\n" + updateLink + "\n\nTo unsubscribe, tap here:\n" + unsubLink
         )
 
     return {
